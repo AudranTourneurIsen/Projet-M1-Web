@@ -1,7 +1,8 @@
 import { FC } from 'react';
+import { PlainMenuItemModel } from '@/models';
 
 type MenuProps = {
-  menu: { name: string; link: string }[];
+  menu: PlainMenuItemModel[];
 };
 
 export const Menu: FC<MenuProps> = ({ menu }) => (

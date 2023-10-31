@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Home",
+    "link": "/"
+  },
+  {
+    "name": "Books",
+    "link": "/books"
+  },
+  {
+    "name": "Authors",
+    "link": "/authors"
+  }
+]
