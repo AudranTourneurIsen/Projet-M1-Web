@@ -1,0 +1,44 @@
+[
+  {
+    "name": "Home",
+    "link": "/",
+    "regex": "^/$",
+    "menu": true
+  },
+  {
+    "name": "Books",
+    "link": "/books",
+    "regex": "^/books$",
+    "menu": true
+  },
+  {
+    "name": "Book",
+    "link": "/books",
+    "regex": "^/books/.$",
+    "menu": false
+  },
+  {
+    "name": "Authors",
+    "link": "/authors",
+    "regex": "^/authors$",
+    "menu": true
+  },
+  {
+    "name": "Author",
+    "link": "/authors",
+    "regex": "^/authors/.$",
+    "menu": false
+  },
+  {
+    "name": "Users",
+    "link": "/users",
+    "regex": "^/users$",
+    "menu": true
+  },
+  {
+    "name": "User",
+    "link": "/users",
+    "regex": "^/users/.$",
+    "menu": false
+  }
+]

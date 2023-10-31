@@ -26,7 +26,7 @@ export const Breadcrumbs: FC<BreadcrumbsProps> = ({ root = 'books' }) => {
     <>
       {listOfLinks.map((item) => (
         <span key={item.name}>
-          {path.split('/').pop() === item.name ? (
+          {path.split('/').pop() === item.link.split('/').pop() ? (
             <span>{item.name}</span>
           ) : (
             <span>

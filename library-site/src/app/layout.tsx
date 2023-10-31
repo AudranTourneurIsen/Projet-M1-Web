@@ -3,7 +3,8 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { ReactElement, ReactNode } from 'react';
 import { Menu } from '@/components/Menu';
-import menu from '@/static/menu.json';
+import paths from '@/static/paths.json';
+import { PlainMenuItemModel } from '@/models';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -17,6 +18,14 @@ export default function RootLayout({
 }: {
   children: ReactNode;
 }): ReactElement {
+  const menu: PlainMenuItemModel[] = [];
+  paths.map((item) => {
+    if (item.menu) {
+      menu.push({ name: item.name, link: item.link });
+    }
+    return item;
+  });
+
   return (
     <html lang="en">
       <body className={inter.className}>
