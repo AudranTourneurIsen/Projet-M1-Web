@@ -10,5 +10,9 @@
   {
     "name": "Authors",
     "link": "/authors"
+  },
+  {
+    "name": "Users",
+    "link": "/users"
   }
 ]
