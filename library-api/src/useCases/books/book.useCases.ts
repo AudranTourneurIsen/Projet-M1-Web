@@ -3,6 +3,7 @@ import { BookId } from 'library-api/src/entities';
 import { BookRepository } from 'library-api/src/repositories';
 import {
   BookUseCasesOutput,
+  CreatePokemonUseCasesInput,
   PlainBookUseCasesOutput,
 } from 'library-api/src/useCases/books/book.useCases.type';
 
@@ -26,5 +27,16 @@ export class BookUseCases {
    */
   public async getById(id: BookId): Promise<BookUseCasesOutput> {
     return this.bookRepository.getById(id);
+  }
+
+  /**
+   * Create a new book
+   * @param book Book to create
+   * @returns Created book
+   */
+  public async createBook(
+    book: CreatePokemonUseCasesInput,
+  ): Promise<BookUseCasesOutput> {
+    return this.bookRepository.createBook(book);
   }
 }

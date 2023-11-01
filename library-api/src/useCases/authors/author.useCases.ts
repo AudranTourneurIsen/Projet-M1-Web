@@ -27,4 +27,15 @@ export class AuthorUseCases {
   public async getById(id: AuthorId): Promise<AuthorUseCasesOutput> {
     return this.authorRepository.getById(id);
   }
+
+  /**
+   * Create a new author
+   * @param author Author to create
+   * @returns Created author
+   */
+  public async create(
+    author: AuthorUseCasesOutput,
+  ): Promise<AuthorUseCasesOutput> {
+    return this.authorRepository.createOne(author);
+  }
 }

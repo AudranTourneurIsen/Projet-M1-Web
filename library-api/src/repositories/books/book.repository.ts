@@ -3,6 +3,7 @@ import { NotFoundError } from 'library-api/src/common/errors';
 import { Book, BookId } from 'library-api/src/entities';
 import {
   BookRepositoryOutput,
+  CreateBookRepositoryInput,
   PlainBookRepositoryOutput,
 } from 'library-api/src/repositories/books/book.repository.type';
 import {
@@ -43,5 +44,18 @@ export class BookRepository extends Repository<Book> {
     }
 
     return adaptBookEntityToBookModel(book);
+  }
+
+  /**
+   * Create a new book
+   * @param book Book to create
+   * @returns Created book
+   */
+  public async createBook(
+    book: CreateBookRepositoryInput,
+  ): Promise<BookRepositoryOutput> {
+    const createdBook = await this.save(book);
+
+    return adaptBookEntityToBookModel(createdBook);
   }
 }
