@@ -24,7 +24,7 @@ export class PlainBookPresenter {
       name: data.name,
       genres: data.genres,
       writtenOn: data.writtenOn,
-      author: PlainAuthorPresenter.from(data.author),
+      author: data.author,
     });
   }
 }
@@ -49,8 +49,8 @@ export class BookPresenter {
       id: data.id,
       name: data.name,
       writtenOn: data.writtenOn,
-      author: PlainAuthorPresenter.from(data.author),
-      genres: data.genres.map(GenrePresenter.from),
+      author: data.author,
+      genres: data.genres,
     });
   }
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, ReactElement, ReactNode, useEffect } from 'react';
+import { FC, ReactElement, ReactNode, useEffect, useState } from 'react';
 import {
   Modal,
   ModalContent,
@@ -10,6 +10,7 @@ import {
   Button,
   useDisclosure,
 } from '@nextui-org/react';
+import axios from 'axios';
 import { useBooksProviders } from '@/hooks';
 import { useAuthorsProviders } from '@/hooks/providers/authorProviders';
 import { useGenresProviders } from '@/hooks/providers/genreProviders';
@@ -26,35 +27,85 @@ const BooksPage: FC = (): ReactElement => {
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-  useEffect(() => load, [books]);
+  const [nameInput, setNameInput] = useState<string>('');
+  const [writtenOnInput, setWrittenOnInput] = useState<Date>(new Date());
+  const [authorInput, setAuthorInput] = useState<PlainAuthorModel>();
+  const [genresInput, setGenresInput] = useState<PlainGenreModel[]>([]);
 
-  const bookToSend: {
-    name: string;
-    writtenOn: Date;
-    author: PlainAuthorModel;
-    genres: PlainGenreModel[];
-  } = {
-    name: 'test',
-    writtenOn: new Date(),
-    author: {
-      id: '0',
-      firstName: 'test',
-      lastName: 'test',
-    },
-    genres: [],
-  };
+  useEffect(() => {
+    load();
+  }, []);
+
+  async function submit(): Promise<void> {
+    console.log(nameInput);
+    console.log(writtenOnInput);
+    console.log(authorInput);
+    console.log(genresInput);
+
+    axios
+      .post(`${process.env.NEXT_PUBLIC_API_URL}/books/new`, {
+        name: 'vampyria',
+        writtenOn: writtenOnInput,
+        authorId: {
+          id: '0',
+          firstName: 'victor',
+          lastName: 'dixen',
+        },
+        genresIds: ['fiction', 'fantasy'],
+      })
+      .then((data) => console.log(data))
+      .catch((err) => console.error(err));
+
+    onOpenChange();
+  }
+
+  function returnDate(date: Date): string {
+    return new Date(date).toLocaleDateString('fr-FR', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  }
 
   return (
     <>
-      <h1>Books</h1>
-      {books.map((book) => (
-        <div key={book.id}>{book.name}</div>
-      ))}
       <Button onPress={onOpen}>Add book</Button>
+      <h1>Books</h1>
+      <table className="border w-8/12">
+        <thead className="border">
+          <tr>
+            <th className="border">name</th>
+            <th>written on</th>
+            <th className="border">author</th>
+            <th>genres</th>
+          </tr>
+        </thead>
+        <tbody className="border">
+          {books.map((book, i) => (
+            <tr
+              key={book.id}
+              className={i % 2 === 1 ? 'bg-neutral-700' : 'bg-neutral-800'}
+            >
+              <td>{book.name}</td>
+              <td>{returnDate(book.writtenOn)}</td>
+              <td>
+                {book.author
+                  ? `${book.author.firstName} ${book.author.lastName}`
+                  : 'Auteur inconnu'}
+              </td>
+              <td>
+                {book.genres.map((genre) => (
+                  <span key={genre.id}>{genre.name}</span>
+                ))}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        className="relative w-6/12 bg-slate-600 p-2 rounded"
+        className="relative w-6/12 bg-slate-600 p-2 rounded text-black"
       >
         <ModalContent>
           {(onClose): ReactNode => (
@@ -68,70 +119,66 @@ const BooksPage: FC = (): ReactElement => {
                     <label htmlFor="name">Name</label>
                     <input
                       type="text"
-                      id="name"
                       name="name"
-                      value={bookToSend.name}
-                      onChange={(e): void => {
-                        bookToSend.name = e.target.value;
-                      }}
+                      id="name"
+                      value={nameInput}
+                      onChange={(e) => setNameInput(e.target.value)}
                     />
                   </div>
                   <div className="flex flex-col gap-1">
                     <label htmlFor="writtenOn">Written on</label>
                     <input
                       type="date"
-                      id="writtenOn"
                       name="writtenOn"
-                      value={bookToSend.writtenOn.toISOString()}
-                      onChange={(e): void => {
-                        bookToSend.writtenOn = new Date(e.target.value);
-                      }}
+                      id="writtenOn"
+                      value={writtenOnInput.toISOString().split('T')[0]}
+                      onChange={(e) =>
+                        setWrittenOnInput(new Date(e.target.value))
+                      }
                     />
                   </div>
                   <div className="flex flex-col gap-1">
                     <label htmlFor="author">Author</label>
                     <select
-                      id="author"
                       name="author"
-                      value={bookToSend.author.id}
-                      onChange={(e): void => {
-                        bookToSend.author = authors.find(
-                          (author) => author.id === e.target.value,
-                        )!;
-                      }}
+                      id="author"
+                      value={authorInput?.id}
+                      onChange={(e) =>
+                        setAuthorInput(
+                          authors.find(
+                            (author) => author.id === e.target.value,
+                          ),
+                        )
+                      }
                     >
-                      {authors.map((author: PlainAuthorModel) => (
+                      {authors.map((author) => (
                         <option key={author.id} value={author.id}>
-                          {author.firstName}
-                          {author.lastName}
+                          {author.firstName} {author.lastName}
                         </option>
                       ))}
                     </select>
-                    <Button href="/authors">Add author</Button>
                   </div>
                   <div className="flex flex-col gap-1">
                     <label htmlFor="genres">Genres</label>
                     <select
-                      id="genres"
                       name="genres"
+                      id="genres"
                       multiple
-                      value={bookToSend.genres.map((genre) => genre.id)}
-                      onChange={(e): void => {
-                        bookToSend.genres = Array.from(
-                          e.target.selectedOptions,
-                        ).map(
-                          (option) =>
-                            genres.find((genre) => genre.id === option.value)!,
-                        );
-                      }}
+                      value={genresInput.map((genre) => genre.id)}
+                      onChange={(e): void =>
+                        setGenresInput(
+                          genres.filter((genre) =>
+                            e.target.value.includes(genre.id),
+                          ),
+                        )
+                      }
                     >
-                      {genres.map((genre: PlainGenreModel) => (
+                      {genres.map((genre) => (
                         <option key={genre.id} value={genre.id}>
                           {genre.name}
                         </option>
                       ))}
                     </select>
-                    <Button href="/genres">Add genre</Button>
                   </div>
                 </form>
               </ModalBody>
@@ -139,7 +186,7 @@ const BooksPage: FC = (): ReactElement => {
                 <Button color="danger" variant="light" onPress={onClose}>
                   Close
                 </Button>
-                <Button color="primary" onPress={onClose}>
+                <Button color="primary" onPress={submit}>
                   Add
                 </Button>
               </ModalFooter>

@@ -1,5 +1,8 @@
-import { Author, BookId } from 'library-api/src/entities';
-import { PlainAuthorModel } from 'library-api/src/models/author.model';
+import { BookId } from 'library-api/src/entities';
+import {
+  AuthorModel,
+  PlainAuthorModel,
+} from 'library-api/src/models/author.model';
 import { GenreModel } from 'library-api/src/models/genre.model';
 
 export type PlainBookModel = {
@@ -14,6 +17,6 @@ export type BookModel = {
   id: BookId;
   name: string;
   writtenOn: Date;
-  author: Author;
+  author: AuthorModel;
   genres: GenreModel[];
 };

@@ -26,7 +26,7 @@ export class BookController {
   }
 
   @Post('/new')
-  public async create(@Body() book: CreateBookDto): Promise<BookPresenter> {
+  public async createBook(@Body() book: CreateBookDto): Promise<BookPresenter> {
     const createdBook = await this.bookUseCases.createBook(book);
 
     return BookPresenter.from(createdBook);
