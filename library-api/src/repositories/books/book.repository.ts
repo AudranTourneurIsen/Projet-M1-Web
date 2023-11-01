@@ -27,8 +27,6 @@ export class BookRepository extends Repository<Book> {
       relations: { bookGenres: { genre: true }, author: true },
     });
 
-    console.log('books : ', books);
-
     return books.map(adaptBookEntityToPlainBookModel);
   }
 
@@ -57,8 +55,6 @@ export class BookRepository extends Repository<Book> {
     book: CreateBookRepositoryInput,
   ): Promise<BookRepositoryOutput> {
     const createdBook = await this.save(book);
-
-    console.log(createdBook);
 
     return adaptBookEntityToBookModel(createdBook);
   }
