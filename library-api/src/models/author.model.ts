@@ -5,3 +5,9 @@ export type PlainAuthorModel = {
   firstName: string;
   lastName: string;
 };
+
+export type AuthorModel = {
+  id: AuthorId;
+  firstName: string;
+  lastName: string;
+};
