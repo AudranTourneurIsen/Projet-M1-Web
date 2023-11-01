@@ -1,6 +1,13 @@
 'use client';
 
-import { FC, ReactElement, ReactNode, useEffect, useState } from 'react';
+import {
+  FC,
+  ReactElement,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import {
   Modal,
   ModalContent,
@@ -36,7 +43,7 @@ const BooksPage: FC = (): ReactElement => {
     load();
   }, []);
 
-  async function submit(): Promise<void> {
+  const submit = useCallback(() => {
     console.log(nameInput);
     console.log(writtenOnInput);
     console.log(authorInput);
@@ -44,20 +51,16 @@ const BooksPage: FC = (): ReactElement => {
 
     axios
       .post(`${process.env.NEXT_PUBLIC_API_URL}/books/new`, {
-        name: 'vampyria',
+        name: nameInput,
         writtenOn: writtenOnInput,
-        authorId: {
-          id: '0',
-          firstName: 'victor',
-          lastName: 'dixen',
-        },
-        genresIds: ['fiction', 'fantasy'],
+        authorId: authorInput?.id,
+        genresIds: genresInput.map((genre) => genre.id),
       })
       .then((data) => console.log(data))
       .catch((err) => console.error(err));
 
     onOpenChange();
-  }
+  }, [nameInput, writtenOnInput, authorInput, genresInput, onOpenChange]);
 
   function returnDate(date: Date): string {
     return new Date(date).toLocaleDateString('fr-FR', {
@@ -68,8 +71,13 @@ const BooksPage: FC = (): ReactElement => {
   }
 
   return (
-    <>
-      <Button onPress={onOpen}>Add book</Button>
+    <div className="relative p-4">
+      <Button
+        onPress={onOpen}
+        className="border rounded bg-green-800 border-green-700"
+      >
+        Add book
+      </Button>
       <h1>Books</h1>
       <table className="border w-8/12">
         <thead className="border">
@@ -105,7 +113,7 @@ const BooksPage: FC = (): ReactElement => {
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        className="relative w-6/12 bg-slate-600 p-2 rounded text-black"
+        className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-6/12 bg-slate-600 p-2 rounded text-black"
       >
         <ModalContent>
           {(onClose): ReactNode => (
@@ -116,69 +124,82 @@ const BooksPage: FC = (): ReactElement => {
               <ModalBody>
                 <form>
                   <div className="flex flex-col gap-1">
-                    <label htmlFor="name">Name</label>
-                    <input
-                      type="text"
-                      name="name"
-                      id="name"
-                      value={nameInput}
-                      onChange={(e) => setNameInput(e.target.value)}
-                    />
+                    <label htmlFor="name">
+                      Name
+                      <input
+                        type="text"
+                        name="name"
+                        id="name"
+                        className="ml-2 border border-gray-400 rounded bg-gray-100"
+                        value={nameInput}
+                        onChange={(e): void => setNameInput(e.target.value)}
+                      />
+                    </label>
                   </div>
                   <div className="flex flex-col gap-1">
-                    <label htmlFor="writtenOn">Written on</label>
-                    <input
-                      type="date"
-                      name="writtenOn"
-                      id="writtenOn"
-                      value={writtenOnInput.toISOString().split('T')[0]}
-                      onChange={(e) =>
-                        setWrittenOnInput(new Date(e.target.value))
-                      }
-                    />
+                    <label htmlFor="writtenOn">
+                      Written on
+                      <input
+                        type="date"
+                        name="writtenOn"
+                        id="writtenOn"
+                        className="ml-2 border border-gray-400 rounded bg-gray-100"
+                        value={writtenOnInput.toISOString().split('T')[0]}
+                        onChange={(e): void => {
+                          setWrittenOnInput(new Date(e.target.value));
+                        }}
+                      />
+                    </label>
                   </div>
                   <div className="flex flex-col gap-1">
-                    <label htmlFor="author">Author</label>
-                    <select
-                      name="author"
-                      id="author"
-                      value={authorInput?.id}
-                      onChange={(e) =>
-                        setAuthorInput(
-                          authors.find(
-                            (author) => author.id === e.target.value,
-                          ),
-                        )
-                      }
-                    >
-                      {authors.map((author) => (
-                        <option key={author.id} value={author.id}>
-                          {author.firstName} {author.lastName}
-                        </option>
-                      ))}
-                    </select>
+                    <label htmlFor="author">
+                      Author
+                      <select
+                        name="author"
+                        id="author"
+                        className="ml-2 border border-gray-400 rounded bg-gray-100"
+                        value={authorInput?.id}
+                        onChange={(e): void => {
+                          setAuthorInput(
+                            authors.find(
+                              (author) => author.id === e.target.value,
+                            ),
+                          );
+                        }}
+                      >
+                        {authors.map((author) => (
+                          <option key={author.id} value={author.id}>
+                            {author.firstName}
+                            {author.lastName}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
                   </div>
                   <div className="flex flex-col gap-1">
-                    <label htmlFor="genres">Genres</label>
-                    <select
-                      name="genres"
-                      id="genres"
-                      multiple
-                      value={genresInput.map((genre) => genre.id)}
-                      onChange={(e): void =>
-                        setGenresInput(
-                          genres.filter((genre) =>
-                            e.target.value.includes(genre.id),
-                          ),
-                        )
-                      }
-                    >
-                      {genres.map((genre) => (
-                        <option key={genre.id} value={genre.id}>
-                          {genre.name}
-                        </option>
-                      ))}
-                    </select>
+                    <label htmlFor="genres">
+                      Genres
+                      <select
+                        name="genres"
+                        id="genres"
+                        className="ml-2 border border-gray-400 rounded bg-gray-100"
+                        multiple
+                        value={genresInput.map((genre) => genre.id)}
+                        onChange={(e): void => {
+                          setGenresInput(
+                            genres.filter((genre) =>
+                              e.target.value.includes(genre.id),
+                            ),
+                          );
+                        }}
+                      >
+                        {genres.map((genre) => (
+                          <option key={genre.id} value={genre.id}>
+                            {genre.name}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
                   </div>
                 </form>
               </ModalBody>
@@ -194,7 +215,7 @@ const BooksPage: FC = (): ReactElement => {
           )}
         </ModalContent>
       </Modal>
-    </>
+    </div>
   );
 };
 
