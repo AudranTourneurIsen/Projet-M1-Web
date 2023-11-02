@@ -17,7 +17,7 @@ import {
   Button,
   useDisclosure,
 } from '@nextui-org/react';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useBooksProviders } from '@/hooks';
 import { useAuthorsProviders } from '@/hooks/providers/authorProviders';
 import { useGenresProviders } from '@/hooks/providers/genreProviders';
@@ -28,9 +28,9 @@ const BooksPage: FC = (): ReactElement => {
   const { useListAuthors } = useAuthorsProviders();
   const { useListGenres } = useGenresProviders();
 
-  const { books, load } = useListBooks();
-  const { authors } = useListAuthors();
-  const { genres } = useListGenres();
+  const { books, loadBooks } = useListBooks();
+  const { authors, loadAuthors } = useListAuthors();
+  const { genres, loadGenres } = useListGenres();
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
@@ -39,28 +39,73 @@ const BooksPage: FC = (): ReactElement => {
   const [authorInput, setAuthorInput] = useState<PlainAuthorModel>();
   const [genresInput, setGenresInput] = useState<PlainGenreModel[]>([]);
 
+  const [nameGenreInput, setNameGenreInput] = useState<string>('');
+
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  const [genreInputToggle, setGenreInputToggle] = useState<boolean>(true);
+
   useEffect(() => {
-    load();
+    loadAuthors();
+    loadGenres();
+    loadBooks();
   }, []);
 
-  const submit = useCallback(() => {
-    console.log(nameInput);
-    console.log(writtenOnInput);
-    console.log(authorInput);
-    console.log(genresInput);
-
+  const submitBook = useCallback(() => {
     axios
       .post(`${process.env.NEXT_PUBLIC_API_URL}/books/new`, {
         name: nameInput,
         writtenOn: writtenOnInput,
-        authorId: authorInput?.id,
-        genresIds: genresInput.map((genre) => genre.id),
+        author: authorInput,
+        genres: genresInput.map((genre) => genre),
       })
-      .then((data) => console.log(data))
-      .catch((err) => console.error(err));
-
-    onOpenChange();
+      .then((data) => {
+        console.log(data);
+        onOpenChange();
+        loadAuthors();
+        loadGenres();
+        loadBooks();
+      })
+      .catch((err: Error | AxiosError) => {
+        if (axios.isAxiosError(err)) {
+          // Access to config, request, and response
+          if (err.status === 500) {
+            setErrorMsg('Server error ! Try again later.');
+          } else {
+            setErrorMsg(err.response?.data.message);
+          }
+        } else {
+          // Just a stock error
+          setErrorMsg(err.message);
+        }
+      });
   }, [nameInput, writtenOnInput, authorInput, genresInput, onOpenChange]);
+
+  const submitGenre = useCallback(() => {
+    axios
+      .post(`${process.env.NEXT_PUBLIC_API_URL}/genres/new`, {
+        name: nameGenreInput,
+      })
+      .then((data) => {
+        console.log(data);
+        loadAuthors();
+        loadGenres();
+        loadBooks();
+      })
+      .catch((err: Error | AxiosError) => {
+        if (axios.isAxiosError(err)) {
+          // Access to config, request, and response
+          if (err.status === 400) {
+            setErrorMsg(err.response?.data.message);
+          } else if (err.status === 500) {
+            setErrorMsg('Server error ! Try again later.');
+          }
+        } else {
+          // Just a stock error
+          setErrorMsg(err.message);
+        }
+      });
+  }, [nameGenreInput]);
 
   function returnDate(date: Date): string {
     return new Date(date).toLocaleDateString('fr-FR', {
@@ -199,7 +244,42 @@ const BooksPage: FC = (): ReactElement => {
                           </option>
                         ))}
                       </select>
+                      <Button
+                        color="primary"
+                        variant="light"
+                        onPress={(): void =>
+                          setGenreInputToggle(!genreInputToggle)
+                        }
+                      >
+                        Add a genre
+                      </Button>
+                      <div hidden={genreInputToggle} id="divInputGenre">
+                        <input
+                          type="text"
+                          name="genre"
+                          id="genre"
+                          className="ml-2 border border-gray-400 rounded bg-gray-100"
+                          value={nameGenreInput}
+                          onChange={(e): void =>
+                            setNameGenreInput(e.target.value)
+                          }
+                        />
+                        <Button
+                          color="primary"
+                          variant="light"
+                          className="ml-2"
+                          onPress={(): void => {
+                            submitGenre();
+                            setGenreInputToggle(!genreInputToggle);
+                          }}
+                        >
+                          Add
+                        </Button>
+                      </div>
                     </label>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <p className="text-red-500">{errorMsg}</p>
                   </div>
                 </form>
               </ModalBody>
@@ -207,7 +287,7 @@ const BooksPage: FC = (): ReactElement => {
                 <Button color="danger" variant="light" onPress={onClose}>
                   Close
                 </Button>
-                <Button color="primary" onPress={submit}>
+                <Button color="primary" onPress={submitBook}>
                   Add
                 </Button>
               </ModalFooter>

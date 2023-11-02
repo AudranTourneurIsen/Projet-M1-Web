@@ -4,6 +4,7 @@ import { DataSource, Repository } from 'typeorm';
 import { NotFoundError } from 'library-api/src/common/errors';
 import {
   AuthorRepositoryOutput,
+  CreateAuthorRepositoryInput,
   PlainAuthorRepositoryOutput,
 } from './author.repository.type';
 import {
@@ -23,7 +24,7 @@ export class AuthorRepository extends Repository<Author> {
    */
   public async getAllPlain(): Promise<PlainAuthorRepositoryOutput[]> {
     const books = await this.find({
-      relations: { books: { bookGenres: true } },
+      relations: { books: { genres: true } },
     });
 
     return books.map(adaptAuthorEntityToPlainAuthorModel);
@@ -43,5 +44,18 @@ export class AuthorRepository extends Repository<Author> {
     }
 
     return adaptAuthorEntityToAuthorModel(book);
+  }
+
+  /**
+   * Create a new author
+   * @param author Author to create
+   * @returns Created author
+   */
+  public async createAuthor(
+    author: CreateAuthorRepositoryInput,
+  ): Promise<AuthorRepositoryOutput> {
+    const createdAuthor = await this.save(author);
+
+    return adaptAuthorEntityToAuthorModel(createdAuthor);
   }
 }

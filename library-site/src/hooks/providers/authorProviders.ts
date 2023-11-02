@@ -4,7 +4,7 @@ import { PlainAuthorModel } from '@/models';
 
 type UseListAuthorsProvider = {
   authors: PlainAuthorModel[];
-  load: () => void;
+  loadAuthors: () => void;
 };
 
 export const useListAuthors = (): UseListAuthorsProvider => {
@@ -17,7 +17,7 @@ export const useListAuthors = (): UseListAuthorsProvider => {
       .catch((err) => console.error(err));
   };
 
-  return { authors, load: fetchAuthors };
+  return { authors, loadAuthors: fetchAuthors };
 };
 
 type AuthorProviders = {

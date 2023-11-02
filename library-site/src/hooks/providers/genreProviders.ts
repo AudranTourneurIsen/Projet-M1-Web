@@ -4,7 +4,7 @@ import { PlainGenreModel } from '@/models';
 
 type UseListGenresProvider = {
   genres: PlainGenreModel[];
-  load: () => void;
+  loadGenres: () => void;
 };
 
 export const useListGenres = (): UseListGenresProvider => {
@@ -17,7 +17,7 @@ export const useListGenres = (): UseListGenresProvider => {
       .catch((err) => console.error(err));
   };
 
-  return { genres, load: fetchGenres };
+  return { genres, loadGenres: fetchGenres };
 };
 
 type GenreProviders = {

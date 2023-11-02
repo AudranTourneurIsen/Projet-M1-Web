@@ -1,15 +1,23 @@
 import { Injectable } from '@nestjs/common';
-import { BookId } from 'library-api/src/entities';
-import { BookRepository } from 'library-api/src/repositories';
+import { Author, Book, BookId, Genre } from 'library-api/src/entities';
+import {
+  AuthorRepository,
+  BookRepository,
+  GenreRepository,
+} from 'library-api/src/repositories';
 import {
   BookUseCasesOutput,
-  CreatePokemonUseCasesInput,
+  CreateBookUseCasesInput,
   PlainBookUseCasesOutput,
 } from 'library-api/src/useCases/books/book.useCases.type';
 
 @Injectable()
 export class BookUseCases {
-  constructor(private readonly bookRepository: BookRepository) {}
+  constructor(
+    private readonly bookRepository: BookRepository,
+    private readonly genreRepository: GenreRepository,
+    private readonly authorRepository: AuthorRepository,
+  ) {}
 
   /**
    * Get all plain books
@@ -35,8 +43,40 @@ export class BookUseCases {
    * @returns Created book
    */
   public async createBook(
-    book: CreatePokemonUseCasesInput,
+    book: CreateBookUseCasesInput,
   ): Promise<BookUseCasesOutput> {
+    const genresIDs = book.genres.map(({ id }) => id);
+
+    const genres = await this.genreRepository.getByIds(genresIDs);
+
+    console.log(book);
+
+    if (!book.author) {
+      throw new Error('all fields are required');
+    }
+
+    const author = await this.authorRepository.getById(book.author.id);
+
+    if (!author) {
+      throw new Error('Author not found');
+    }
+
+    const authorToSave = new Author();
+    authorToSave.id = author.id;
+    authorToSave.firstName = author.firstName;
+    authorToSave.lastName = author.lastName;
+
+    const bookToSend = new Book();
+    bookToSend.name = book.name;
+    bookToSend.author = authorToSave;
+    bookToSend.writtenOn = book.writtenOn;
+    genres.forEach((genre) => {
+      const genreTmp = new Genre();
+      genreTmp.id = genre.id;
+      genreTmp.name = genre.name;
+      bookToSend.genres.push(genreTmp);
+    });
+
     return this.bookRepository.createBook(book);
   }
 }

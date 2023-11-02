@@ -3,12 +3,13 @@ import {
   BaseEntity,
   Column,
   Entity,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { BookGenre } from './BookGenre';
 import { Author } from './Author';
+import { Genre } from './Genre';
 
 export type BookId = string & { __brand: 'Book' };
 
@@ -26,6 +27,7 @@ export class Book extends BaseEntity {
   @ManyToOne(() => Author, (author) => author.books, { onDelete: 'CASCADE' })
   author: Author;
 
-  @OneToMany(() => BookGenre, (bookGenre) => bookGenre.book)
-  bookGenres: BookGenre[];
+  @ManyToMany(() => Genre, (genre) => genre.books)
+  @JoinTable()
+  genres: Genre[];
 }
