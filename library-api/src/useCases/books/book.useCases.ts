@@ -70,6 +70,7 @@ export class BookUseCases {
     bookToSend.name = book.name;
     bookToSend.author = authorToSave;
     bookToSend.writtenOn = book.writtenOn;
+    bookToSend.genres = [];
     genres.forEach((genre) => {
       const genreTmp = new Genre();
       genreTmp.id = genre.id;

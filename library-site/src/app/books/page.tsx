@@ -14,16 +14,16 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  Button,
   useDisclosure,
-  Checkbox,
-  CheckboxGroup,
-} from '@nextui-org/react';
+} from '@nextui-org/modal';
+import { Button } from '@nextui-org/button';
+import { Checkbox, CheckboxGroup } from '@nextui-org/checkbox';
 import axios, { AxiosError } from 'axios';
 import { useBooksProviders } from '@/hooks';
 import { useAuthorsProviders } from '@/hooks/providers/authorProviders';
 import { useGenresProviders } from '@/hooks/providers/genreProviders';
 import { PlainAuthorModel, PlainGenreModel } from '@/models';
+import { CheckboxGroupProvider } from '@nextui-org/react';
 
 const BooksPage: FC = (): ReactElement => {
   const { useListBooks } = useBooksProviders();
@@ -55,6 +55,25 @@ const BooksPage: FC = (): ReactElement => {
   }, []);
 
   const submitBook = useCallback(() => {
+    let errorMsgTmp = '';
+    if (!nameInput || nameInput === '') {
+      errorMsgTmp = `${errorMsgTmp}Name is required! `;
+    }
+    if (!writtenOnInput) {
+      errorMsgTmp = `${errorMsgTmp}WrittenOn is required! `;
+    }
+    if (!authorInput || authorInput?.id === '') {
+      errorMsgTmp = `${errorMsgTmp}Author is required! `;
+    }
+    if (genresInput.length === 0) {
+      errorMsgTmp = `${errorMsgTmp}At least one genre is required! `;
+    }
+
+    setErrorMsg(errorMsgTmp);
+    if (errorMsg !== '') {
+      return;
+    }
+
     axios
       .post(`${process.env.NEXT_PUBLIC_API_URL}/books/new`, {
         name: nameInput,
@@ -87,6 +106,7 @@ const BooksPage: FC = (): ReactElement => {
     writtenOnInput,
     authorInput,
     genresInput,
+    errorMsg,
     onOpenChange,
     loadAuthors,
     loadGenres,
@@ -117,7 +137,7 @@ const BooksPage: FC = (): ReactElement => {
           setErrorMsg(err.message);
         }
       });
-  }, [nameGenreInput]);
+  }, [loadAuthors, loadBooks, loadGenres, nameGenreInput]);
 
   function returnDate(date: Date): string {
     return new Date(date).toLocaleDateString('fr-FR', {
@@ -129,10 +149,7 @@ const BooksPage: FC = (): ReactElement => {
 
   return (
     <div className="relative p-4">
-      <Button
-        onPress={onOpen}
-        className="border rounded bg-green-800 border-green-700"
-      >
+      <Button className="bg-purple-950 p-1 purple rounded-md" onPress={onOpen}>
         Add book
       </Button>
       <h1>Books</h1>
@@ -170,7 +187,7 @@ const BooksPage: FC = (): ReactElement => {
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-6/12 bg-slate-600 p-2 rounded text-black h-4/6"
+        className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-6/12 bg-slate-600 p-2 rounded text-black"
       >
         <ModalContent>
           {(onClose): ReactNode => (
@@ -237,26 +254,9 @@ const BooksPage: FC = (): ReactElement => {
                     </label>
                   </div>
                   <div className="flex flex-col gap-1">
-                    <CheckboxGroup
-                      name="genres"
-                      id="genres"
-                      color="warning"
-                      value={genresNameInput}
-                      onValueChange={setGenresNameInput}
-                      onChange={(): void =>
-                        setGenresInput(
-                          genres.filter((genre) =>
-                            genresNameInput.includes(genre.name),
-                          ),
-                        )
-                      }
-                    >
+                    <CheckboxGroup name="genres" id="genres" color="warning">
                       {genres.map((genre) => (
-                        <Checkbox
-                          className="text-white w-1/12 h-1/6"
-                          key={genre.id}
-                          value={genre.name}
-                        >
+                        <Checkbox key={genre.id} value={genre.name}>
                           {genre.name}
                         </Checkbox>
                       ))}
