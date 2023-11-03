@@ -5,7 +5,6 @@ import { ReactElement, ReactNode } from 'react';
 import { Menu } from '@/components/Menu';
 import paths from '@/static/paths.json';
 import { PlainMenuItemModel } from '@/models';
-import { NextUiIntermediaryPage } from '@/components/NextUiIntermediaryPage';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -32,10 +31,8 @@ export default function RootLayout({
       <body
         className={`${inter.className} bg-gray-100 dark:bg-gray-900 text-gray-300`}
       >
-        <NextUiIntermediaryPage>
-          <Menu menu={menu} />
-          {children}
-        </NextUiIntermediaryPage>
+        <Menu menu={menu} />
+        {children}
       </body>
     </html>
   );
