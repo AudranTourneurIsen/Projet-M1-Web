@@ -36,6 +36,6 @@ export class AuthorUseCases {
   public async create(
     author: AuthorUseCasesOutput,
   ): Promise<AuthorUseCasesOutput> {
-    return this.authorRepository.createOne(author);
+    return this.authorRepository.createAuthor(author);
   }
 }

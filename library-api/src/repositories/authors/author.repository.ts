@@ -44,4 +44,16 @@ export class AuthorRepository extends Repository<Author> {
 
     return adaptAuthorEntityToAuthorModel(book);
   }
+
+  /**
+   * Create a new author
+   * @param author Author to create
+   * @returns Created author
+   */
+  public async createAuthor(
+    author: AuthorRepositoryOutput,
+  ): Promise<AuthorRepositoryOutput> {
+    const createdAuthor = await this.save(author);
+    return adaptAuthorEntityToAuthorModel(createdAuthor);
+  }
 }
