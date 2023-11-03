@@ -27,8 +27,6 @@ export class BookRepository extends Repository<Book> {
       relations: { genres: true, author: true },
     });
 
-    console.log('books : ', books);
-
     return books.map(adaptBookEntityToPlainBookModel);
   }
 
@@ -59,8 +57,6 @@ export class BookRepository extends Repository<Book> {
     console.log(book);
 
     const createdBook = await this.save(book);
-
-    console.log(createdBook);
 
     return adaptBookEntityToBookModel(createdBook);
   }
