@@ -1,31 +1,20 @@
 'use client';
 
-import {
-  FC,
-  ReactElement,
-  ReactNode,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  useDisclosure,
-} from '@nextui-org/modal';
-import { Button } from '@nextui-org/button';
-import { Checkbox, CheckboxGroup } from '@nextui-org/checkbox';
+import { FC, ReactElement, useCallback, useEffect, useState } from 'react';
 import axios, { AxiosError } from 'axios';
 import { useBooksProviders } from '@/hooks';
 import { useAuthorsProviders } from '@/hooks/providers/authorProviders';
 import { useGenresProviders } from '@/hooks/providers/genreProviders';
-import { PlainAuthorModel, PlainGenreModel } from '@/models';
-import { set } from 'lodash';
+import { PlainAuthorModel } from '@/models';
+import { Button } from '@/components/Button';
+import { Modal } from '@/components/Modal';
+import { TextInput } from '@/components/TextInput';
+
+import { DropdownSelection } from '@/components/DropdownSelection';
+import { DropdownCheckboxSelection } from '@/components/DropdownCheckboxSelection';
 
 const BooksPage: FC = (): ReactElement => {
+  console.log('books re-render');
   const { useListBooks } = useBooksProviders();
   const { useListAuthors } = useAuthorsProviders();
   const { useListGenres } = useGenresProviders();
@@ -40,10 +29,11 @@ const BooksPage: FC = (): ReactElement => {
   };
 
   const [nameInput, setNameInput] = useState<string>('');
-  const [writtenOnInput, setWrittenOnInput] = useState<Date>(new Date());
+  const [writtenOnDateInput, setWrittenOnDateInput] = useState<Date>(
+    new Date(),
+  );
   const [authorInput, setAuthorInput] = useState<PlainAuthorModel>();
-  const [genresNameInput, setGenresNameInput] = useState<string[]>([]);
-  const [genresInput, setGenresInput] = useState<PlainGenreModel[]>([]);
+  // const [_genresNameInput, _setGenresNameInput] = useState<string[]>([]);
 
   const [nameGenreInput, setNameGenreInput] = useState<string>('');
 
@@ -51,41 +41,64 @@ const BooksPage: FC = (): ReactElement => {
 
   const [genreInputToggle, setGenreInputToggle] = useState<boolean>(true);
 
+  const [genresInput, setGenresInput] = useState<
+    {
+      id: string;
+      name: string;
+      selected: boolean;
+    }[]
+  >([]);
+
   useEffect(() => {
     loadAuthors();
     loadGenres();
     loadBooks();
   }, []);
 
-  const submitBook = useCallback(() => {
-    let errorMsgTmp = '';
-    if (!nameInput || nameInput === '') {
-      errorMsgTmp = `${errorMsgTmp}Name is required! `;
-    }
-    if (!writtenOnInput) {
-      errorMsgTmp = `${errorMsgTmp}WrittenOn is required! `;
-    }
-    if (!authorInput || authorInput?.id === '') {
-      errorMsgTmp = `${errorMsgTmp}Author is required! `;
-    }
-    if (genresInput.length === 0) {
-      errorMsgTmp = `${errorMsgTmp}At least one genre is required! `;
-    }
+  useEffect(() => {
+    setGenresInput(
+      genres.map((genre) => ({
+        id: genre.id,
+        name: genre.name,
+        selected: false,
+      })),
+    );
+  }, [genres]);
 
-    setErrorMsg(errorMsgTmp);
-    if (errorMsg !== '') {
+  const submitBook = useCallback(() => {
+    if (!nameInput) {
+      setErrorMsg('The name of the book is required!');
       return;
     }
+    if (!writtenOnDateInput) {
+      setErrorMsg('The author of the book is required! ');
+      return;
+    }
+    if (!authorInput?.id) {
+      setErrorMsg('The author of the book is required! ');
+      return;
+    }
+    if (!genresInput.length) {
+      setErrorMsg('Specifying at least one genre is required!');
+      return;
+    }
+
+    setErrorMsg('');
 
     axios
       .post(`${process.env.NEXT_PUBLIC_API_URL}/books/new`, {
         name: nameInput,
-        writtenOn: writtenOnInput,
+        writtenOn: writtenOnDateInput,
         author: authorInput,
-        genres: genresInput.map((genre) => genre),
+        genres: genresInput
+          .filter((genre) => genre.selected)
+          .map((g) => ({
+            id: g.id,
+            name: g.name,
+          })),
       })
-      .then((data) => {
-        console.log(data);
+      .then(() => {
+        // console.log(data);
         loadAuthors();
         loadGenres();
         loadBooks();
@@ -94,7 +107,7 @@ const BooksPage: FC = (): ReactElement => {
         if (axios.isAxiosError(err)) {
           // Access to config, request, and response
           if (err.status === 500) {
-            setErrorMsg('Server error ! Try again later.');
+            setErrorMsg('Server error! Try again later.');
           } else {
             setErrorMsg(err.response?.data.message);
           }
@@ -105,10 +118,9 @@ const BooksPage: FC = (): ReactElement => {
       });
   }, [
     nameInput,
-    writtenOnInput,
+    writtenOnDateInput,
     authorInput,
     genresInput,
-    errorMsg,
     loadAuthors,
     loadGenres,
     loadBooks,
@@ -119,8 +131,8 @@ const BooksPage: FC = (): ReactElement => {
       .post(`${process.env.NEXT_PUBLIC_API_URL}/genres/new`, {
         name: nameGenreInput,
       })
-      .then((data) => {
-        console.log(data);
+      .then(() => {
+        // console.log(data);
         loadAuthors();
         loadGenres();
         loadBooks();
@@ -150,144 +162,131 @@ const BooksPage: FC = (): ReactElement => {
 
   return (
     <div className="relative p-4">
-      <button
-        type="button"
-        className="bg-purple-950 p-1 purple rounded-md"
-        onClick={(): void => setIsOpen(!isOpen)}
-      >
+      <Button color="info" onPress={(): void => setIsOpen(!isOpen)}>
         Add book
-      </button>
+      </Button>
       <h1>Books</h1>
-      <table className="border w-8/12">
-        <thead className="border">
-          <tr>
-            <th className="border">name</th>
-            <th>written on</th>
-            <th className="border">author</th>
-            <th>genres</th>
-          </tr>
-        </thead>
-        <tbody className="border">
-          {books.map((book, i) => (
-            <tr
-              key={book.id}
-              className={i % 2 === 1 ? 'bg-neutral-700' : 'bg-neutral-800'}
-            >
-              <td>{book.name}</td>
-              <td>{returnDate(book.writtenOn)}</td>
-              <td>
-                {book.author
-                  ? `${book.author.firstName} ${book.author.lastName}`
-                  : 'Auteur inconnu'}
-              </td>
-              <td>
-                {book.genres.map((genre) => (
-                  <span key={genre.id}>{genre.name}</span>
-                ))}
-              </td>
+      <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+              <th scope="col" className="px-6 py-3">
+                Name
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Written on
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Author
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Genres
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="border">
+            {books.map((book) => (
+              <tr
+                key={book.id}
+                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+              >
+                <th
+                  scope="row"
+                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                >
+                  {book.name}
+                </th>
+                <td className="px-6 py-4">{returnDate(book.writtenOn)}</td>
+                <td className="px-6 py-4">
+                  {book.author
+                    ? `${book.author.firstName} ${book.author.lastName}`
+                    : 'Auteur inconnu'}
+                </td>
+                <td className="px-6 py-4">
+                  {book.genres.map((genre) => (
+                    <span key={genre.id}>{genre.name}</span>
+                  ))}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       <Modal isOpen={isOpen} onClose={onClose}>
-        ah
-      </Modal>
-      <form>
-        <div className="flex flex-col gap-1">
-          <label htmlFor="name">
-            Name
-            <input
-              type="text"
-              name="name"
-              id="name"
-              className="ml-2 border border-gray-400 rounded bg-gray-100"
+        <form className="p-6 flex flex-col gap-4">
+          <div className="flex flex-col gap-1">
+            <TextInput
+              label="Name"
               value={nameInput}
-              required
-              onChange={(e): void => setNameInput(e.target.value)}
+              onChange={(text: string): void => setNameInput(text)}
             />
-          </label>
-        </div>
-        <div className="flex flex-col gap-1">
-          <label htmlFor="writtenOn">
+          </div>
+          <div className="flex flex-col gap-1">
             Written on
             <input
               type="date"
               name="writtenOn"
               id="writtenOn"
               className="ml-2 border border-gray-400 rounded bg-gray-100"
-              value={writtenOnInput.toISOString().split('T')[0]}
-              required
+              value={writtenOnDateInput.toISOString().split('T')[0]}
               onChange={(e): void => {
-                setWrittenOnInput(new Date(e.target.value));
+                setWrittenOnDateInput(new Date(e.target.value));
               }}
             />
-          </label>
-        </div>
-        <div className="flex flex-col gap-1">
-          <label htmlFor="author">
-            Author
-            <select
-              name="author"
-              id="author"
-              className="ml-2 border border-gray-400 rounded bg-gray-100"
-              value={authorInput?.id}
-              required
-              onChange={(e): void => {
+          </div>
+          <div className="flex flex-col gap-1">
+            <DropdownSelection
+              label="Author"
+              onChange={(value: string): void => {
                 setAuthorInput(
-                  authors.find((author) => author.id === e.target.value),
+                  authors.filter((author) => author.id === value)[0],
                 );
               }}
-            >
-              {authors.map((author) => (
-                <option key={author.id} value={author.id}>
-                  {author.firstName}
-                  {author.lastName}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
-        <div className="flex flex-col gap-1">
-          <CheckboxGroup name="genres" id="genres" color="warning">
-            {genres.map((genre) => (
-              <Checkbox key={genre.id} value={genre.name}>
-                {genre.name}
-              </Checkbox>
-            ))}
-          </CheckboxGroup>
-          <Button
-            color="primary"
-            variant="light"
-            onPress={(): void => setGenreInputToggle(!genreInputToggle)}
-          >
-            Add a genre
-          </Button>
-          <div hidden={genreInputToggle} id="divInputGenre">
-            <input
-              type="text"
-              name="genre"
-              id="genre"
-              className="ml-2 border border-gray-400 rounded bg-gray-100"
-              value={nameGenreInput}
-              onChange={(e): void => setNameGenreInput(e.target.value)}
+              propositions={authors.map((author) => ({
+                id: author.id,
+                name: `${author.firstName} ${author.lastName}`,
+              }))}
+              currentlySelectedId={
+                authors.find((a) => a.id === authorInput?.id)?.id
+              }
             />
-            <Button
-              color="primary"
-              variant="light"
-              className="ml-2"
-              onPress={(): void => {
-                submitGenre();
-                setGenreInputToggle(!genreInputToggle);
-              }}
-            >
-              Add
-            </Button>
           </div>
-        </div>
-        <div className="flex flex-col gap-1">
-          <p className="text-red-500">{errorMsg}</p>
-        </div>
-      </form>
+          <div className="flex flex-col gap-1">
+            <div hidden={genreInputToggle} id="divInputGenre">
+              <input
+                type="text"
+                name="genre"
+                id="genre"
+                className="ml-2 border border-gray-400 rounded bg-gray-100"
+                value={nameGenreInput}
+                onChange={(e): void => setNameGenreInput(e.target.value)}
+              />
+              <Button
+                color="info"
+                onPress={(): void => {
+                  submitGenre();
+                  setGenreInputToggle(!genreInputToggle);
+                }}
+              >
+                Add
+              </Button>
+            </div>
+          </div>
+          <div className="flex flex-col gap-1">
+            <DropdownCheckboxSelection
+              label="Select genres"
+              state={genresInput}
+              setState={setGenresInput}
+            />
+          </div>
+          <div className="flex flex-col gap-1">
+            <p className="text-red-500">{errorMsg}</p>
+          </div>
+          <Button color="success" onPress={submitBook}>
+            Save book
+          </Button>
+        </form>
+      </Modal>
     </div>
   );
 };
