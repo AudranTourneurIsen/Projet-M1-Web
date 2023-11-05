@@ -1,29 +1,14 @@
 'use client';
 
-import {
-  FC,
-  ReactElement,
-  ReactNode,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  useDisclosure,
-} from '@nextui-org/modal';
-import { Button } from '@nextui-org/button';
+import { FC, ReactElement, useCallback, useEffect, useState } from 'react';
 import { Checkbox, CheckboxGroup } from '@nextui-org/checkbox';
 import axios, { AxiosError } from 'axios';
 import { useBooksProviders } from '@/hooks';
 import { useAuthorsProviders } from '@/hooks/providers/authorProviders';
 import { useGenresProviders } from '@/hooks/providers/genreProviders';
 import { PlainAuthorModel, PlainGenreModel } from '@/models';
-import { set } from 'lodash';
+import { Button } from '@/components/Button';
+import { Modal } from "@/components/Modal";
 
 const BooksPage: FC = (): ReactElement => {
   const { useListBooks } = useBooksProviders();
@@ -42,8 +27,8 @@ const BooksPage: FC = (): ReactElement => {
   const [nameInput, setNameInput] = useState<string>('');
   const [writtenOnInput, setWrittenOnInput] = useState<Date>(new Date());
   const [authorInput, setAuthorInput] = useState<PlainAuthorModel>();
-  const [genresNameInput, setGenresNameInput] = useState<string[]>([]);
-  const [genresInput, setGenresInput] = useState<PlainGenreModel[]>([]);
+  // const [_genresNameInput, _setGenresNameInput] = useState<string[]>([]);
+  const [genresInput] = useState<PlainGenreModel[]>([]);
 
   const [nameGenreInput, setNameGenreInput] = useState<string>('');
 
@@ -55,7 +40,7 @@ const BooksPage: FC = (): ReactElement => {
     loadAuthors();
     loadGenres();
     loadBooks();
-  }, []);
+  }, [loadAuthors, loadGenres, loadBooks]);
 
   const submitBook = useCallback(() => {
     let errorMsgTmp = '';
@@ -150,13 +135,9 @@ const BooksPage: FC = (): ReactElement => {
 
   return (
     <div className="relative p-4">
-      <button
-        type="button"
-        className="bg-purple-950 p-1 purple rounded-md"
-        onClick={(): void => setIsOpen(!isOpen)}
-      >
+      <Button color="info" onPress={(): void => setIsOpen(!isOpen)}>
         Add book
-      </button>
+      </Button>
       <h1>Books</h1>
       <table className="border w-8/12">
         <thead className="border">
@@ -256,8 +237,7 @@ const BooksPage: FC = (): ReactElement => {
             ))}
           </CheckboxGroup>
           <Button
-            color="primary"
-            variant="light"
+            color="info"
             onPress={(): void => setGenreInputToggle(!genreInputToggle)}
           >
             Add a genre
@@ -272,9 +252,7 @@ const BooksPage: FC = (): ReactElement => {
               onChange={(e): void => setNameGenreInput(e.target.value)}
             />
             <Button
-              color="primary"
-              variant="light"
-              className="ml-2"
+              color="info"
               onPress={(): void => {
                 submitGenre();
                 setGenreInputToggle(!genreInputToggle);
