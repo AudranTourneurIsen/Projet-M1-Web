@@ -1,7 +1,10 @@
-import { PlainAuthorPresenter } from 'library-api/src/controllers/authors/author.presenter';
-import { GenrePresenter } from 'library-api/src/controllers/genres/genre.presenter';
-import { Book, Genre, UserId } from 'library-api/src/entities';
+import {
+  GenrePresenter,
+  PlainGenrePresenter,
+} from 'library-api/src/controllers/genres/genre.presenter';
+import { UserId } from 'library-api/src/entities';
 import { UserModel, PlainUserModel } from 'library-api/src/models';
+import { BookPresenter, PlainBookPresenter } from '../books/book.presenter';
 
 export class PlainUserPresenter {
   id: UserId;
@@ -10,13 +13,14 @@ export class PlainUserPresenter {
 
   lastName: string;
 
-  ownedBooks?: Book[];
+  ownedBooks?: PlainBookPresenter[];
 
-  favoriteBook?: Book;
+  favoriteBook?: PlainBookPresenter;
 
-  favoriteGenres?: Genre[];
+  favoriteGenres?: PlainGenrePresenter[];
 
-  friends?: User[];
+  // eslint-disable-next-line no-use-before-define
+  friends?: PlainUserPresenter[];
 
   private constructor(data: PlainUserPresenter) {
     Object.assign(this, data);
@@ -27,20 +31,29 @@ export class PlainUserPresenter {
       id: data.id,
       firstName: data.firstName,
       lastName: data.lastName,
+      ownedBooks: data.ownedBooks,
+      favoriteBook: data.favoriteBook,
+      favoriteGenres: data.favoriteGenres,
+      friends: data.friends,
     });
   }
 }
 
 export class UserPresenter {
-  id: string;
+  id: UserId;
 
-  name: string;
+  firstName: string;
 
-  author: PlainAuthorPresenter;
+  lastName: string;
 
-  writtenOn: Date;
+  ownedBooks?: BookPresenter[];
 
-  genres: GenrePresenter[];
+  favoriteBook?: BookPresenter;
+
+  favoriteGenres?: GenrePresenter[];
+
+  // eslint-disable-next-line no-use-before-define
+  friends?: UserPresenter[];
 
   private constructor(data: UserPresenter) {
     Object.assign(this, data);
@@ -49,10 +62,12 @@ export class UserPresenter {
   public static from(data: UserModel): UserPresenter {
     return new UserPresenter({
       id: data.id,
-      name: data.name,
-      writtenOn: data.writtenOn,
-      author: data.author,
-      genres: data.genres,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      ownedBooks: data.ownedBooks?.map(BookPresenter.from),
+      favoriteBook: data.favoriteBook && BookPresenter.from(data.favoriteBook),
+      favoriteGenres: data.favoriteGenres?.map(GenrePresenter.from),
+      friends: data.friends?.map(UserPresenter.from),
     });
   }
 }

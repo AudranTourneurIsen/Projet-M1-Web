@@ -8,6 +8,11 @@ import { UseCasesModule } from 'library-api/src/useCases/useCases.module';
 
 @Module({
   imports: [UseCasesModule, RepositoryModule],
-  controllers: [AuthorController, BookController, GenreController, UserController],
+  controllers: [
+    AuthorController,
+    BookController,
+    GenreController,
+    UserController,
+  ],
 })
 export class ControllerModule {}

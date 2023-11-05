@@ -1,4 +1,7 @@
-import { PlainAuthorPresenter } from 'library-api/src/controllers/authors/author.presenter';
+import {
+  AuthorPresenter,
+  PlainAuthorPresenter,
+} from 'library-api/src/controllers/authors/author.presenter';
 import {
   GenrePresenter,
   PlainGenrePresenter,
@@ -33,11 +36,11 @@ export class PlainBookPresenter {
 }
 
 export class BookPresenter {
-  id: string;
+  id: BookId;
 
   name: string;
 
-  author: PlainAuthorPresenter;
+  author: AuthorPresenter;
 
   writtenOn: Date;
 
