@@ -3,10 +3,11 @@ import { type FC, useId } from 'react';
 type TextInputProps = {
   label: string;
   onChange: (value: string) => void;
+  value: string;
 };
 
 export const TextInput: FC<TextInputProps> = (props) => {
-  const { label, onChange } = props;
+  const { label, onChange, value } = props;
 
   const id = useId();
 
@@ -25,6 +26,7 @@ export const TextInput: FC<TextInputProps> = (props) => {
         placeholder="John"
         required
         onChange={(e): void => onChange(e.target.value)}
+        value={value}
       />
     </div>
   );
