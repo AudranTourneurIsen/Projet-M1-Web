@@ -4,3 +4,8 @@ export type GenreModel = {
   id: GenreId;
   name: string;
 };
+
+export type PlainGenreModel = {
+  id: GenreId;
+  name: string;
+};

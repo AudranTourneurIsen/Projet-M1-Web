@@ -3,4 +3,4 @@ import { CreateBookRepositoryInput } from 'library-api/src/repositories/books/bo
 
 export type PlainBookUseCasesOutput = PlainBookModel;
 export type BookUseCasesOutput = BookModel;
-export type CreatePokemonUseCasesInput = CreateBookRepositoryInput;
+export type CreateBookUseCasesInput = CreateBookRepositoryInput;

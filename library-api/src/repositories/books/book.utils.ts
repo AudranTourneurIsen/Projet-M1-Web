@@ -8,14 +8,12 @@ export const adaptBookEntityToPlainBookModel = (
   book: Book,
 ): PlainBookRepositoryOutput => ({
   ...book,
-  genres: book.bookGenres.map((bookGenre) => bookGenre.genre.name),
+  genres: book.genres,
 });
 
 export const adaptBookEntityToBookModel = (
   book: Book,
 ): BookRepositoryOutput => ({
   ...book,
-  genres: book.bookGenres
-    ? book.bookGenres.map((bookGenre) => bookGenre.genre)
-    : [],
+  genres: book.genres ? book.genres : [],
 });

@@ -3,11 +3,11 @@ import {
   BaseEntity,
   Column,
   Entity,
+  JoinTable,
   ManyToMany,
-  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { BookGenre } from './BookGenre';
+import { Book } from './Book';
 import { User } from './User';
 
 export type GenreId = string & { __brand: 'Genre' };
@@ -20,8 +20,9 @@ export class Genre extends BaseEntity {
   @Column()
   name: string;
 
-  @OneToMany(() => BookGenre, (bookGenre) => bookGenre.genre)
-  bookGenres: BookGenre[];
+  @ManyToMany(() => Book, (books) => books.genres)
+  @JoinTable()
+  books: Book[];
 
   @ManyToMany(() => User, (user) => user.favoriteGenres)
   inFavoriteGenre: User[];

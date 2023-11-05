@@ -10,12 +10,12 @@ export class BookGenre extends BaseEntity {
   @PrimaryColumn()
   id: BookGenreId;
 
-  @ManyToOne(() => Book, (book) => book.bookGenres, {
+  @ManyToOne(() => Book, (book) => book.genres, {
     onDelete: 'CASCADE',
   })
   book: Book;
 
-  @ManyToOne(() => Genre, (genre) => genre.bookGenres, {
+  @ManyToOne(() => Genre, (genre) => genre.books, {
     onDelete: 'CASCADE',
   })
   genre: Genre;

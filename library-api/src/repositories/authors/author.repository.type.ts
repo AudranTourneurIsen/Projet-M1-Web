@@ -5,3 +5,4 @@ import {
 
 export type PlainAuthorRepositoryOutput = PlainAuthorModel;
 export type AuthorRepositoryOutput = AuthorModel;
+export type CreateAuthorRepositoryInput = Omit<AuthorModel, 'id'>;

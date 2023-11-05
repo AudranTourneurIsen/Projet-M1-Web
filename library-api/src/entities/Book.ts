@@ -9,9 +9,9 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { BookGenre } from './BookGenre';
 import { Author } from './Author';
 import { User } from './User';
+import { Genre } from './Genre';
 
 export type BookId = string & { __brand: 'Book' };
 
@@ -36,6 +36,7 @@ export class Book extends BaseEntity {
   @OneToMany(() => User, (user) => user.favoriteBook, { onDelete: 'CASCADE' })
   inFavoriteBook: User;
 
-  @OneToMany(() => BookGenre, (bookGenre) => bookGenre.book)
-  bookGenres: BookGenre[];
+  @ManyToMany(() => Genre, (genre) => genre.books)
+  @JoinTable()
+  genres: Genre[];
 }

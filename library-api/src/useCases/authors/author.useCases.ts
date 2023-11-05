@@ -3,6 +3,7 @@ import { AuthorRepository } from 'library-api/src/repositories';
 import { AuthorId } from 'library-api/src/entities';
 import {
   AuthorUseCasesOutput,
+  CreateAuthorUseCasesInput,
   PlainAuthorUseCasesOutput,
 } from './author.useCases.type';
 
@@ -33,8 +34,8 @@ export class AuthorUseCases {
    * @param author Author to create
    * @returns Created author
    */
-  public async create(
-    author: AuthorUseCasesOutput,
+  public async createAuthor(
+    author: CreateAuthorUseCasesInput,
   ): Promise<AuthorUseCasesOutput> {
     return this.authorRepository.createAuthor(author);
   }
