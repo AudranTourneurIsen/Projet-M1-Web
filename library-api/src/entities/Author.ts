@@ -2,10 +2,10 @@
 import {
   BaseEntity,
   Column,
-  Entity,
+  Entity, IsNull,
   OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+  PrimaryGeneratedColumn
+} from "typeorm";
 import { Book } from './Book';
 
 export type AuthorId = string & { __brand: 'Author' };
@@ -21,8 +21,10 @@ export class Author extends BaseEntity {
   @Column()
   lastName: string;
 
-  @Column()
-  photoUrl?: string;
+  @Column({
+    nullable: true,
+  })
+  photoUrl?: string | null;
 
   @OneToMany(() => Book, (book) => book.author)
   books: Book[];
