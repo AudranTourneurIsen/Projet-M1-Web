@@ -1,6 +1,15 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { AuthorId } from 'library-api/src/entities';
 import { AuthorUseCases } from 'library-api/src/useCases';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthorPresenter, PlainAuthorPresenter } from './author.presenter';
 import { CreateAuthorDto } from './author.dto';
 
@@ -23,7 +32,9 @@ export class AuthorController {
   }
 
   @Post('/new')
+  @UseInterceptors(FileInterceptor('photo'))
   public async createAuthor(
+    @UploadedFile() file,
     @Body() author: CreateAuthorDto,
   ): Promise<AuthorPresenter> {
     const createdAuthor = await this.authorUseCases.createAuthor(author);
