@@ -8,6 +8,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Book } from './Book';
+import { User } from './User';
 
 export type GenreId = string & { __brand: 'Genre' };
 
@@ -22,4 +23,7 @@ export class Genre extends BaseEntity {
   @ManyToMany(() => Book, (books) => books.genres)
   @JoinTable()
   books: Book[];
+
+  @ManyToMany(() => User, (user) => user.favoriteGenres)
+  inFavoriteGenre: User[];
 }

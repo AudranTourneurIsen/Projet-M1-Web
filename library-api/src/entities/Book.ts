@@ -6,9 +6,11 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Author } from './Author';
+import { User } from './User';
 import { Genre } from './Genre';
 
 export type BookId = string & { __brand: 'Book' };
@@ -26,6 +28,13 @@ export class Book extends BaseEntity {
 
   @ManyToOne(() => Author, (author) => author.books, { onDelete: 'CASCADE' })
   author: Author;
+
+  @ManyToMany(() => User, (user) => user.ownedBooks, { onDelete: 'CASCADE' })
+  @JoinTable()
+  ownedByUsers: User[];
+
+  @OneToMany(() => User, (user) => user.favoriteBook, { onDelete: 'CASCADE' })
+  inFavoriteBook: User;
 
   @ManyToMany(() => Genre, (genre) => genre.books)
   @JoinTable()

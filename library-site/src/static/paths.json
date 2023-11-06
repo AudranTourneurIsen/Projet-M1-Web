@@ -14,7 +14,7 @@
   {
     "name": "Book",
     "link": "/books",
-    "regex": "^/books/.$",
+    "regex": "^/books/.+$",
     "menu": false
   },
   {
@@ -26,7 +26,7 @@
   {
     "name": "Author",
     "link": "/authors",
-    "regex": "^/authors/.$",
+    "regex": "^/authors/.+$",
     "menu": false
   },
   {
