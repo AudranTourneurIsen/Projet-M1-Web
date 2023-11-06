@@ -37,7 +37,10 @@ export class BookRepository extends Repository<Book> {
    * @throws 404: book with this ID was not found
    */
   public async getById(id: BookId): Promise<BookRepositoryOutput> {
-    const book = await this.findOne({ where: { id } });
+    const book = await this.findOne({
+      where: { id },
+      relations: { genres: true, author: true },
+    });
 
     if (!book) {
       throw new NotFoundError(`Book - '${id}'`);
