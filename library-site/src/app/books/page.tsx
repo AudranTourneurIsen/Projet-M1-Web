@@ -194,7 +194,8 @@ const BooksPage: FC = (): ReactElement => {
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 >
-                  {book.name}
+                  <a href={"/books/" + book.id}>{book.name}</a>
+
                 </th>
                 <td className="px-6 py-4">{returnDate(book.writtenOn)}</td>
                 <td className="px-6 py-4">
