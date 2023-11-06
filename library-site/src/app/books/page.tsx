@@ -82,6 +82,10 @@ const BooksPage: FC = (): ReactElement => {
     );
   }, [genres]);
 
+  useEffect(() => {
+    setDisplayedBooks(books);
+  }, [books]);
+
   const submitBook = useCallback(() => {
     if (!nameInput) {
       setErrorMsg('The name of the book is required!');
