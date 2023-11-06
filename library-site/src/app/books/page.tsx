@@ -12,7 +12,7 @@ import { TextInput } from '@/components/TextInput';
 
 import { DropdownSelection } from '@/components/DropdownSelection';
 import { DropdownCheckboxSelection } from '@/components/DropdownCheckboxSelection';
-import {Badge} from "@/components/Badge";
+import { Badge } from '@/components/Badge';
 
 const BooksPage: FC = (): ReactElement => {
   console.log('books re-render');
@@ -241,8 +241,17 @@ const BooksPage: FC = (): ReactElement => {
             </div>
           </form>
         </div>
-        <div> {genres.map((x) => x.name).join(', ')}
-              <Badge color={"unselected"} onPress={(): void => {}} label={'efjdscq'}></Badge>
+        <div className={'flex'}>
+          {' '}
+          {genres.map((genre) => (
+            <div key={genre.id}>
+              <Badge
+                color={'unselected'}
+                onPress={(): void => {}}
+                label={genre.name}
+              ></Badge>
+            </div>
+          ))}
         </div>
       </div>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
