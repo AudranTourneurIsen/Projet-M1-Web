@@ -190,7 +190,7 @@ const BooksPage: FC = (): ReactElement => {
 
   return (
     <div className="relative p-4">
-      <div className={'flex flex-col gap-4 my-8 items-center justify-center'}>
+      <div className="flex flex-col gap-4 my-8 items-center justify-center">
         <div>
           <Button color="info" onPress={(): void => setIsOpen(!isOpen)}>
             Add book
@@ -270,7 +270,7 @@ const BooksPage: FC = (): ReactElement => {
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 >
-                  <a href={'/books/' + book.id}>{book.name}</a>
+                  <a href={`/books/${book.id}`}>{book.name}</a>
                 </th>
                 <td className="px-6 py-4">{returnDate(book.writtenOn)}</td>
                 <td className="px-6 py-4">
