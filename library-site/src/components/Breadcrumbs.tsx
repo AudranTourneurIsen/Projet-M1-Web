@@ -11,6 +11,8 @@ type BreadcrumbsProps = {
 export const Breadcrumbs: FC<BreadcrumbsProps> = ({ root = 'books' }) => {
   const path = usePathname();
 
+  console.log(path);
+
   const listOfLinks: PlainMenuItemModel[] = [];
 
   listOfLinks.push({ name: root, link: '/' });
