@@ -26,6 +26,8 @@ const AuthorsPage: FC = () => {
       firstName: authorFirstName,
       lastName: authorLastName,
     });
+    setIsOpen(false);
+    loadAuthors();
   }
 
   return (
@@ -64,7 +66,9 @@ const AuthorsPage: FC = () => {
                 >
                   [TODO]
                 </th>
-                <td className="px-6 py-4">{author.firstName} {author.lastName}</td>
+                <td className="px-6 py-4">
+                  {author.firstName} {author.lastName}
+                </td>
                 <td className="px-6 py-4">[TODO]</td>
               </tr>
             ))}
