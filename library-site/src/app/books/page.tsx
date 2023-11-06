@@ -57,8 +57,15 @@ const BooksPage: FC = (): ReactElement => {
     console.log('searchInput', searchInput);
     if (searchInput) {
       setDisplayedBooks(
-        books.filter((book) =>
-          book.name.toLowerCase().includes(searchInput.toLowerCase()),
+        books.filter(
+          (book) =>
+            book.name.toLowerCase().includes(searchInput.toLowerCase()) ||
+            book.author?.firstName
+              .toLowerCase()
+              .includes(searchInput.toLowerCase()) ||
+            book.author?.lastName
+              .toLowerCase()
+              .includes(searchInput.toLowerCase()),
         ),
       );
     } else {
@@ -220,7 +227,6 @@ const BooksPage: FC = (): ReactElement => {
                 id="search"
                 className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Search"
-                required
                 onInput={(e): void => {
                   setSearchInput(e.currentTarget.value);
                 }}
@@ -263,8 +269,7 @@ const BooksPage: FC = (): ReactElement => {
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 >
-                  <a href={"/books/" + book.id}>{book.name}</a>
-
+                  <a href={'/books/' + book.id}>{book.name}</a>
                 </th>
                 <td className="px-6 py-4">{returnDate(book.writtenOn)}</td>
                 <td className="px-6 py-4">
