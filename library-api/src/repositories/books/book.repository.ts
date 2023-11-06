@@ -54,8 +54,6 @@ export class BookRepository extends Repository<Book> {
   public async createBook(
     book: CreateBookRepositoryInput,
   ): Promise<BookRepositoryOutput> {
-    console.log(book);
-
     const createdBook = await this.save(book);
 
     return adaptBookEntityToBookModel(createdBook);
