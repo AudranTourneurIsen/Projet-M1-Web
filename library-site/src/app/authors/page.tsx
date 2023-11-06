@@ -26,6 +26,8 @@ const AuthorsPage: FC = () => {
       firstName: authorFirstName,
       lastName: authorLastName,
     });
+    setIsOpen(false);
+    loadAuthors();
   }
 
   return (
