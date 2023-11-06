@@ -19,17 +19,12 @@ const BooksDetailsPage: FC = () => {
     loadBook();
   }, []);
 
-  useEffect(() => {}, [book]);
-
   if (!book) {
     return <p>Loading...</p>;
   }
 
   if (book === 'not found') {
-    setTimeout(() => {
-      redirect('/books');
-    }, 3000);
-    return <p>You are going to be redirected after a few seconds</p>;
+    return redirect('/books');
   }
 
   function returnDate(date: Date): string {
