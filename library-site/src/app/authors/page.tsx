@@ -141,7 +141,7 @@ const AuthorsPage: FC = () => {
             </tr>
           </thead>
           <tbody>
-            {authors.map((author) => (
+            {displayedauthors.map((author) => (
               <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                 <th
                   scope="row"
