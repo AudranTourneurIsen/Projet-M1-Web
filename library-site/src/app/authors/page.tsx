@@ -20,11 +20,13 @@ const AuthorsPage: FC = () => {
 
   const [authorFirstName, setAuthorFirstName] = useState<string>('');
   const [authorLastName, setAuthorLastName] = useState<string>('');
+  const [authorImage, setAuthorImage] = useState<File | null>(null);
 
   async function submitNewAuthor(): Promise<void> {
     await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/authors/new`, {
       firstName: authorFirstName,
       lastName: authorLastName,
+      image: authorImage,
     });
     setIsOpen(false);
     loadAuthors();
@@ -97,6 +99,12 @@ const AuthorsPage: FC = () => {
               setAuthorLastName(newName);
             }}
             value={authorLastName}
+          />
+          <input
+            type="file"
+            onChange={(event): void => {
+              setAuthorImage(event.target.files ? event.target.files[0] : null);
+            }}
           />
           <div className="flex flex-row-reverse">
             <Button

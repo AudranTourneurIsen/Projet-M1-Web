@@ -33,7 +33,7 @@ export class AuthorController {
   }
 
   @Post('/new')
-  @UseInterceptors(FileInterceptor('photo'))
+  @UseInterceptors(FileInterceptor('image'))
   public async createAuthor(
     @UploadedFile() file: Express.Multer.File,
     @Body() author: CreateAuthorDto,
@@ -42,7 +42,10 @@ export class AuthorController {
       throw new Error('Invalid file type');
     }
 
-    const createdAuthor = await this.authorUseCases.createAuthor(author);
+    const createdAuthor = await this.authorUseCases.createAuthor(
+      author,
+      file.buffer,
+    );
 
     return AuthorPresenter.from(createdAuthor);
   }

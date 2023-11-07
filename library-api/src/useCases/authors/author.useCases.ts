@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { AuthorRepository } from 'library-api/src/repositories';
 import { AuthorId } from 'library-api/src/entities';
+import { ImageRepository } from 'library-api/src/repositories/images/image.repository';
+import { CreateImageRepositoryInput } from 'library-api/src/repositories/images/image.repository.type';
+import { CreateAuthorRepositoryInput } from 'library-api/src/repositories/authors/author.repository.type';
 import {
   AuthorUseCasesOutput,
   CreateAuthorUseCasesInput,
@@ -9,7 +12,10 @@ import {
 
 @Injectable()
 export class AuthorUseCases {
-  constructor(private readonly authorRepository: AuthorRepository) {}
+  constructor(
+    private readonly authorRepository: AuthorRepository,
+    private readonly imageRepository: ImageRepository,
+  ) {}
 
   /**
    * Get all plain authors
@@ -36,7 +42,19 @@ export class AuthorUseCases {
    */
   public async createAuthor(
     author: CreateAuthorUseCasesInput,
+    imageBuffer: Buffer,
   ): Promise<AuthorUseCasesOutput> {
-    return this.authorRepository.createAuthor(author);
+    const imageInput: CreateImageRepositoryInput = {
+      image: imageBuffer.toString('base64'),
+    };
+
+    const image = await this.imageRepository.createImage(imageInput);
+
+    const authorInput: CreateAuthorRepositoryInput = {
+      ...author,
+      image,
+    };
+
+    return this.authorRepository.createAuthor(authorInput);
   }
 }
