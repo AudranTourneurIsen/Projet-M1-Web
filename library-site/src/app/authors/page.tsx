@@ -24,11 +24,14 @@ const AuthorsPage: FC = () => {
     console.log(authorFirstName, authorLastName);
 
     try {
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/authors/new`, {
-        firstName: authorFirstName,
-        lastName: authorLastName,
-      });
-      console.log(res)
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/authors/new`,
+        {
+          firstName: authorFirstName,
+          lastName: authorLastName,
+        },
+      );
+      console.log(res);
 
       console.log('réponse serveur =', res);
     } catch (e) {
