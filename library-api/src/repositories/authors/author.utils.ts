@@ -24,6 +24,7 @@ export const adaptAuthorToPlainAuthorRepositoryOutput = (
   id: author.id,
   firstName: author.firstName,
   lastName: author.lastName,
+  photo: author.photo,
 });
 
 export const adaptAuthorToCreateAuthorRepositoryInput = (
@@ -31,4 +32,5 @@ export const adaptAuthorToCreateAuthorRepositoryInput = (
 ): CreateAuthorRepositoryInput => ({
   firstName: author.firstName,
   lastName: author.lastName,
+  photo: author.photo,
 });

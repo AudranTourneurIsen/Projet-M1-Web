@@ -19,15 +19,15 @@ export class AuthorRepository extends Repository<Author> {
   }
 
   /**
-   * Get all plain books
-   * @returns Array of plain books
+   * Get all plain authors
+   * @returns Array of plain authors
    */
   public async getAllPlain(): Promise<PlainAuthorRepositoryOutput[]> {
-    const books = await this.find({
-      relations: { books: { genres: true } },
+    const authors = await this.find({
+      relations: { books: { genres: true }, photo: true },
     });
 
-    return books.map(adaptAuthorEntityToPlainAuthorModel);
+    return authors.map(adaptAuthorEntityToPlainAuthorModel);
   }
 
   /**
@@ -37,7 +37,10 @@ export class AuthorRepository extends Repository<Author> {
    * @throws 404: book with this ID was not found
    */
   public async getById(id: AuthorId): Promise<AuthorRepositoryOutput> {
-    const book = await this.findOne({ where: { id } });
+    const book = await this.findOne({
+      relations: { photo: true },
+      where: { id },
+    });
 
     if (!book) {
       throw new NotFoundError(`Author - '${id}'`);

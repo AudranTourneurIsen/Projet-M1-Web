@@ -8,7 +8,7 @@ import {
   AuthorUseCasesOutput,
   CreateAuthorUseCasesInput,
   PlainAuthorUseCasesOutput,
-} from './author.useCases.type';
+} from 'library-api/src/useCases/authors/author.useCases.type';
 
 @Injectable()
 export class AuthorUseCases {
@@ -52,7 +52,7 @@ export class AuthorUseCases {
 
     const authorInput: CreateAuthorRepositoryInput = {
       ...author,
-      image,
+      photo: image,
     };
 
     return this.authorRepository.createAuthor(authorInput);

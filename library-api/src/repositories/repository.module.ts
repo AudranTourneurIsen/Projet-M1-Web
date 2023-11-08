@@ -3,12 +3,14 @@ import { AuthorRepository } from 'library-api/src/repositories/authors/author.re
 import { BookRepository } from 'library-api/src/repositories/books/book.repository';
 import { GenreRepository } from 'library-api/src/repositories/genres/genre.repository';
 import { UserRepository } from 'library-api/src/repositories/users/user.repository';
+import { ImageRepository } from './images/image.repository';
 
 const repositories = [
   AuthorRepository,
   BookRepository,
   GenreRepository,
   UserRepository,
+  ImageRepository,
 ];
 
 @Module({

@@ -3,6 +3,7 @@ import {
   BaseEntity,
   Column,
   Entity,
+  JoinColumn,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -24,6 +25,7 @@ export class Author extends BaseEntity {
   lastName: string;
 
   @OneToOne(() => Image, (image) => image.author)
+  @JoinColumn()
   photo?: Image;
 
   @OneToMany(() => Book, (book) => book.author)

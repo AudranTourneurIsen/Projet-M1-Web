@@ -34,10 +34,10 @@ describe('AuthorUseCases', () => {
   describe('getById', () => {
     it('should call repository function', async () => {
       const repository1 = {
-        getAllPlain: jest.fn(),
+        getById: jest.fn(),
       } as unknown as AuthorRepository;
       const repository2 = {
-        getAllPlain: jest.fn(),
+        getById: jest.fn(),
       } as unknown as ImageRepository;
       const useCases = new AuthorUseCases(repository1, repository2);
       const fixture = adaptAuthorToPlainAuthorRepositoryOutput(authorFixture());
@@ -55,9 +55,8 @@ describe('AuthorUseCases', () => {
     });
   });
 
-  /*
   describe('createAuthor', () => {
-    it('should call repository function', async () => {
+    it('should call repositories functions', async () => {
       const repository1 = {
         getAllPlain: jest.fn(),
       } as unknown as AuthorRepository;
@@ -73,7 +72,7 @@ describe('AuthorUseCases', () => {
         .spyOn(repository1, 'createAuthor')
         .mockResolvedValue(output);
 
-      const result = await useCases.createAuthor(input);
+      const result = await useCases.createAuthor(input, Buffer.from(''));
 
       expect(createAuthorSpy).toHaveBeenCalledTimes(1);
       expect(createAuthorSpy).toHaveBeenCalledWith(input);
@@ -81,5 +80,4 @@ describe('AuthorUseCases', () => {
       expect(result).toStrictEqual(output);
     });
   });
-  */
 });

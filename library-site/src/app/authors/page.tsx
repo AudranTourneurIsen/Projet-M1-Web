@@ -1,8 +1,9 @@
 'use client';
 
-import { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import axios from 'axios';
 
+import Image from 'next/image';
 import { useAuthorsProviders } from '@/hooks/providers/authorProviders';
 import { Modal } from '@/components/Modal';
 import { Button } from '@/components/Button';
@@ -16,18 +17,39 @@ const AuthorsPage: FC = () => {
     loadAuthors();
   }, []);
 
+  useEffect(() => {
+    console.log(authors);
+  }, [authors]);
+
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const [authorFirstName, setAuthorFirstName] = useState<string>('');
   const [authorLastName, setAuthorLastName] = useState<string>('');
   const [authorImage, setAuthorImage] = useState<File | null>(null);
 
+  const imageRenderer = (imageURL: string): React.JSX.Element => (
+    <Image
+      width={300}
+      height={300}
+      src={`data:image/png;base64,${imageURL}`}
+      alt="Profile picture"
+    />
+  );
+
   async function submitNewAuthor(): Promise<void> {
-    await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/authors/new`, {
-      firstName: authorFirstName,
-      lastName: authorLastName,
-      image: authorImage,
-    });
+    const formData = new FormData();
+    formData.append('image', authorImage as File);
+    formData.append('firstName', authorFirstName);
+    formData.append('lastName', authorLastName);
+    await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL}/authors/new`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
+    );
     setIsOpen(false);
     loadAuthors();
   }
@@ -66,7 +88,9 @@ const AuthorsPage: FC = () => {
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 >
-                  [TODO]
+                  {author.photo
+                    ? imageRenderer(author.photo?.image)
+                    : 'no photo available'}
                 </th>
                 <td className="px-6 py-4">
                   {author.firstName} {author.lastName}
