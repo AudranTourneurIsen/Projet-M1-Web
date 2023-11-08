@@ -2,6 +2,9 @@
 
 import { FC, ReactElement, useCallback, useEffect, useState } from 'react';
 import axios, { AxiosError } from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faPlus} from '@fortawesome/free-solid-svg-icons';
+import {faXmark} from '@fortawesome/free-solid-svg-icons';
 import { useBooksProviders } from '@/hooks';
 import { useAuthorsProviders } from '@/hooks/providers/authorProviders';
 import { useGenresProviders } from '@/hooks/providers/genreProviders';
@@ -9,14 +12,10 @@ import { PlainAuthorModel } from '@/models';
 import { Button } from '@/components/Button';
 import { Modal } from '@/components/Modal';
 import { TextInput } from '@/components/TextInput';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 import { DropdownSelection } from '@/components/DropdownSelection';
 import { DropdownCheckboxSelection } from '@/components/DropdownCheckboxSelection';
 import { Badge } from '@/components/Badge';
 
-// Icons import
-import {faPlus} from '@fortawesome/free-solid-svg-icons';
 
 const BooksPage: FC = (): ReactElement => {
   console.log('books re-render');
@@ -307,6 +306,11 @@ const BooksPage: FC = (): ReactElement => {
         </table>
       </div>
       <Modal isOpen={isOpen} onClose={onClose}>
+        <div className={'flex flex-row-reverse'}>
+          <Button color="none" onPress={onClose}>
+            <FontAwesomeIcon icon={faXmark} />
+          </Button>
+        </div>
         <form className="p-6 flex flex-col gap-4">
           <div className="flex flex-col gap-1">
             <TextInput
@@ -376,9 +380,14 @@ const BooksPage: FC = (): ReactElement => {
           <div className="flex flex-col gap-1">
             <p className="text-red-500">{errorMsg}</p>
           </div>
-          <Button color="success" onPress={submitBook}>
-            Save book
-          </Button>
+          <div className={'flex justify-between'}>
+            <Button color="info" onPress={onClose}>
+              Cancel
+            </Button>
+            <Button color="success" onPress={submitBook}>
+              Save book
+            </Button>
+          </div>
         </form>
       </Modal>
     </div>
