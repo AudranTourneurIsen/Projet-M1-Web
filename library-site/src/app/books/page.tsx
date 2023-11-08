@@ -9,10 +9,14 @@ import { PlainAuthorModel } from '@/models';
 import { Button } from '@/components/Button';
 import { Modal } from '@/components/Modal';
 import { TextInput } from '@/components/TextInput';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { DropdownSelection } from '@/components/DropdownSelection';
 import { DropdownCheckboxSelection } from '@/components/DropdownCheckboxSelection';
 import { Badge } from '@/components/Badge';
+
+// Icons import
+import {faPlus} from '@fortawesome/free-solid-svg-icons';
 
 const BooksPage: FC = (): ReactElement => {
   console.log('books re-render');
@@ -194,7 +198,8 @@ const BooksPage: FC = (): ReactElement => {
       <div className="flex flex-col gap-4 my-8 items-center justify-center">
         <div>
           <Button color="info" onPress={(): void => setIsOpen(!isOpen)}>
-            Add book
+            <FontAwesomeIcon icon={faPlus} />
+            &nbsp; Add book
           </Button>
         </div>
         <div className={'w-[600px]'}>
@@ -246,6 +251,7 @@ const BooksPage: FC = (): ReactElement => {
           {genres.map((genre) => (
             <div key={genre.id}>
               <Badge
+                isActive={false}
                 color={'unselected'}
                 onPress={(): void => {}}
                 label={genre.name}
