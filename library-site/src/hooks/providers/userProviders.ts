@@ -24,6 +24,6 @@ type UserProviders = {
     useListUsers: () => UseListUsersProvider;
 };
 
-export const useAuthorsProviders = (): UserProviders => ({
+export const useUsersProviders = (): UserProviders => ({
     useListUsers,
 });
