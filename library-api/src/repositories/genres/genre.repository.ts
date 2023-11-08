@@ -5,7 +5,6 @@ import { DataSource, In, Repository } from 'typeorm';
 import {
   PlainGenreRepositoryOutput,
   GenreRepositoryOutput,
-  CreateGenreRepositoryInput,
 } from './genre.repository.type';
 import {
   adaptGenreEntityToPlainGenreModel,
@@ -59,18 +58,5 @@ export class GenreRepository extends Repository<Genre> {
     }
 
     return genres.map(adaptGenreEntityToGenreModel);
-  }
-
-  /**
-   * Create a new genre
-   * @param genre Genre to create
-   * @returns Created genre
-   */
-  public async createGenre(
-    genre: CreateGenreRepositoryInput,
-  ): Promise<GenreRepositoryOutput> {
-    const createdGenre = await this.save(genre);
-
-    return adaptGenreEntityToGenreModel(createdGenre);
   }
 }
