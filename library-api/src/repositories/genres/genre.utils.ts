@@ -15,3 +15,9 @@ export const adaptGenreEntityToGenreModel = (
 ): GenreRepositoryOutput => ({
   ...genre,
 });
+
+export const adaptGenreEntityToGenreRepositoryOutput = (
+  genre: Genre,
+): GenreRepositoryOutput => ({
+  ...genre,
+});

@@ -1,7 +1,13 @@
-import { authorFixture } from 'library-api/src/fixtures';
+import { authorFixture, imageFixture } from 'library-api/src/fixtures';
 import { AuthorRepository } from 'library-api/src/repositories';
-import { adaptAuthorToPlainAuthorRepositoryOutput } from 'library-api/src/repositories/authors/author.utils';
+import {
+  adaptAuthorEntityToAuthorModel,
+  adaptAuthorToCreateAuthorRepositoryInput,
+  adaptAuthorToPlainAuthorRepositoryOutput,
+} from 'library-api/src/repositories/authors/author.utils';
 import { ImageRepository } from 'library-api/src/repositories/images/image.repository';
+import { adaptImageEntityToCreateImageRepositoryInput } from 'library-api/src/repositories/images/image.utils';
+import { faker } from '@faker-js/faker';
 import { AuthorUseCases } from './author.useCases';
 
 describe('AuthorUseCases', () => {
@@ -10,9 +16,7 @@ describe('AuthorUseCases', () => {
       const repository1 = {
         getAllPlain: jest.fn(),
       } as unknown as AuthorRepository;
-      const repository2 = {
-        getAllPlain: jest.fn(),
-      } as unknown as ImageRepository;
+      const repository2 = {} as unknown as ImageRepository;
       const useCases = new AuthorUseCases(repository1, repository2);
       const fixtures = [authorFixture(), authorFixture(), authorFixture()].map(
         adaptAuthorToPlainAuthorRepositoryOutput,
@@ -36,11 +40,9 @@ describe('AuthorUseCases', () => {
       const repository1 = {
         getById: jest.fn(),
       } as unknown as AuthorRepository;
-      const repository2 = {
-        getById: jest.fn(),
-      } as unknown as ImageRepository;
+      const repository2 = {} as unknown as ImageRepository;
       const useCases = new AuthorUseCases(repository1, repository2);
-      const fixture = adaptAuthorToPlainAuthorRepositoryOutput(authorFixture());
+      const fixture = adaptAuthorEntityToAuthorModel(authorFixture());
 
       const getByIdSpy = jest
         .spyOn(repository1, 'getById')
@@ -58,26 +60,39 @@ describe('AuthorUseCases', () => {
   describe('createAuthor', () => {
     it('should call repositories functions', async () => {
       const repository1 = {
-        getAllPlain: jest.fn(),
+        createAuthor: jest.fn(),
       } as unknown as AuthorRepository;
       const repository2 = {
-        getAllPlain: jest.fn(),
+        createImage: jest.fn(),
       } as unknown as ImageRepository;
       const useCases = new AuthorUseCases(repository1, repository2);
-      const fixture = authorFixture();
-      const input = adaptAuthorToPlainAuthorRepositoryOutput(fixture);
-      const output = adaptAuthorToPlainAuthorRepositoryOutput(fixture);
+
+      const input2 = Buffer.from(faker.string.sample(8));
+      const imageFix = imageFixture(input2);
+      const input3 = adaptImageEntityToCreateImageRepositoryInput(imageFix);
+
+      const authorFix = authorFixture(imageFix);
+      const input1 = adaptAuthorToCreateAuthorRepositoryInput(authorFix);
+
+      const output1 = adaptAuthorEntityToAuthorModel(authorFix);
 
       const createAuthorSpy = jest
         .spyOn(repository1, 'createAuthor')
-        .mockResolvedValue(output);
+        .mockResolvedValue(output1);
 
-      const result = await useCases.createAuthor(input, Buffer.from(''));
+      const createImageSpy = jest
+        .spyOn(repository2, 'createImage')
+        .mockResolvedValue(imageFix);
+
+      const result = await useCases.createAuthor(input1, input2);
+
+      expect(createImageSpy).toHaveBeenCalledTimes(1);
+      expect(createImageSpy).toHaveBeenCalledWith(input3);
 
       expect(createAuthorSpy).toHaveBeenCalledTimes(1);
-      expect(createAuthorSpy).toHaveBeenCalledWith(input);
+      expect(createAuthorSpy).toHaveBeenCalledWith(input1);
 
-      expect(result).toStrictEqual(output);
+      expect(result).toStrictEqual(output1);
     });
   });
 });

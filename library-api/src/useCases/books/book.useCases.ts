@@ -49,8 +49,6 @@ export class BookUseCases {
 
     const genres = await this.genreRepository.getByIds(genresIDs);
 
-    console.log(book);
-
     if (!book.author) {
       throw new Error('all fields are required');
     }
