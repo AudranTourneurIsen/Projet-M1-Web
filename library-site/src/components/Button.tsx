@@ -1,7 +1,7 @@
 import { FC, ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-type ButtonColor = 'info' | 'success';
+type ButtonColor = 'info' | 'success' | 'none';
 
 type ButtonProps = {
   color: ButtonColor;
@@ -19,6 +19,7 @@ export const Button: FC<ButtonProps> = (props) => {
     info: 'from-blue-500 via-blue-600 to-blue-700 focus:ring-blue-300 dark:focus:ring-blue-800',
     success:
       'from-green-400 via-green-500 to-green-600 focus:ring-green-300 dark:focus:ring-green-800',
+    none: '',
   };
 
   return (
