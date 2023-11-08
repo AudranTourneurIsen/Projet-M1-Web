@@ -1,4 +1,4 @@
-import {
+import type {
   AuthorPresenter,
   PlainAuthorPresenter,
 } from 'library-api/src/controllers/authors/author.presenter';

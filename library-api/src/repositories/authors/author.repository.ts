@@ -31,22 +31,22 @@ export class AuthorRepository extends Repository<Author> {
   }
 
   /**
-   * Get a book by its ID
+   * Get a author by its ID
    * @param id Author's ID
    * @returns Author if found
    * @throws 404: book with this ID was not found
    */
   public async getById(id: AuthorId): Promise<AuthorRepositoryOutput> {
-    const book = await this.findOne({
+    const author = await this.findOne({
       relations: { photo: true },
       where: { id },
     });
 
-    if (!book) {
+    if (!author) {
       throw new NotFoundError(`Author - '${id}'`);
     }
 
-    return adaptAuthorEntityToAuthorModel(book);
+    return adaptAuthorEntityToAuthorModel(author);
   }
 
   /**

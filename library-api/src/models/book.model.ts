@@ -1,5 +1,5 @@
 import { BookId } from 'library-api/src/entities';
-import {
+import type {
   AuthorModel,
   PlainAuthorModel,
 } from 'library-api/src/models/author.model';

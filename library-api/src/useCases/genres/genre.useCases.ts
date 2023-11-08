@@ -2,10 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { GenreRepository } from 'library-api/src/repositories';
 import { PlainGenreRepositoryOutput } from 'library-api/src/repositories/genres/genre.repository.type';
 import { GenreId } from 'library-api/src/entities';
-import {
-  CreateGenreUseCasesInput,
-  GenreUseCasesOutput,
-} from './genre.useCases.type';
+import { GenreUseCasesOutput } from './genre.useCases.type';
 
 @Injectable()
 export class GenreUseCases {
@@ -37,16 +34,5 @@ export class GenreUseCases {
    */
   public async getByIds(ids: GenreId[]): Promise<GenreUseCasesOutput[]> {
     return this.genreRepository.getByIds(ids);
-  }
-
-  /**
-   * Create a new genre
-   * @param genre Genre to create
-   * @returns Created genre
-   */
-  public async createGenre(
-    genre: CreateGenreUseCasesInput,
-  ): Promise<GenreUseCasesOutput> {
-    return this.genreRepository.createGenre(genre);
   }
 }

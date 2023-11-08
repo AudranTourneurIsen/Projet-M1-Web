@@ -3,7 +3,7 @@ import {
   ImageModel,
   PlainImageModel,
 } from 'library-api/src/models/image.model';
-import { PlainAuthorPresenter } from '../authors/author.presenter';
+import type { PlainAuthorPresenter } from '../authors/author.presenter';
 
 export class PlainImagePresenter {
   id: ImageId;
