@@ -1,17 +1,22 @@
 'use client';
 
-import { useParams } from 'next/navigation';
-import { FC } from 'react';
+import {FC, useEffect, useState} from "react";
+import axios from  "axios";
+import {useUsersProviders} from "@/hooks/providers/userProviders";
 
-const UserDetailsPage: FC = () => {
-    const { id } = useParams();
+import {Button} from "@/components/Button";
+import {Modal} from "@/components/Modal";
+import {TextInput} from "@/components/TextInput";
+
+const UsersPage: FC = () => {
+    const {useListUsers} = useUsersProviders();
+    const {users, loadUsers} = useListUsers();
+
+
 
     return (
-        <>
-            User details &apos;
-            {id}
-            &apos; not implemented
-        </>
+        <p>:3 working on it owo</p>
     );
 };
-export default UserDetailsPage;
+
+export default UsersPage;
