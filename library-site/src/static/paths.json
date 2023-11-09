@@ -38,7 +38,7 @@
   {
     "name": "User",
     "link": "/users",
-    "regex": "^/users/.$",
+    "regex": "^/users/.+$",
     "menu": false
   }
 ]

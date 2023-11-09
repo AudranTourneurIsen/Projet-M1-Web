@@ -31,6 +31,7 @@ const UserDetailsPage: FC = () => {
   }, []);
 
   if (!id || typeof id !== 'string') {
+    console.log('ID=', id);
     redirect('/users');
   }
 
@@ -39,6 +40,7 @@ const UserDetailsPage: FC = () => {
   }
 
   if (user === 'not found') {
+    console.log('ID NOT FOUND');
     return redirect('/users');
   }
 
