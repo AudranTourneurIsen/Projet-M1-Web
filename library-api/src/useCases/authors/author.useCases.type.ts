@@ -5,3 +5,4 @@ export type PlainAuthorUseCasesOutput = PlainAuthorModel;
 export type AuthorUseCasesOutput = AuthorModel;
 export type CreateAuthorUseCasesInput = CreateAuthorRepositoryInput;
 export type EditAuthorUseCasesInput = Partial<AuthorModel>;
+export type EditAuthorImageUseCasesInput = Pick<AuthorModel, 'id'>

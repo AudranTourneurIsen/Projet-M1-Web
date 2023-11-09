@@ -1,11 +1,12 @@
 'use client';
 import { redirect, useParams, useRouter } from 'next/navigation';
 import React, { FC, useEffect, useState } from 'react';
-import { useAuthorProvider } from '@/hooks';
+import { useAuthorProvider, useBooksProviders } from '@/hooks';
 import { Button } from '@/components/Button';
 import { Modal } from '@/components/Modal';
 import { TextInput } from '@/components/TextInput';
 import axios from 'axios';
+import { MultiSelectBlock } from '@/components/MultiSelectBlock';
 
 const AuthorDetailsPage: FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -14,6 +15,9 @@ const AuthorDetailsPage: FC = () => {
   const { useAuthor } = useAuthorProvider();
   const { id } = useParams();
   const { author, loadAuthor } = useAuthor(id);
+
+  const { useListBooks } = useBooksProviders();
+  const { books, loadBooks } = useListBooks();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
@@ -24,6 +28,8 @@ const AuthorDetailsPage: FC = () => {
   const [authorEditImage, setAuthorImage] = useState<File | null>(null);
 
   const [shouldRedirect, setShouldRedirect] = useState<boolean>(false);
+
+  const [selectedBookIds, setSelectedBookIds] = useState<string[]>([]);
 
   const onClose = (): void => {
     if (isModalOpen) {
@@ -50,6 +56,7 @@ const AuthorDetailsPage: FC = () => {
 
   useEffect(() => {
     loadAuthor();
+    loadBooks();
   }, []);
 
   if (!id || typeof id !== 'string') {
@@ -79,12 +86,32 @@ const AuthorDetailsPage: FC = () => {
 
   // Hack, the "redirect" function doesn't seem to work in this case
   if (shouldRedirect) {
-    router.push("/authors");
+    router.push('/authors');
   }
 
   async function submitDeleteAuthor(): Promise<void> {
     await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/authors/delete/${id}`);
     setShouldRedirect(true);
+  }
+
+  const booksOptions = books.map((book) => ({
+    id: book.id,
+    name: book.name,
+  }));
+
+
+  async function submitImageAuthor(): Promise<void> {
+    const formData = new FormData();
+    formData.append('image', authorEditImage as File);
+    await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL}/authors/edit/image`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
+    );
   }
 
   return (
@@ -194,7 +221,7 @@ const AuthorDetailsPage: FC = () => {
                 }}
               />
               <div className="flex justify-between ">
-                <Button color="success" onPress={submitEditAuthor}>
+                <Button color="success" onPress={submitImageAuthor}>
                   Modify image
                 </Button>
               </div>
@@ -244,7 +271,11 @@ const AuthorDetailsPage: FC = () => {
         }}
       >
         <h3 className="text-xl font-bold text-center col-span-3 p-4 text-red-600">
-          AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          <MultiSelectBlock
+            options={booksOptions}
+            selectedOptionIds={selectedBookIds}
+            setSelectedOptionIds={setSelectedBookIds}
+          />
         </h3>
         <div className="flex justify-between ">
           <Button color="info" onPress={onClose}>

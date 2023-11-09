@@ -84,4 +84,8 @@ export class AuthorRepository extends Repository<Author> {
   public async deleteAuthor(id: string): Promise<void> {
     await this.delete(id);
   }
+
+  public async editAuthorImage(id: AuthorId, buffer: Buffer) {
+    await this
+  }
 }
