@@ -3,8 +3,7 @@
 import { FC, ReactElement, useCallback, useEffect, useState } from 'react';
 import axios, { AxiosError } from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faPlus} from '@fortawesome/free-solid-svg-icons';
-import {faXmark} from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { useBooksProviders } from '@/hooks';
 import { useAuthorsProviders } from '@/hooks/providers/authorProviders';
 import { useGenresProviders } from '@/hooks/providers/genreProviders';
@@ -15,7 +14,6 @@ import { TextInput } from '@/components/TextInput';
 import { DropdownSelection } from '@/components/DropdownSelection';
 import { DropdownCheckboxSelection } from '@/components/DropdownCheckboxSelection';
 import { Badge } from '@/components/Badge';
-
 
 const BooksPage: FC = (): ReactElement => {
   console.log('books re-render');
@@ -201,7 +199,7 @@ const BooksPage: FC = (): ReactElement => {
             &nbsp; Add book
           </Button>
         </div>
-        <div className={'w-[600px]'}>
+        <div className="w-[600px]">
           <form>
             <label
               htmlFor="search"
@@ -245,16 +243,16 @@ const BooksPage: FC = (): ReactElement => {
             </div>
           </form>
         </div>
-        <div className={'flex'}>
+        <div className="flex">
           {' '}
           {genres.map((genre) => (
             <div key={genre.id}>
               <Badge
                 isActive={false}
-                color={'unselected'}
+                color="unselected"
                 onPress={(): void => {}}
                 label={genre.name}
-              ></Badge>
+              />
             </div>
           ))}
         </div>
@@ -306,7 +304,7 @@ const BooksPage: FC = (): ReactElement => {
         </table>
       </div>
       <Modal isOpen={isOpen} onClose={onClose}>
-        <div className={'flex flex-row-reverse'}>
+        <div className="flex flex-row-reverse">
           <Button color="none" onPress={onClose}>
             <FontAwesomeIcon icon={faXmark} />
           </Button>
@@ -380,7 +378,7 @@ const BooksPage: FC = (): ReactElement => {
           <div className="flex flex-col gap-1">
             <p className="text-red-500">{errorMsg}</p>
           </div>
-          <div className={'flex justify-between'}>
+          <div className="flex justify-between">
             <Button color="info" onPress={onClose}>
               Cancel
             </Button>

@@ -1,10 +1,15 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import { config } from '@fortawesome/fontawesome-svg-core';
+import '@fortawesome/fontawesome-svg-core/styles.css';
+
 import './globals.css';
 import { ReactElement, ReactNode } from 'react';
-import { Menu } from '@/components/Menu';
 import paths from '@/static/paths.json';
 import { PlainMenuItemModel } from '@/models';
+import { Menu } from '@/components/Menu';
+
+config.autoAddCss = false;
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -27,6 +32,7 @@ export default function RootLayout({
   });
 
   return (
+
     <html lang="en" className="dark">
       <body
         className={`${inter.className} bg-gray-100 dark:bg-gray-900 text-gray-300`}

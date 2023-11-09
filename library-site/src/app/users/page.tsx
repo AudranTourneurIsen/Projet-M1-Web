@@ -27,6 +27,9 @@ const UsersPage: FC = () => {
             setDisplayedUsers(
                 users.filter(
                     (user) =>
+                        user.ownedBooks?.some((book) => {
+                            return book.name.toLowerCase().includes(searchInput.toLowerCase());
+                        } ) ||
                         user.firstName.toLowerCase().includes(searchInput.toLowerCase()) ||
                         user.lastName
                             .toLowerCase()
@@ -39,9 +42,11 @@ const UsersPage: FC = () => {
     }, [searchInput]);
 
     useEffect(() => {
+        setDisplayedUsers(users);
+    }, [users]);
+
+    useEffect(() => {
         loadUsers();
-        //loadAuthors();
-        //loadBooks();
     }, []);
 
     return (
@@ -110,7 +115,7 @@ const UsersPage: FC = () => {
                                         scope="row"
                                         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                                     >
-                                        {user.firstName}
+                                        <a href={`/users/${user.id}`}>{user.firstName}</a>
                                     </td>
                                     <td className="px-6 py-4">
                                         {user.lastName}

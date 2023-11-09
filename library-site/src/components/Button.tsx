@@ -5,7 +5,7 @@ type ButtonColor = 'info' | 'success' | 'none';
 
 type ButtonProps = {
   color: ButtonColor;
-  onPress: () => void;
+  onPress?: () => void;
   children: ReactNode;
 };
 
@@ -31,4 +31,8 @@ export const Button: FC<ButtonProps> = (props) => {
       {children}
     </button>
   );
+};
+
+Button.defaultProps = {
+  onPress: (): void => {},
 };
