@@ -37,21 +37,28 @@ const BooksDetailsPage: FC = () => {
 
   return (
     <div className="relative m-10 p-auto">
-      <h1 className="text-2xl font-bold text-center">Book Details</h1>
+      <div className="py-8 px-8 max-w-sm mx-auto bg-gray-500 rounded-xl shadow-lg space-y-2 sm:py-4 sm:items-center sm:space-y-0 sm:space-x-6">
+        <h1 className="text-2xl font-bold text-center">Book Details</h1>
+      </div>
+
+
       <div className="mt-5 grid gap-5 border rounded w-full">
         <div className="grid grid-cols-8">
           <h2 className="p-4">name :</h2>
-          <h3 className="text-xl font-bold text-center col-span-3 p-4">
+          <h3 className="text-xl font-bold col-span-3 p-4 text-transparent bg-clip-text bg-gradient-to-r from-purple-700 to-purple-400 glitch">
             {book.name}
           </h3>
-          <h2 className="p-4">written on :</h2>
-          <h3 className="text-l font-bold text-center col-span-3 p-4">
-            {returnDate(book.writtenOn)}
-          </h3>
+          <h4 className="p-4">written on :</h4>
+          <h5 className="text-l font-bold col-span-3 p-4 text-transparent bg-clip-text bg-gradient-to-r from-purple-700 to-purple-400 glitch">
+          {returnDate(book.writtenOn)}
+          </h5>
+        </div>
+        <div>
+
         </div>
         <div className="grid grid-cols-6">
           <h2 className="p-4">author :</h2>
-          <div className="col-span-5">
+          <div className="col-span-5 text-transparent bg-clip-text bg-gradient-to-r from-purple-700 to-purple-400 glitch">
             {book.author ? (
               <>
                 <p className="text-center">{book.author.firstName}</p>
@@ -68,10 +75,10 @@ const BooksDetailsPage: FC = () => {
         </div>
         <div className="grid grid-cols-6">
           <h2 className="p-4">genres :</h2>
-          <div className="col-span-5">
+          <div className="col-span-4 flex">
             {book.genres.length !== 0 ? (
               book.genres.map((genre) => (
-                <span key={genre.id}>{genre.name}</span>
+                  <div className="p-4 text-transparent bg-clip-text bg-gradient-to-r from-purple-700 to-purple-400 glitch"><span key={genre.id}>{genre.name}</span></div>
               ))
             ) : (
               <p className="text-center">
