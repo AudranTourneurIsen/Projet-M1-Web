@@ -1,11 +1,23 @@
 'use client';
 
 import { redirect, useParams } from 'next/navigation';
-import { FC, useEffect } from 'react';
+import React, {FC, useEffect, useState} from 'react';
+
 import { useBookProvider } from '@/hooks';
+import {faPlus} from "@fortawesome/free-solid-svg-icons";
+import {Button} from "@/components/Button";
+import { Modal } from '@/components/Modal';
+
+
+
 
 const BooksDetailsPage: FC = () => {
   const { id } = useParams();
+
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const onClose = (): void => {
+    setIsOpen(!isOpen);
+  };
 
   if (!id || typeof id !== 'string') {
     redirect('/books');
@@ -89,6 +101,28 @@ const BooksDetailsPage: FC = () => {
           </div>
         </div>
       </div>
+
+      <div className="flex flex-col gap-4 my-8 items-center justify-center">
+          <Button color="info"  onPress={(): void => setIsOpen(!isOpen)}>
+            &nbsp; delete the book
+          </Button>
+          <Modal
+              isOpen={isOpen}
+              onClose={(): void => {
+                setIsOpen(false);
+              }}
+          >
+            <div className="flex flex-col gap-4 my-8 items-center justify-center">
+              <Button
+                  color="info"
+              >
+                delete
+              </Button>
+            </div>
+          </Modal>
+
+      </div>
+
     </div>
   );
 };
