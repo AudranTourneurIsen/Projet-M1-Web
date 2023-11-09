@@ -3,11 +3,15 @@ import { AuthorRepository } from 'library-api/src/repositories';
 import { AuthorId } from 'library-api/src/entities';
 import { ImageRepository } from 'library-api/src/repositories/images/image.repository';
 import { CreateImageRepositoryInput } from 'library-api/src/repositories/images/image.repository.type';
-import { CreateAuthorRepositoryInput } from 'library-api/src/repositories/authors/author.repository.type';
+import {
+  CreateAuthorRepositoryInput,
+  EditAuthorRepositoryInput,
+} from 'library-api/src/repositories/authors/author.repository.type';
 import {
   AuthorUseCasesOutput,
   CreateAuthorUseCasesInput,
   PlainAuthorUseCasesOutput,
+  EditAuthorUseCasesInput,
 } from 'library-api/src/useCases/authors/author.useCases.type';
 
 @Injectable()
@@ -56,5 +60,18 @@ export class AuthorUseCases {
     };
 
     return this.authorRepository.createAuthor(authorInput);
+  }
+
+  public async editAuthor(
+    author: EditAuthorUseCasesInput,
+  ): Promise<AuthorUseCasesOutput> {
+    const authorInput: EditAuthorRepositoryInput = {
+      ...author,
+    };
+    return this.authorRepository.editAuthor(authorInput);
+  }
+
+  public async deleteAuthor(id: string): Promise<void> {
+    await this.authorRepository.deleteAuthor(id);
   }
 }

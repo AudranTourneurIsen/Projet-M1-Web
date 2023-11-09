@@ -1,7 +1,7 @@
 import {
   Body,
   Controller,
-  Get,
+  Get, Logger,
   Param,
   Post,
   UploadedFile,
@@ -12,7 +12,7 @@ import { AuthorUseCases } from 'library-api/src/useCases';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Express } from 'express';
 import { AuthorPresenter, PlainAuthorPresenter } from './author.presenter';
-import { CreateAuthorDto } from './author.dto';
+import {CreateAuthorDto, EditAuthorDto} from './author.dto';
 
 @Controller('authors')
 export class AuthorController {
@@ -48,5 +48,24 @@ export class AuthorController {
     );
 
     return AuthorPresenter.from(createdAuthor);
+  }
+  @Post('/edit')
+  public async editAuthor(
+    @Body() author: EditAuthorDto,
+    ): Promise<AuthorPresenter> {
+
+    Logger.warn(`ICI auteur édité ; ${author.id} ${author.firstName} ${author.lastName}`, author)
+
+    const editedAuthor = await this.authorUseCases.editAuthor(
+        author,
+    );
+
+    return AuthorPresenter.from(editedAuthor);
+  }
+  @Post('/delete/:id')
+    public async deleteAuthor(@Param("id") id: AuthorId
+    ): Promise<void> {
+    Logger.warn("ouuuuuuuuuui ID=" + id)
+    await this.authorUseCases.deleteAuthor(id);
   }
 }

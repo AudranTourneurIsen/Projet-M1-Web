@@ -6,6 +6,7 @@ import {
   AuthorRepositoryOutput,
   CreateAuthorRepositoryInput,
   PlainAuthorRepositoryOutput,
+  EditAuthorRepositoryInput,
 } from './author.repository.type';
 import {
   adaptAuthorEntityToAuthorModel,
@@ -61,4 +62,15 @@ export class AuthorRepository extends Repository<Author> {
 
     return adaptAuthorEntityToAuthorModel(createdAuthor);
   }
+
+  public async editAuthor(
+      author: EditAuthorRepositoryInput,
+        ): Promise<AuthorRepositoryOutput> {
+    const editedAuthor = await this.save(author);
+    return adaptAuthorEntityToAuthorModel(editedAuthor);
+  }
+
+    public async deleteAuthor(id: string): Promise<void> {
+    await this.delete(id);
+    }
 }
