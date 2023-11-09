@@ -90,12 +90,12 @@ const AuthorsPage: FC = () => {
           </Button>
         </div>
       </div>
-      <div className={'flex flex-col gap-4 my-8 items-center justify-center'}>
-        <div className={'w-[600px]'}>
+      <div className="flex flex-col gap-4 my-8 items-center justify-center">
+        <div className="w-[600px]">
           <SearchBar onChange={setSearchInput} value={searchInput} />
         </div>
       </div>
-      <div className={"h-8"} />
+      <div className="h-8" />
       <div className="w-[100vw] md:w-[95vw] lg:w-[90vw] max-w-[950px] flex flex-col mx-auto gap-8">
         {displayedAuthors.map((author) => (
           <AuthorLine key={author.id} author={author} />
