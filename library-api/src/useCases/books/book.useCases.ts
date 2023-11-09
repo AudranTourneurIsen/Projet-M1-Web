@@ -19,7 +19,9 @@ export class BookUseCases {
     private readonly authorRepository: AuthorRepository,
   ) {}
 
-  /**
+  /*    if (!book.author) {
+      throw new Error('all fields are required');
+    }*
    * Get all plain books
    * @returns Array of plain books
    */
@@ -49,11 +51,7 @@ export class BookUseCases {
 
     const genres = await this.genreRepository.getByIds(genresIDs);
 
-    if (!book.author) {
-      throw new Error('all fields are required');
-    }
-
-    const author = await this.authorRepository.getById(book.author.id);
+    const author = await this.authorRepository.getById(book.authorId);
 
     if (!author) {
       throw new Error('Author not found');

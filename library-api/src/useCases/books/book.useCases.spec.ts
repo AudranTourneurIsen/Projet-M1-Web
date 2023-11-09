@@ -152,8 +152,6 @@ describe('BookUseCases', () => {
         .spyOn(repository1, 'createBook')
         .mockResolvedValue(output1);
 
-      input1.author = undefined;
-
       try {
         await useCases.createBook(input1);
       } catch (e) {
