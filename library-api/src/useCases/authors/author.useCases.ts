@@ -2,7 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { AuthorRepository } from 'library-api/src/repositories';
 import { AuthorId } from 'library-api/src/entities';
 import { ImageRepository } from 'library-api/src/repositories/images/image.repository';
-import { CreateImageRepositoryInput } from 'library-api/src/repositories/images/image.repository.type';
+import {
+  CreateImageRepositoryInput,
+  EditImageRepositoryInput
+} from 'library-api/src/repositories/images/image.repository.type';
 import {
   CreateAuthorRepositoryInput,
   EditAuthorRepositoryInput,
@@ -12,6 +15,7 @@ import {
   CreateAuthorUseCasesInput,
   PlainAuthorUseCasesOutput,
   EditAuthorUseCasesInput,
+  EditAuthorImageUseCasesInput,
 } from 'library-api/src/useCases/authors/author.useCases.type';
 
 @Injectable()
@@ -69,6 +73,24 @@ export class AuthorUseCases {
       ...author,
     };
     return this.authorRepository.editAuthor(authorInput);
+  }
+
+  public async editAuthorImage(
+    authorBase: EditAuthorImageUseCasesInput,
+    imageBuffer: Buffer,
+  ) {
+    const authorId = authorBase.id;
+
+    const author = await this.getById(authorId);
+
+    const imageId = author.photo.id
+
+    const imageInput: EditImageRepositoryInput = {
+      id: imageId,
+      image: imageBuffer.toString('base64'),
+    };
+
+    this.imageRepository.editImage(imageInput);
   }
 
   public async deleteAuthor(id: string): Promise<void> {

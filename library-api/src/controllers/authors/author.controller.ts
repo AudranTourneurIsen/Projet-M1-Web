@@ -12,7 +12,7 @@ import { AuthorUseCases } from 'library-api/src/useCases';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Express } from 'express';
 import { AuthorPresenter, PlainAuthorPresenter } from './author.presenter';
-import {CreateAuthorDto, EditAuthorDto} from './author.dto';
+import {CreateAuthorDto, EditAuthorDto, EditAuthorImageDto} from './author.dto';
 
 @Controller('authors')
 export class AuthorController {
@@ -62,6 +62,21 @@ export class AuthorController {
 
     return AuthorPresenter.from(editedAuthor);
   }
+
+  @Post('/edit/image')
+  @UseInterceptors(FileInterceptor('image'))
+  public async editAuthorImage(
+      @UploadedFile() file: Express.Multer.File,
+      @Body() author: EditAuthorImageDto,
+  ): Promise<void> {
+    if (file.mimetype !== 'image/jpeg' && file.mimetype !== 'image/png') {
+      throw new Error('Invalid file type');
+    }
+
+    await this.authorUseCases.editAuthorImage(author, file.buffer);
+  }
+
+
   @Post('/delete/:id')
     public async deleteAuthor(@Param("id") id: AuthorId
     ): Promise<void> {

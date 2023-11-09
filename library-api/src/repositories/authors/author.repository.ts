@@ -64,13 +64,17 @@ export class AuthorRepository extends Repository<Author> {
   }
 
   public async editAuthor(
-      author: EditAuthorRepositoryInput,
-        ): Promise<AuthorRepositoryOutput> {
+    author: EditAuthorRepositoryInput,
+  ): Promise<AuthorRepositoryOutput> {
     const editedAuthor = await this.save(author);
     return adaptAuthorEntityToAuthorModel(editedAuthor);
   }
 
-    public async deleteAuthor(id: string): Promise<void> {
+  public async deleteAuthor(id: string): Promise<void> {
     await this.delete(id);
-    }
+  }
+
+  public async editAuthorImage(id: AuthorId, buffer: Buffer) {
+    await this
+  }
 }

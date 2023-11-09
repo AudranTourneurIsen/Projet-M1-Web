@@ -20,6 +20,11 @@ export class EditAuthorDto {
   lastName: string;
 }
 
+export class EditAuthorImageDto {
+    @IsString()
+    id: AuthorId
+}
+
 export class DeleteAuthorDto {
     @IsString()
     id: AuthorId

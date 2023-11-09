@@ -6,3 +6,4 @@ import {
 export type PlainImageRepositoryOutput = PlainImageModel;
 export type ImageRepositoryOutput = ImageModel;
 export type CreateImageRepositoryInput = Omit<ImageModel, 'id'>;
+export type EditImageRepositoryInput = Pick<ImageModel, 'id' | 'image'>;
