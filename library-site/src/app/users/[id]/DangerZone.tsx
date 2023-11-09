@@ -1,9 +1,9 @@
 import React, { useCallback, useState } from 'react';
-import { PlainUserModel } from '@/models';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { Button } from '@/components/Button';
 import { Modal } from '@/components/Modal';
+import { PlainUserModel } from '@/models';
 
 type DangerZoneProps = {
   user: PlainUserModel;

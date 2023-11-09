@@ -1,10 +1,10 @@
 import React, { useCallback, useState } from 'react';
-import { PlainBookModel, PlainUserModel } from '@/models';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBook } from '@fortawesome/free-solid-svg-icons';
 import { Button } from '@/components/Button';
 import { Modal } from '@/components/Modal';
 import { MultiSelectBlock } from '@/components/MultiSelectBlock';
+import { PlainBookModel, PlainUserModel } from '@/models';
 
 type BookshelfProps = {
   user: PlainUserModel;

@@ -1,11 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { PlainGenreModel, PlainUserModel } from '@/models';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { Button } from '@/components/Button';
 import { Modal } from '@/components/Modal';
-import { SingleSelectBlock } from '@/components/SingleSelectBlock';
 import { MultiSelectBlock } from '@/components/MultiSelectBlock';
+import { PlainGenreModel, PlainUserModel } from '@/models';
 
 type FavoriteGenresProps = {
   user: PlainUserModel;
