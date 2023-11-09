@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import {
   UserPresenter,
   PlainUserPresenter,
@@ -32,9 +32,9 @@ export class UserController {
     return UserPresenter.from(createdUser);
   }
 
-  @Post('/edit-favorite-book')
+  @Post('/:id/edit-favorite-book')
   public async editFavoriteBook(
-    @Body() userId: UserId,
+    @Param('id') userId: UserId,
     @Body() bookId: BookId,
   ): Promise<UserPresenter> {
     const editedUser = await this.userUseCases.editFavoriteBook(userId, bookId);
@@ -42,9 +42,9 @@ export class UserController {
     return UserPresenter.from(editedUser);
   }
 
-  @Post('/edit-favorite-genres')
+  @Post('/:id/edit-favorite-genres')
   public async editFavoriteGenres(
-    @Body() userId: UserId,
+    @Param('id') userId: UserId,
     @Body() genresIds: GenreId[],
   ): Promise<UserPresenter> {
     const editedUser = await this.userUseCases.editFavoriteGenres(
@@ -55,9 +55,9 @@ export class UserController {
     return UserPresenter.from(editedUser);
   }
 
-  @Post('/edit-owned-books')
+  @Post('/:id/edit-owned-books')
   public async editOwnedBooks(
-    @Body() userId: UserId,
+    @Param('id') userId: UserId,
     @Body() books: BookId[],
   ): Promise<UserPresenter> {
     const editedUser = await this.userUseCases.editOwnedBooks(userId, books);
@@ -65,8 +65,8 @@ export class UserController {
     return UserPresenter.from(editedUser);
   }
 
-  @Post('/delete')
-  public async deleteUser(@Body() userId: UserId): Promise<void> {
+  @Delete('/:id/delete')
+  public async deleteUser(@Param('id') userId: UserId): Promise<void> {
     await this.userUseCases.deleteUser(userId);
   }
 }
