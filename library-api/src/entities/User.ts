@@ -29,12 +29,15 @@ export class User extends BaseEntity {
   ownedBooks?: Book[];
 
   @ManyToOne(() => Book, (book) => book.inFavoriteBook)
+  @JoinTable()
   favoriteBook?: Book;
 
   @ManyToMany(() => Genre, (genre) => genre.inFavoriteGenre)
+  @JoinTable()
   favoriteGenres?: Genre[];
 
   @ManyToMany(() => User, (user) => user.friends)
+  @JoinTable()
   // eslint-disable-next-line no-use-before-define
   friends?: User[];
 }

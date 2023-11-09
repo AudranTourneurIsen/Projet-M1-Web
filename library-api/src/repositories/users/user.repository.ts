@@ -34,27 +34,27 @@ export class UserRepository extends Repository<User> {
   }
 
   /**
-   * Get a book by its ID
+   * Get a user by its ID
    * @param id User's ID
    * @returns User if found
-   * @throws 404: book with this ID was not found
+   * @throws 404: user with this ID was not found
    */
   public async getById(id: UserId): Promise<UserRepositoryOutput> {
-    const book = await this.findOne({
+    const user = await this.findOne({
       where: { id },
       relations: {
-        favoriteBook: true,
+        favoriteBook: { author: true, genres: true },
+        ownedBooks: true,
         favoriteGenres: true,
         friends: true,
-        ownedBooks: true,
       },
     });
 
-    if (!book) {
+    if (!user) {
       throw new NotFoundError(`User - '${id}'`);
     }
 
-    return adaptUserEntityToUserModel(book);
+    return adaptUserEntityToUserModel(user);
   }
 
   /**
