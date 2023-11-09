@@ -26,6 +26,7 @@ export function SingleSelectBlock(props: SingleSelectBlockProps): JSX.Element {
         <label
           className="flex items-center pl-4 border border-gray-200 rounded dark:border-gray-700"
           htmlFor={`${baseId}-${index}`}
+          key={option.id}
         >
           <input
             id={`${baseId}-${index}`}

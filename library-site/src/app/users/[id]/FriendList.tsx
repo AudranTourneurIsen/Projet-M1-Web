@@ -1,18 +1,21 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserGroup } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
 import { Button } from '@/components/Button';
 import { Modal } from '@/components/Modal';
 import { MultiSelectBlock } from '@/components/MultiSelectBlock';
 import { PlainUserModel } from '@/models';
+import { API_URL } from '@/utils/constants';
 
 type FriendListProps = {
   user: PlainUserModel;
   users: PlainUserModel[];
+  reload: () => void;
 };
 
 export function FriendList(props: FriendListProps): React.JSX.Element {
-  const { user, users } = props;
+  const { user, users, reload } = props;
 
   const [isEditFriendListModalOpen, setIsEditFriendListModalOpen] =
     useState(false);
@@ -23,10 +26,14 @@ export function FriendList(props: FriendListProps): React.JSX.Element {
 
   const [selectedFriendIds, setSelectedFriendIds] = useState<string[]>([]);
 
-  const save = useCallback(() => {
+  const save = useCallback(async () => {
     console.log('SAVE', selectedFriendIds);
+    await axios.post(`${API_URL}/users/${user.id}/edit-friends`, {
+      userIds: selectedFriendIds,
+    });
     setIsEditFriendListModalOpen(false);
-  }, [selectedFriendIds]);
+    reload();
+  }, [reload, selectedFriendIds, user.id]);
 
   const friendOptions = users
     .map((u) => ({
@@ -34,6 +41,10 @@ export function FriendList(props: FriendListProps): React.JSX.Element {
       name: `${u.firstName} ${u.lastName}`,
     }))
     .filter((u) => u.id !== user.id);
+
+  useEffect(() => {
+    setSelectedFriendIds(user.friends?.map((f) => f.id) || []);
+  }, []);
 
   return (
     <>

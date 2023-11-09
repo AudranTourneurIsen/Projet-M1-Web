@@ -5,14 +5,17 @@ import { Button } from '@/components/Button';
 import { Modal } from '@/components/Modal';
 import { MultiSelectBlock } from '@/components/MultiSelectBlock';
 import { PlainBookModel, PlainUserModel } from '@/models';
+import axios from 'axios';
+import { API_URL } from '@/utils/constants';
 
 type BookshelfProps = {
   user: PlainUserModel;
   books: PlainBookModel[];
+  reload: () => void;
 };
 
 export function Bookshelf(props: BookshelfProps): React.JSX.Element {
-  const { user, books } = props;
+  const { user, books, reload } = props;
 
   const [isEditBookshelfModalOpen, setIsEditBookshelfModalOpen] =
     useState(false);
@@ -23,10 +26,14 @@ export function Bookshelf(props: BookshelfProps): React.JSX.Element {
 
   const [selectedBookIds, setSelectedBookIds] = useState<string[]>([]);
 
-  const save = useCallback(() => {
+  const save = useCallback(async () => {
     console.log('SAVE', selectedBookIds);
+    await axios.post(`${API_URL}/users/${user.id}/edit-owned-books`, {
+      bookIds: selectedBookIds,
+    });
     setIsEditBookshelfModalOpen(false);
-  }, [selectedBookIds]);
+    reload();
+  }, [reload, selectedBookIds, user.id]);
 
   const booksOptions = books.map((book) => ({
     id: book.id,

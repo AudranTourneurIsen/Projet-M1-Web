@@ -1,5 +1,5 @@
 import { IsString } from 'class-validator';
-import {AuthorId} from "../../entities";
+import { AuthorId } from '../../entities';
 
 export class CreateAuthorDto {
   @IsString()
@@ -11,7 +11,7 @@ export class CreateAuthorDto {
 
 export class EditAuthorDto {
   @IsString()
-  id: AuthorId
+  id: AuthorId;
 
   @IsString()
   firstName: string;
@@ -21,11 +21,11 @@ export class EditAuthorDto {
 }
 
 export class EditAuthorImageDto {
-    @IsString()
-    id: AuthorId
+  @IsString()
+  id: AuthorId;
 }
 
 export class DeleteAuthorDto {
-    @IsString()
-    id: AuthorId
+  @IsString()
+  id: AuthorId;
 }

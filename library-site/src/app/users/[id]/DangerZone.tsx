@@ -1,16 +1,19 @@
 import React, { useCallback, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
 import { Button } from '@/components/Button';
 import { Modal } from '@/components/Modal';
 import { PlainUserModel } from '@/models';
+import { API_URL } from '@/utils/constants';
 
 type DangerZoneProps = {
   user: PlainUserModel;
+  reload: () => void;
 };
 
 export function DangerZone(props: DangerZoneProps): React.JSX.Element {
-  const { user } = props;
+  const { user, reload } = props;
 
   const [isDeleteUserModalOpen, setIsDeleteUserModalOpen] = useState(false);
 
@@ -18,9 +21,11 @@ export function DangerZone(props: DangerZoneProps): React.JSX.Element {
     setIsDeleteUserModalOpen(false);
   }, []);
 
-  const confirm = useCallback(() => {
+  const confirm = useCallback(async () => {
     setIsDeleteUserModalOpen(false);
-  }, []);
+    await axios.delete(`${API_URL}/users/${user.id}/delete`);
+    reload();
+  }, [reload, user.id]);
 
   return (
     <>

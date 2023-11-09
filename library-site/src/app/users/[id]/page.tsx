@@ -44,6 +44,13 @@ const UserDetailsPage: FC = () => {
     return redirect('/users');
   }
 
+  function reload() {
+    loadUser();
+    loadBooks();
+    loadGenres();
+    loadUsers();
+  }
+
   return (
     <div className="flex flex-col">
       <div className="m-4 flex items-center justify-center gap-8">
@@ -64,15 +71,19 @@ const UserDetailsPage: FC = () => {
         </div>
       </div>
       <div className="flex flex-col m-6 gap-12 mx-auto">
-        <FavoriteBook user={user} books={books} />
+        <FavoriteBook user={user} books={books} reload={(): void => reload()} />
 
-        <FavoriteGenres user={user} genres={genres} />
+        <FavoriteGenres
+          user={user}
+          genres={genres}
+          reload={(): void => reload()}
+        />
 
-        <Bookshelf user={user} books={books} />
+        <Bookshelf user={user} books={books} reload={(): void => reload()} />
 
-        <FriendList user={user} users={users} />
+        <FriendList user={user} users={users} reload={(): void => reload()} />
 
-        <DangerZone user={user} />
+        <DangerZone user={user} reload={(): void => reload()} />
       </div>
     </div>
   );

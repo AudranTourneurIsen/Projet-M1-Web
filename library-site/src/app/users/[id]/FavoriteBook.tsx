@@ -1,18 +1,21 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import React, { useCallback, useEffect, useState } from 'react';
+import axios from 'axios';
 import { Modal } from '@/components/Modal';
 import { Button } from '@/components/Button';
 import { SingleSelectBlock } from '@/components/SingleSelectBlock';
 import { PlainBookModel, PlainUserModel } from '@/models';
+import { API_URL } from '@/utils/constants';
 
 type FavoriteBookProps = {
   user: PlainUserModel;
   books: PlainBookModel[];
+  reload: () => void;
 };
 
 export function FavoriteBook(props: FavoriteBookProps): React.JSX.Element {
-  const { user, books } = props;
+  const { user, books, reload } = props;
 
   const [isEditFavoriteBookModalOpen, setIsEditFavoriteBookModalOpen] =
     useState(false);
@@ -35,10 +38,17 @@ export function FavoriteBook(props: FavoriteBookProps): React.JSX.Element {
     setIsEditFavoriteBookModalOpen(false);
   }, []);
 
-  const save = useCallback(() => {
+  const save = useCallback(async () => {
+    if (!selectedBookId) return;
     console.log('SAVE', selectedBookId);
+    console.log('NETCALL 1');
+    await axios.post(`${API_URL}/users/${user.id}/edit-favorite-book`, {
+      bookId: selectedBookId,
+    });
+    console.log('NETCALL 2');
     setIsEditFavoriteBookModalOpen(false);
-  }, [selectedBookId]);
+    reload();
+  }, [selectedBookId, reload]);
 
   useEffect(() => {
     console.log('selectedBookId => ', selectedBookId);

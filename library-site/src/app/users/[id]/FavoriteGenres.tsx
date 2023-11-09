@@ -1,18 +1,21 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
 import { Button } from '@/components/Button';
 import { Modal } from '@/components/Modal';
 import { MultiSelectBlock } from '@/components/MultiSelectBlock';
 import { PlainGenreModel, PlainUserModel } from '@/models';
+import { API_URL } from '@/utils/constants';
 
 type FavoriteGenresProps = {
   user: PlainUserModel;
   genres: PlainGenreModel[];
+  reload: () => void;
 };
 
 export function FavoriteGenres(props: FavoriteGenresProps): React.JSX.Element {
-  const { user, genres } = props;
+  const { user, genres, reload } = props;
 
   const [isEditFavoriteGenresModalOpen, setIsEditFavoriteGenresModalOpen] =
     useState(false);
@@ -33,10 +36,14 @@ export function FavoriteGenres(props: FavoriteGenresProps): React.JSX.Element {
     setSelectedGenreIds(user.favoriteGenres?.map((genre) => genre.id) || []);
   }, [genres, user]);
 
-  const save = useCallback(() => {
+  const save = useCallback(async () => {
     console.log('SAVE', selectedGenreIds);
+    await axios.post(`${API_URL}/users/${user.id}/edit-favorite-genres`, {
+      genreIds: selectedGenreIds,
+    });
     setIsEditFavoriteGenresModalOpen(false);
-  }, [selectedGenreIds]);
+    reload();
+  }, [reload, selectedGenreIds, user.id]);
 
   const genresOptions = genres.map((genre) => ({
     id: genre.id,
