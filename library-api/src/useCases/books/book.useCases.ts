@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from "@nestjs/common";
 import { Author, Book, BookId, Genre } from 'library-api/src/entities';
 import {
   AuthorRepository,
@@ -55,14 +55,9 @@ export class BookUseCases {
       throw new Error('Author not found');
     }
 
-    const authorToSave = new Author();
-    authorToSave.id = author.id;
-    authorToSave.firstName = author.firstName;
-    authorToSave.lastName = author.lastName;
-
     const bookToSend = new Book();
+    bookToSend.authorId = author.id;
     bookToSend.name = book.name;
-    bookToSend.author = authorToSave;
     bookToSend.writtenOn = book.writtenOn;
     bookToSend.genres = [];
     genres.forEach((genre) => {
@@ -71,6 +66,8 @@ export class BookUseCases {
       genreTmp.name = genre.name;
       bookToSend.genres.push(genreTmp);
     });
+
+    Logger.log('bookToSend', JSON.stringify(bookToSend));
 
     return this.bookRepository.createBook(book);
   }
