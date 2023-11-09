@@ -3,7 +3,7 @@ import {
   UserPresenter,
   PlainUserPresenter,
 } from 'library-api/src/controllers/users/user.presenter';
-import { UserId } from 'library-api/src/entities';
+import { BookId, GenreId, UserId } from 'library-api/src/entities';
 import { UserUseCases } from 'library-api/src/useCases';
 import { CreateUserDto } from './user.dto';
 
@@ -30,5 +30,43 @@ export class UserController {
     const createdUser = await this.userUseCases.createUser(user);
 
     return UserPresenter.from(createdUser);
+  }
+
+  @Post('/edit-favorite-book')
+  public async editFavoriteBook(
+    @Body() userId: UserId,
+    @Body() bookId: BookId,
+  ): Promise<UserPresenter> {
+    const editedUser = await this.userUseCases.editFavoriteBook(userId, bookId);
+
+    return UserPresenter.from(editedUser);
+  }
+
+  @Post('/edit-favorite-genres')
+  public async editFavoriteGenres(
+    @Body() userId: UserId,
+    @Body() genresIds: GenreId[],
+  ): Promise<UserPresenter> {
+    const editedUser = await this.userUseCases.editFavoriteGenres(
+      userId,
+      genresIds,
+    );
+
+    return UserPresenter.from(editedUser);
+  }
+
+  @Post('/edit-owned-books')
+  public async editOwnedBooks(
+    @Body() userId: UserId,
+    @Body() books: BookId[],
+  ): Promise<UserPresenter> {
+    const editedUser = await this.userUseCases.editOwnedBooks(userId, books);
+
+    return UserPresenter.from(editedUser);
+  }
+
+  @Post('/delete')
+  public async deleteUser(@Body() userId: UserId): Promise<void> {
+    await this.userUseCases.deleteUser(userId);
   }
 }

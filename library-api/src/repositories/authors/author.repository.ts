@@ -63,14 +63,25 @@ export class AuthorRepository extends Repository<Author> {
     return adaptAuthorEntityToAuthorModel(createdAuthor);
   }
 
+  /**
+   * Edit an existing author
+   * @param author Author to edit
+   * @returns Edited author
+   */
+
   public async editAuthor(
-      author: EditAuthorRepositoryInput,
-        ): Promise<AuthorRepositoryOutput> {
+    author: EditAuthorRepositoryInput,
+  ): Promise<AuthorRepositoryOutput> {
     const editedAuthor = await this.save(author);
     return adaptAuthorEntityToAuthorModel(editedAuthor);
   }
 
-    public async deleteAuthor(id: string): Promise<void> {
+  /**
+   * Delete an existing author
+   * @param id Author's ID
+   */
+
+  public async deleteAuthor(id: string): Promise<void> {
     await this.delete(id);
-    }
+  }
 }

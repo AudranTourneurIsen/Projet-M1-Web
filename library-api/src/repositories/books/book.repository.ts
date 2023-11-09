@@ -10,7 +10,7 @@ import {
   adaptBookEntityToBookModel,
   adaptBookEntityToPlainBookModel,
 } from 'library-api/src/repositories/books/book.utils';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, In, Repository } from 'typeorm';
 
 @Injectable()
 export class BookRepository extends Repository<Book> {
@@ -60,5 +60,17 @@ export class BookRepository extends Repository<Book> {
     const createdBook = await this.save(book);
 
     return adaptBookEntityToBookModel(createdBook);
+  }
+
+  /**
+   * Get books by their IDs
+   * @param ids Books' IDs
+   * @returns Books if found
+   */
+
+  public async getByIds(ids: BookId[]): Promise<BookRepositoryOutput[]> {
+    const books = await this.find({ where: { id: In(ids) } });
+
+    return books.map(adaptBookEntityToBookModel);
   }
 }

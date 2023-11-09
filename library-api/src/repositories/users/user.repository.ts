@@ -4,7 +4,7 @@ import { DataSource, Repository } from 'typeorm';
 import { NotFoundError } from 'library-api/src/common/errors';
 import {
   UserRepositoryOutput,
-  CreateUserRepositoryInput,
+  CreateUserRepositoryInput as EditUserRepositoryInput,
   PlainUserRepositoryOutput,
 } from './user.repository.type';
 import {
@@ -24,7 +24,10 @@ export class UserRepository extends Repository<User> {
    */
   public async getAllPlain(): Promise<PlainUserRepositoryOutput[]> {
     const books = await this.find({
-      relations: { favoriteBook: { author: true, genres: true }, ownedBooks : true },
+      relations: {
+        favoriteBook: { author: true, genres: true },
+        ownedBooks: true,
+      },
     });
 
     return books.map(adaptUserEntityToPlainUserModel);
@@ -37,7 +40,15 @@ export class UserRepository extends Repository<User> {
    * @throws 404: book with this ID was not found
    */
   public async getById(id: UserId): Promise<UserRepositoryOutput> {
-    const book = await this.findOne({ where: { id } });
+    const book = await this.findOne({
+      where: { id },
+      relations: {
+        favoriteBook: true,
+        favoriteGenres: true,
+        friends: true,
+        ownedBooks: true,
+      },
+    });
 
     if (!book) {
       throw new NotFoundError(`User - '${id}'`);
@@ -52,10 +63,33 @@ export class UserRepository extends Repository<User> {
    * @returns Created user
    */
   public async createUser(
-    user: CreateUserRepositoryInput,
+    user: EditUserRepositoryInput,
   ): Promise<UserRepositoryOutput> {
     const createdUser = await this.save(user);
 
     return adaptUserEntityToUserModel(createdUser);
+  }
+
+  /**
+   * Edit the user
+   * @param user User to edit
+   * @returns Edited user
+   */
+
+  public async editUser(
+    user: EditUserRepositoryInput,
+  ): Promise<UserRepositoryOutput> {
+    const editedUser = await this.save(user);
+
+    return adaptUserEntityToUserModel(editedUser);
+  }
+
+  /**
+   * Delete a user
+   * @param id User's ID
+   */
+
+  public async deleteUser(id: UserId): Promise<void> {
+    await this.delete(id);
   }
 }

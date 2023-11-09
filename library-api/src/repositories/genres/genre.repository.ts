@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Genre, GenreId } from 'library-api/src/entities';
-import { NotFoundError } from 'rxjs';
 import { DataSource, In, Repository } from 'typeorm';
+import { NotFoundError } from 'library-api/src/common/errors';
 import {
   PlainGenreRepositoryOutput,
   GenreRepositoryOutput,
