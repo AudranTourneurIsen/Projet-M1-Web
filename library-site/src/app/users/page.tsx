@@ -13,6 +13,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import { TextInput } from '@/components/TextInput';
+import { MultiSelectBlock } from '@/components/MultiSelectBlock';
 
 const UsersPage: FC = () => {
   const { useListUsers } = useUsersProviders();
@@ -32,22 +33,32 @@ const UsersPage: FC = () => {
   const [createFirstName, setCreateFirstName] = useState<string>('');
   const [createLastName, setCreateLastName] = useState<string>('');
 
+  const [selectedBookIds, setSelectedBookIds] = useState<string[]>([]);
+
   useEffect(() => {
-    if (searchInput) {
-      setDisplayedUsers(
-        users.filter(
+    if (searchInput || selectedBookIds.length > 0) {
+      let newUsers = users;
+      if (searchInput) {
+        newUsers = users.filter(
           (user) =>
             user.ownedBooks?.some((book) =>
               book.name.toLowerCase().includes(searchInput.toLowerCase()),
             ) ||
             user.firstName.toLowerCase().includes(searchInput.toLowerCase()) ||
             user.lastName.toLowerCase().includes(searchInput.toLowerCase()),
-        ),
-      );
+        );
+      }
+      if (selectedBookIds.length > 0) {
+        newUsers = newUsers.filter(
+          (user) =>
+            user.ownedBooks?.some((book) => selectedBookIds.includes(book.id)),
+        );
+      }
+      setDisplayedUsers(newUsers);
     } else {
       setDisplayedUsers(users);
     }
-  }, [searchInput]);
+  }, [searchInput, selectedBookIds]);
 
   useEffect(() => {
     setDisplayedUsers(users);
@@ -58,7 +69,6 @@ const UsersPage: FC = () => {
     loadBooks();
   }, []);
 
-
   const submitUserCreation = async (): Promise<void> => {
     await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/users/new`, {
       firstName: createFirstName,
@@ -68,6 +78,11 @@ const UsersPage: FC = () => {
     console.log('CREATE', createFirstName, createLastName);
     setIsCreationModalOpen(false);
   };
+
+  const bookOptions = books.map((book) => ({
+    id: book.id,
+    name: book.name,
+  }));
 
   return (
     <>
@@ -123,7 +138,7 @@ const UsersPage: FC = () => {
             <div className="">
               <SearchBar onChange={setSearchInput} value={searchInput} />
             </div>
-            <div className="flex gap-4 justify-around">
+            <div className="flex flex-col gap-4 justify-center items-center">
               <Button
                 color="info"
                 onPress={(): void => {
@@ -132,6 +147,12 @@ const UsersPage: FC = () => {
               >
                 Filter by books
               </Button>
+              {selectedBookIds.length > 0 && (
+                <span>
+                  Search filter enabled for {selectedBookIds.length} book
+                  {selectedBookIds.length > 1 && 's'}
+                </span>
+              )}
             </div>
           </div>
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -150,14 +171,21 @@ const UsersPage: FC = () => {
           setFilterByBookIsModalOpen(false);
         }}
       >
-        <div className="flex flex-col gap-4">
-          {books.map((book) => (
-            <Checkbox key={book.id}>{book.name}</Checkbox>
-          ))}
+        <MultiSelectBlock
+          options={bookOptions}
+          selectedOptionIds={selectedBookIds}
+          setSelectedOptionIds={setSelectedBookIds}
+        />
+        <div className="flex flex-row-reverse mt-4">
+          <Button
+            color="success"
+            onPress={(): void => setFilterByBookIsModalOpen(false)}
+          >
+            Save filters
+          </Button>
         </div>
       </Modal>
     </>
   );
 };
-
 export default UsersPage;
