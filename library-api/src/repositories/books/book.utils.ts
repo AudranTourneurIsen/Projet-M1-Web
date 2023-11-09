@@ -24,6 +24,7 @@ export const adaptBookEntityToCreateBookUseCasesInput = (
 ): CreateBookUseCasesInput => ({
   ...book,
   genres: book.genres ? book.genres : [],
+  authorId: book.author.id,
 });
 
 export const adaptBookEntityToBookRepositoryOutput = (

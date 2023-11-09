@@ -8,7 +8,8 @@ export class CreateBookDto {
   @IsDate()
   writtenOn: Date;
 
-  author: PlainAuthorModel;
+  @IsString()
+  authorId: PlainAuthorModel['id'];
 
   @IsArray()
   genres: GenreModel[];

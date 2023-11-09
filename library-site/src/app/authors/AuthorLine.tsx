@@ -41,14 +41,6 @@ export function AuthorLine(props: AuthorLineProps): React.JSX.Element {
 
           <div className="flex justify-end">
             <div>
-              <Button
-                color="info"
-                onPress={(): void => {
-                  setIsModalOpen(true);
-                }}
-              >
-                Edit
-              </Button>
               <a href={`/authors/${author.id}`}>
                 <Button color="success">More info</Button>
               </a>
@@ -56,15 +48,6 @@ export function AuthorLine(props: AuthorLineProps): React.JSX.Element {
           </div>
         </div>
       </div>
-
-      <Modal
-        isOpen={isModalOpen}
-        onClose={(): void => {
-          setIsModalOpen(false);
-        }}
-      >
-        Edit author: {author.firstName} {author.lastName}
-      </Modal>
     </>
   );
 }

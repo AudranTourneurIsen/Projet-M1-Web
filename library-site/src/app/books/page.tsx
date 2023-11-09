@@ -119,7 +119,7 @@ const BooksPage: FC = (): ReactElement => {
       .post(`${process.env.NEXT_PUBLIC_API_URL}/books/new`, {
         name: nameInput,
         writtenOn: writtenOnDateInput,
-        author: authorInput,
+        authorId: authorInput.id,
         genres: genresInput
           .filter((genre) => genre.selected)
           .map((g) => ({
