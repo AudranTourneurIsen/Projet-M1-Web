@@ -36,7 +36,7 @@ export function AuthorLine(props: AuthorLineProps): React.JSX.Element {
             {author.firstName} {author.lastName}
           </h5>
           <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-            {author.books?.join(', ')}
+            Wrote <span className="font-bold">{author.books?.length || 0}</span> books
           </p>
 
           <div className="flex justify-end">

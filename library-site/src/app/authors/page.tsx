@@ -67,7 +67,7 @@ const AuthorsPage: FC = () => {
         </div>
       </div>
 
-      <div className="w-[100vw] md:w-[95vw] lg:w-[90vw] flex flex-col mx-auto gap-8">
+      <div className="w-[100vw] md:w-[95vw] lg:w-[90vw] max-w-[950px] flex flex-col mx-auto gap-8">
         {authors.map((author) => (
           <AuthorLine key={author.id} author={author} />
         ))}
