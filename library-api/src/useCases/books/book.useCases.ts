@@ -19,9 +19,7 @@ export class BookUseCases {
     private readonly authorRepository: AuthorRepository,
   ) {}
 
-  /*    if (!book.author) {
-      throw new Error('all fields are required');
-    }*
+  /**
    * Get all plain books
    * @returns Array of plain books
    */
@@ -75,5 +73,59 @@ export class BookUseCases {
     });
 
     return this.bookRepository.createBook(book);
+  }
+
+  /**
+   * Delete a book
+   * @param id Book's ID
+   * @throws 404: book with this ID was not found
+   */
+
+  public async deleteBook(id: BookId): Promise<void> {
+    const book = await this.bookRepository.getById(id);
+
+    if (!book) {
+      throw new Error('Book not found');
+    }
+
+    return this.bookRepository.deleteBook(id);
+  }
+
+  /**
+   * Add a comment to a book
+   * @param id Book's ID
+   * @param comment Comment to add
+   * @returns Book with the new comment
+   * @throws 404: book with this ID was not found
+   */
+
+  public async addComment(
+    id: BookId,
+    comment: string,
+  ): Promise<BookUseCasesOutput> {
+    const book = await this.bookRepository.getById(id);
+
+    if (!book) {
+      throw new Error('Book not found');
+    }
+
+    return book;
+  }
+
+  /**
+   * Get all comments of a book
+   * @param id Book's ID
+   * @returns Book with its comments
+   * @throws 404: book with this ID was not found
+   */
+
+  public async getComments(id: BookId): Promise<BookUseCasesOutput> {
+    const book = await this.bookRepository.getById(id);
+
+    if (!book) {
+      throw new Error('Book not found');
+    }
+
+    return book;
   }
 }

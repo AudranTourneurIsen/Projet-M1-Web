@@ -131,6 +131,31 @@ export class UserUseCases {
   }
 
   /**
+   * Edit the friends of a user
+   * @param userId User's ID
+   * @param friendsIds Users' IDs
+   * @returns Edited user
+   * @throws 404: user with this ID was not found
+   */
+
+  public async editFriends(
+    userId: UserId,
+    friendsIds: UserId[],
+  ): Promise<UserUseCasesOutput> {
+    const users = await this.userRepository.getByIds(friendsIds);
+
+    const user = await this.userRepository.getById(userId);
+
+    if (!user) {
+      throw new NotFoundError(`User - '${userId}'`);
+    }
+
+    user.friends = users;
+
+    return this.userRepository.editUser(user);
+  }
+
+  /**
    * Delete a user
    * @param userId User's ID
    * @returns Deleted user

@@ -73,4 +73,13 @@ export class BookRepository extends Repository<Book> {
 
     return books.map(adaptBookEntityToBookModel);
   }
+
+  /**
+   * Delete a book
+   * @param id Book's ID
+   */
+
+  public async deleteBook(id: BookId): Promise<void> {
+    await this.delete(id);
+  }
 }

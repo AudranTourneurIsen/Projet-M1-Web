@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { User, UserId } from 'library-api/src/entities';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, In, Repository } from 'typeorm';
 import { NotFoundError } from 'library-api/src/common/errors';
 import {
   UserRepositoryOutput,
@@ -82,6 +82,18 @@ export class UserRepository extends Repository<User> {
     const editedUser = await this.save(user);
 
     return adaptUserEntityToUserModel(editedUser);
+  }
+
+  /**
+   * Get users by their IDs
+   * @param ids Users' IDs
+   * @returns Users if found
+   */
+
+  public async getByIds(ids: UserId[]): Promise<UserRepositoryOutput[]> {
+    const users = await this.find({ where: { id: In(ids) } });
+
+    return users.map(adaptUserEntityToUserModel);
   }
 
   /**

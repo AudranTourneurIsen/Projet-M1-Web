@@ -33,4 +33,26 @@ export class BookController {
 
     return BookPresenter.from(createdBook);
   }
+
+  @Post('/:id/delete')
+  public async deleteBook(@Param('id') id: BookId): Promise<void> {
+    await this.bookUseCases.deleteBook(id);
+  }
+
+  @Post('/:id/comments/new')
+  public async addComment(
+    @Param('id') id: BookId,
+    @Body() comment: string,
+  ): Promise<BookPresenter> {
+    const book = await this.bookUseCases.addComment(id, comment);
+
+    return BookPresenter.from(book);
+  }
+
+  @Post('/:id/comments/')
+  public async getComments(@Param('id') id: BookId): Promise<BookPresenter> {
+    const book = await this.bookUseCases.getComments(id);
+
+    return BookPresenter.from(book);
+  }
 }
