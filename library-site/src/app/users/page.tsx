@@ -86,6 +86,24 @@ const UsersPage: FC = () => {
 
   return (
     <>
+      <div className="flex flex-col items-center justify-center my-4">
+        <h1 className="text-2xl font-bold text-center">Users</h1>
+        <h2>
+          There are currently <span className="font-bold">{users.length}</span>{' '}
+          users in the dataset
+        </h2>
+        <div className="my-8">
+          <Button
+            color="success"
+            onPress={(): void => {
+              setIsCreationModalOpen(true);
+            }}
+          >
+            <FontAwesomeIcon icon={faPlus} />
+            &nbsp; Create new author
+          </Button>
+        </div>
+      </div>
       <div className="relative p-4">
         <div className="my-8">
           <Button

@@ -32,7 +32,7 @@ export const DropdownCheckboxSelection: FC<DropdownCheckboxProps> = (props) => {
         aria-expanded="true"
         onClick={(): void => setIsOpen(!isOpen)}
       >
-        {label} hello {isOpen ? 'test' : 'test2'}
+        {label}
         <svg
           className="w-2.5 h-2.5 ml-2.5"
           aria-hidden="true"
@@ -50,7 +50,7 @@ export const DropdownCheckboxSelection: FC<DropdownCheckboxProps> = (props) => {
         </svg>
       </button>
 
-      {isOpen && <p>{state.length}</p>}
+      <div className="h-2" />
 
       {isOpen && (
         <div

@@ -71,7 +71,7 @@ const AuthorsPage: FC = () => {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center my-3">
+      <div className="flex flex-col items-center justify-center my-4">
         <h1 className="text-2xl font-bold text-center">Authors</h1>
         <h2>
           There are currently{' '}
