@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { PlainBookModel, PlainUserModel } from '@/models';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBook } from '@fortawesome/free-solid-svg-icons';
 import { Button } from '@/components/Button';
 import { Modal } from '@/components/Modal';
+import { MultiSelectBlock } from '@/components/MultiSelectBlock';
 
 type BookshelfProps = {
   user: PlainUserModel;
@@ -15,6 +16,22 @@ export function Bookshelf(props: BookshelfProps): React.JSX.Element {
 
   const [isEditBookshelfModalOpen, setIsEditBookshelfModalOpen] =
     useState(false);
+
+  const cancel = useCallback(() => {
+    setIsEditBookshelfModalOpen(false);
+  }, []);
+
+  const [selectedBookIds, setSelectedBookIds] = useState<string[]>([]);
+
+  const save = useCallback(() => {
+    console.log('SAVE', selectedBookIds);
+    setIsEditBookshelfModalOpen(false);
+  }, [selectedBookIds]);
+
+  const booksOptions = books.map((book) => ({
+    id: book.id,
+    name: book.name,
+  }));
 
   return (
     <>
@@ -55,7 +72,21 @@ export function Bookshelf(props: BookshelfProps): React.JSX.Element {
         isOpen={isEditBookshelfModalOpen}
         title="Edit bookshelf"
       >
-        ...
+        <div className="flex flex-col gap-4">
+          <MultiSelectBlock
+            options={booksOptions}
+            selectedOptionIds={selectedBookIds}
+            setSelectedOptionIds={setSelectedBookIds}
+          />
+          <div className="flex justify-between">
+            <Button color="info" onPress={cancel}>
+              Cancel
+            </Button>
+            <Button color="success" onPress={save}>
+              Save
+            </Button>
+          </div>
+        </div>
       </Modal>
     </>
   );

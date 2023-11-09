@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { PlainGenreModel, PlainUserModel } from '@/models';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { Button } from '@/components/Button';
 import { Modal } from '@/components/Modal';
+import { SingleSelectBlock } from '@/components/SingleSelectBlock';
+import { MultiSelectBlock } from '@/components/MultiSelectBlock';
 
 type FavoriteGenresProps = {
   user: PlainUserModel;
@@ -22,6 +24,26 @@ export function FavoriteGenres(props: FavoriteGenresProps): React.JSX.Element {
     ? `My favorite genres are ${favGenres}`
     : 'This user has no favorite genres... yet!';
 
+  const cancel = useCallback(() => {
+    setIsEditFavoriteGenresModalOpen(false);
+  }, []);
+
+  const [selectedGenreIds, setSelectedGenreIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    setSelectedGenreIds(user.favoriteGenres?.map((genre) => genre.id) || []);
+  }, [genres, user]);
+
+  const save = useCallback(() => {
+    console.log('SAVE', selectedGenreIds);
+    setIsEditFavoriteGenresModalOpen(false);
+  }, [selectedGenreIds]);
+
+  const genresOptions = genres.map((genre) => ({
+    id: genre.id,
+    name: genre.name,
+  }));
+
   return (
     <>
       <Modal
@@ -29,7 +51,21 @@ export function FavoriteGenres(props: FavoriteGenresProps): React.JSX.Element {
         isOpen={isEditFavoriteGenresModalOpen}
         title="Edit favorite genres"
       >
-        ...
+        <div className="flex flex-col gap-4">
+          <MultiSelectBlock
+            options={genresOptions}
+            selectedOptionIds={selectedGenreIds}
+            setSelectedOptionIds={setSelectedGenreIds}
+          />
+          <div className="flex justify-between">
+            <Button color="info" onPress={cancel}>
+              Cancel
+            </Button>
+            <Button color="success" onPress={save}>
+              Save
+            </Button>
+          </div>
+        </div>
       </Modal>
       <div className="flex flex-col gap-3">
         <div className="flex gap-3">

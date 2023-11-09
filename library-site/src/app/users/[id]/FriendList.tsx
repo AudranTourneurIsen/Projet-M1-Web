@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { PlainUserModel } from '@/models';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserGroup } from '@fortawesome/free-solid-svg-icons';
 import { Button } from '@/components/Button';
 import { Modal } from '@/components/Modal';
+import { MultiSelectBlock } from '@/components/MultiSelectBlock';
 
 type FriendListProps = {
   user: PlainUserModel;
@@ -15,6 +16,24 @@ export function FriendList(props: FriendListProps): React.JSX.Element {
 
   const [isEditFriendListModalOpen, setIsEditFriendListModalOpen] =
     useState(false);
+
+  const cancel = useCallback(() => {
+    setIsEditFriendListModalOpen(false);
+  }, []);
+
+  const [selectedFriendIds, setSelectedFriendIds] = useState<string[]>([]);
+
+  const save = useCallback(() => {
+    console.log('SAVE', selectedFriendIds);
+    setIsEditFriendListModalOpen(false);
+  }, [selectedFriendIds]);
+
+  const friendOptions = users
+    .map((u) => ({
+      id: u.id,
+      name: `${u.firstName} ${u.lastName}`,
+    }))
+    .filter((u) => u.id !== user.id);
 
   return (
     <>
@@ -58,7 +77,21 @@ export function FriendList(props: FriendListProps): React.JSX.Element {
         isOpen={isEditFriendListModalOpen}
         title="Edit friend list"
       >
-        ...
+        <div className="flex flex-col gap-4">
+          <MultiSelectBlock
+            options={friendOptions}
+            selectedOptionIds={selectedFriendIds}
+            setSelectedOptionIds={setSelectedFriendIds}
+          />
+          <div className="flex justify-between">
+            <Button color="info" onPress={cancel}>
+              Cancel
+            </Button>
+            <Button color="success" onPress={save}>
+              Save
+            </Button>
+          </div>
+        </div>
       </Modal>
     </>
   );

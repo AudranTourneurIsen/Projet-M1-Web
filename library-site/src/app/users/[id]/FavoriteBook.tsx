@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from "react";
 import { Modal } from '@/components/Modal';
 import { Button } from '@/components/Button';
 import { SingleSelectBlock } from '@/components/SingleSelectBlock';
@@ -17,6 +17,8 @@ export function FavoriteBook(props: FavoriteBookProps): React.JSX.Element {
   const [isEditFavoriteBookModalOpen, setIsEditFavoriteBookModalOpen] =
     useState(false);
 
+  const [selectedBookId, setSelectedBookId] = useState<string | null>(null);
+
   const favBookName = user.favoriteBook?.name;
 
   const favBookText = favBookName
@@ -28,6 +30,20 @@ export function FavoriteBook(props: FavoriteBookProps): React.JSX.Element {
     name: book.name,
   }));
 
+  const cancel = useCallback(() => {
+    setSelectedBookId(null);
+    setIsEditFavoriteBookModalOpen(false);
+  }, []);
+
+  const save = useCallback(() => {
+    console.log('SAVE', selectedBookId);
+    setIsEditFavoriteBookModalOpen(false);
+  }, [selectedBookId]);
+
+  useEffect(() => {
+    console.log('selectedBookId => ', selectedBookId);
+  }, [selectedBookId]);
+
   return (
     <>
       <Modal
@@ -35,11 +51,21 @@ export function FavoriteBook(props: FavoriteBookProps): React.JSX.Element {
         isOpen={isEditFavoriteBookModalOpen}
         title="Edit favorite book"
       >
-        <SingleSelectBlock
-          options={booksOptions}
-          selectedOptionId={null}
-          setSelectedOptionId={(): void => {}}
-        />
+        <div className="flex flex-col gap-4">
+          <SingleSelectBlock
+            options={booksOptions}
+            selectedOptionId={selectedBookId}
+            setSelectedOptionId={setSelectedBookId}
+          />
+          <div className="flex justify-between">
+            <Button color="info" onPress={cancel}>
+              Cancel
+            </Button>
+            <Button color="success" onPress={save}>
+              Save
+            </Button>
+          </div>
+        </div>
       </Modal>
       <div className="flex flex-col gap-3">
         <div className="flex gap-3">
