@@ -100,22 +100,11 @@ const UsersPage: FC = () => {
             }}
           >
             <FontAwesomeIcon icon={faPlus} />
-            &nbsp; Create new author
-          </Button>
-        </div>
-      </div>
-      <div className="relative p-4">
-        <div className="my-8">
-          <Button
-            color="success"
-            onPress={(): void => {
-              setIsCreationModalOpen(true);
-            }}
-          >
-            <FontAwesomeIcon icon={faPlus} />
             &nbsp; Create new user
           </Button>
         </div>
+      </div>
+      <div className="relative px-4">
         <Modal
           title="Create new user"
           isOpen={isCreationModalOpen}
@@ -173,12 +162,10 @@ const UsersPage: FC = () => {
               )}
             </div>
           </div>
-          <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <div>
-              {displayedUsers.map((user) => (
-                <UserLine user={user} key={user.id} />
-              ))}
-            </div>
+          <div className="relative overflow-x-auto shadow-md sm:rounded-lg flex flex-col gap-8">
+            {displayedUsers.map((user) => (
+              <UserLine user={user} key={user.id} />
+            ))}
           </div>
         </div>
       </div>
