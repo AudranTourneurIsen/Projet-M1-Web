@@ -8,6 +8,7 @@ import { useAuthorsProviders } from '@/hooks/providers/authorProviders';
 import { Modal } from '@/components/Modal';
 import { Button } from '@/components/Button';
 import { TextInput } from '@/components/TextInput';
+import { AuthorLine } from '@/app/authors/AuthorLine';
 
 const AuthorsPage: FC = () => {
   const { useListAuthors } = useAuthorsProviders();
@@ -26,15 +27,6 @@ const AuthorsPage: FC = () => {
   const [authorFirstName, setAuthorFirstName] = useState<string>('');
   const [authorLastName, setAuthorLastName] = useState<string>('');
   const [authorImage, setAuthorImage] = useState<File | null>(null);
-
-  const imageRenderer = (imageURL: string): React.JSX.Element => (
-    <Image
-      width={300}
-      height={300}
-      src={`data:image/png;base64,${imageURL}`}
-      alt="Profile picture"
-    />
-  );
 
   async function submitNewAuthor(): Promise<void> {
     const formData = new FormData();
@@ -56,50 +48,29 @@ const AuthorsPage: FC = () => {
 
   return (
     <>
-      <p>Les auteurs : {authors.join(', ')}</p>
-      <Button
-        color="success"
-        onPress={(): void => {
-          setIsOpen(true);
-        }}
-      >
-        Test
-      </Button>
+      <div className="flex flex-col items-center justify-center my-3">
+        <h1 className="text-2xl font-bold text-center">Authors</h1>
+        <h2>
+          There are currently{' '}
+          <span className="font-bold">{authors.length}</span> authors in the
+          dataset
+        </h2>
+        <div className="my-8">
+          <Button
+            color="success"
+            onPress={(): void => {
+              setIsOpen(true);
+            }}
+          >
+            Create new author
+          </Button>
+        </div>
+      </div>
 
-      <div className="relative overflow-x-auto">
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-              <th scope="col" className="px-6 py-3">
-                Image
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Name
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Bibliography
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {authors.map((author) => (
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  {author.photo
-                    ? imageRenderer(author.photo?.image)
-                    : 'no photo available'}
-                </th>
-                <td className="px-6 py-4">
-                  {author.firstName} {author.lastName}
-                </td>
-                <td className="px-6 py-4">[TODO]</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="w-[100vw] md:w-[95vw] lg:w-[90vw] flex flex-col mx-auto gap-8">
+        {authors.map((author) => (
+          <AuthorLine key={author.id} author={author} />
+        ))}
       </div>
 
       <Modal
