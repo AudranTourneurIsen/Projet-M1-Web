@@ -304,11 +304,6 @@ const BooksPage: FC = (): ReactElement => {
         </table>
       </div>
       <Modal isOpen={isOpen} onClose={onClose}>
-        <div className="flex flex-row-reverse">
-          <Button color="none" onPress={onClose}>
-            <FontAwesomeIcon icon={faXmark} />
-          </Button>
-        </div>
         <form className="p-6 flex flex-col gap-4">
           <div className="flex flex-col gap-1">
             <TextInput
