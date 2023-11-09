@@ -65,6 +65,16 @@ export class UserController {
     return UserPresenter.from(editedUser);
   }
 
+  @Post('/:id/edit-friends')
+  public async editFriends(
+    @Param('id') userId: UserId,
+    @Body() friends: UserId[],
+  ): Promise<UserPresenter> {
+    const editedUser = await this.userUseCases.editFriends(userId, friends);
+
+    return UserPresenter.from(editedUser);
+  }
+
   @Delete('/:id/delete')
   public async deleteUser(@Param('id') userId: UserId): Promise<void> {
     await this.userUseCases.deleteUser(userId);
