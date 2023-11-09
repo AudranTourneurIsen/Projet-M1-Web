@@ -25,5 +25,6 @@ export class Genre extends BaseEntity {
   books: Book[];
 
   @ManyToMany(() => User, (user) => user.favoriteGenres)
+  @JoinTable()
   inFavoriteGenre: User[];
 }
