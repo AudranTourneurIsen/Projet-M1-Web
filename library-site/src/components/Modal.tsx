@@ -1,12 +1,21 @@
 import { type ReactNode, useRef, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Button } from '@/components/Button';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 type ModalProps = {
+  title?: string;
   isOpen: boolean;
   onClose: () => void;
   children: ReactNode;
 };
 
-export const Modal = ({ isOpen, onClose, children }: ModalProps): ReactNode => {
+export const Modal = ({
+  isOpen,
+  onClose,
+  children,
+  title,
+}: ModalProps): ReactNode => {
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -45,7 +54,7 @@ export const Modal = ({ isOpen, onClose, children }: ModalProps): ReactNode => {
       <div className="flex items-center justify-center min-h-screen">
         <div className="fixed inset-0 transition-opacity" aria-hidden="true">
           <div
-            className="absolute inset-0 bg-gray-500 opacity-75"
+            className="absolute inset-0 bg-gray-900 opacity-75"
             onClick={onClose}
             onKeyDown={(event): void => {
               if (event.key === 'Enter') {
@@ -59,13 +68,23 @@ export const Modal = ({ isOpen, onClose, children }: ModalProps): ReactNode => {
         </div>
 
         <div
-          className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-xl transform transition-all max-w-2xl w-full"
+          className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-xl transform transition-all max-w-2xl w-full p-4"
           ref={modalRef}
           tabIndex={-1}
         >
+          <div className="flex justify-between items-center mb-3">
+            <h1 className="font-semibold">{title}</h1>
+            <Button color="none" onPress={onClose}>
+              <FontAwesomeIcon icon={faXmark} size="lg" />
+            </Button>
+          </div>
           {children}
         </div>
       </div>
     </div>
   );
+};
+
+Modal.defaultProps = {
+  title: '',
 };
