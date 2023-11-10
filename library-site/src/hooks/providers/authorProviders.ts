@@ -13,8 +13,7 @@ export const useListAuthors = (): UseListAuthorsProvider => {
   const fetchAuthors = (): void => {
     axios
       .get(`${process.env.NEXT_PUBLIC_API_URL}/authors`)
-      .then((data) => setAuthors(data.data))
-      .catch((err) => console.error(err));
+      .then((data) => setAuthors(data.data));
   };
 
   return { authors, loadAuthors: fetchAuthors };

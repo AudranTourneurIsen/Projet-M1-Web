@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { useState } from 'react';
-import {PlainAuthorModel} from '@/models';
+import { PlainAuthorModel } from '@/models';
 
 type UseAuthorProvider = {
-    author: PlainAuthorModel | 'not found' | undefined;
-    loadAuthor: () => void;
+  author: PlainAuthorModel | 'not found' | undefined;
+  loadAuthor: () => void;
 };
 
 export const useAuthor = (authorId: string | string[]): UseAuthorProvider => {
@@ -36,5 +36,5 @@ type AuthorProvider = {
 };
 
 export const useAuthorProvider = (): AuthorProvider => ({
-    useAuthor,
+  useAuthor,
 });

@@ -19,8 +19,6 @@ export const DropdownCheckboxSelection: FC<DropdownCheckboxProps> = (props) => {
 
   const [isOpen, setIsOpen] = useState(false);
 
-  console.log('dropdown checkbox', state);
-
   return (
     <>
       <button
@@ -80,7 +78,6 @@ export const DropdownCheckboxSelection: FC<DropdownCheckboxProps> = (props) => {
                         }
                         return stateItem;
                       });
-                      console.log('new state:', newState);
                       setState(newState);
                     }}
                   />

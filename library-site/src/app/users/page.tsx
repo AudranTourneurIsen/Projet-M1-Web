@@ -1,17 +1,16 @@
 'use client';
 
 import React, { FC, useEffect, useState } from 'react';
-import { useUsersProviders } from '@/hooks/providers/userProviders';
-
-import { UserLine } from '@/app/users/UserLine';
-import { SearchBar } from '@/components/SearchBar';
-import { Checkbox } from '@/components/Checkbox';
-import { Button } from '@/components/Button';
-import { Modal } from '@/components/Modal';
-import { useBooksProviders } from '@/hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+
+import { useUsersProviders } from '@/hooks/providers/userProviders';
+import { UserLine } from '@/app/users/UserLine';
+import { SearchBar } from '@/components/SearchBar';
+import { Button } from '@/components/Button';
+import { Modal } from '@/components/Modal';
+import { useBooksProviders } from '@/hooks';
 import { TextInput } from '@/components/TextInput';
 import { MultiSelectBlock } from '@/components/MultiSelectBlock';
 
@@ -58,7 +57,7 @@ const UsersPage: FC = () => {
     } else {
       setDisplayedUsers(users);
     }
-  }, [searchInput, selectedBookIds]);
+  }, [searchInput, selectedBookIds, users]);
 
   useEffect(() => {
     setDisplayedUsers(users);
@@ -75,7 +74,6 @@ const UsersPage: FC = () => {
       lastName: createLastName,
     });
     loadUsers();
-    console.log('CREATE', createFirstName, createLastName);
     setIsCreationModalOpen(false);
   };
 

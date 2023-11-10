@@ -14,7 +14,6 @@ export function SingleSelectBlock(props: SingleSelectBlockProps): JSX.Element {
   const manageChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const newValue = event.target.value;
-      console.log("???", newValue);
       setSelectedOptionId(newValue);
     },
     [],

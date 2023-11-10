@@ -15,9 +15,6 @@ type DropdownProps = {
 export const DropdownSelection: FC<DropdownProps> = (props) => {
   const { label, onChange, currentlySelectedId, propositions } = props;
 
-  console.log('propositions', propositions);
-  console.log('selected', currentlySelectedId);
-
   return (
     <div>
       <label
