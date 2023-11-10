@@ -1,4 +1,5 @@
-'use client'
+'use client';
+
 import SwaggerUI from 'swagger-ui-react';
 import 'swagger-ui-react/swagger-ui.css';
 import { FC } from 'react';

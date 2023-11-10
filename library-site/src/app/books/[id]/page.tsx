@@ -53,7 +53,7 @@ const BooksDetailsPage: FC = () => {
       </div>
       <div className="flex flex-col m-6 gap-12 mx-auto">
         <BookInfo book={book} />
-        <AuthorInfo book={book} author={book.author} />
+        <AuthorInfo book={book} />
         <CommentSection book={book} />
         <BookSuppression book={book} reload={(): void => reload()} />
       </div>
