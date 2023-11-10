@@ -1,6 +1,6 @@
 # The Great Library
 ## Contributors
-- Iémélian Rmbeau
+- Iémélian Rambeau
 -  Audran Tourneur
 - Amaury Giot
 - Judith Lecoq
@@ -84,3 +84,7 @@ Pour créer un livre il faut renseigner les champs suivants :
 
 Nous avons réalisé des tests (essentiels), et possédons au total 30 tests.  
 Au total, nous avons environ 2/3 de couverture.
+
+## Lint 
+
+L'entièreté du code respecte les règles ESLint et Prettier (testé avec le npm run site:lint et npm run api:lint).
