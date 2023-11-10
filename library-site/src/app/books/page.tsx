@@ -9,7 +9,7 @@ import React, {
 } from 'react';
 import axios, { AxiosError } from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useBooksProviders } from '@/hooks';
 import { useAuthorsProviders } from '@/hooks/providers/authorProviders';
 import { useGenresProviders } from '@/hooks/providers/genreProviders';
@@ -23,7 +23,6 @@ import { Badge } from '@/components/Badge';
 import { SearchBar } from '@/components/SearchBar';
 
 const BooksPage: FC = (): ReactElement => {
-  console.log('books re-render');
   const { useListBooks } = useBooksProviders();
   const { useListAuthors } = useAuthorsProviders();
   const { useListGenres } = useGenresProviders();
@@ -65,7 +64,6 @@ const BooksPage: FC = (): ReactElement => {
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
 
   useEffect(() => {
-    console.log('searchInput', searchInput);
     if (searchInput || selectedGenres.length > 0) {
       let newBooks = books;
 
@@ -83,7 +81,6 @@ const BooksPage: FC = (): ReactElement => {
       }
 
       if (selectedGenres.length > 0) {
-        console.log('genres selected', selectedGenres);
         newBooks = newBooks.filter((book) =>
           book.genres
             .map((g) => g.id)
@@ -244,7 +241,6 @@ const BooksPage: FC = (): ReactElement => {
                 <Badge
                   isActive={selectedGenres.includes(genre.id)}
                   onPress={(): void => {
-                    console.log(selectedGenres);
                     let currentlySelectedGenres = selectedGenres;
                     if (currentlySelectedGenres.includes(genre.id)) {
                       currentlySelectedGenres = currentlySelectedGenres.filter(
@@ -294,12 +290,12 @@ const BooksPage: FC = (): ReactElement => {
                   <td className="px-6 py-4">{returnDate(book.writtenOn)}</td>
                   <td className="px-6 py-4">
                     {book.author ? (
-                        <a href={`/authors/${book.author.id}`}>
-                            {book.author.firstName} {book.author.lastName}
-                        </a>
-                        ) : (
-                        'Auteur inconnu'
-                        )}
+                      <a href={`/authors/${book.author.id}`}>
+                        {book.author.firstName} {book.author.lastName}
+                      </a>
+                    ) : (
+                      'Auteur inconnu'
+                    )}
                   </td>
                   <td className="px-6 py-4">
                     {book.genres.map((genre) => (
@@ -315,7 +311,7 @@ const BooksPage: FC = (): ReactElement => {
           <form className="p-6 flex flex-col gap-4">
             <div className="flex flex-col gap-1">
               <TextInput
-                placeholder='Name'
+                placeholder="Name"
                 label="Name"
                 value={nameInput}
                 onChange={(text: string): void => setNameInput(text)}
