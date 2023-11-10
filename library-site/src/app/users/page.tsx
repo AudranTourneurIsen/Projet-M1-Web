@@ -66,6 +66,8 @@ const UsersPage: FC = () => {
   useEffect(() => {
     loadUsers();
     loadBooks();
+    // Boucle infinie si on suit la règle
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const submitUserCreation = async (): Promise<void> => {

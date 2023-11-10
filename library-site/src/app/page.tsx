@@ -9,7 +9,7 @@ const Home: FC = (): ReactElement => (
         <h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-700 to-purple-400 glitch">
           The Great Library
         </h1>
-        <div className="h-6"></div>
+        <div className="h-6" />
         <h2 className="dark:text-gray-200 text-2xl">
           A blazingly-fast, no non-sense <br />
           <span className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-cyan-300">

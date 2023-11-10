@@ -76,8 +76,6 @@ export const Breadcrumbs: FC<BreadcrumbsProps> = ({ root = 'books' }) => {
     return listOfLinks;
   });
 
-  console.log('listOfLinks = ', listOfLinks);
-
   return (
     <>
       {listOfLinks.map((item) => (

@@ -24,6 +24,8 @@ const BooksDetailsPage: FC = () => {
 
   useEffect(() => {
     loadBook();
+    // Boucle infinie si on suit la règle
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function reload(): void {

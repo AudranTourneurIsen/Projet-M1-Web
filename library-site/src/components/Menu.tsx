@@ -3,8 +3,8 @@
 import { FC } from 'react';
 import { usePathname } from 'next/navigation';
 import { PlainMenuItemModel } from '@/models';
-import { Breadcrumbs } from './Breadcrumbs';
 import paths from '@/static/paths.json';
+import { Breadcrumbs } from './Breadcrumbs';
 
 type MenuProps = {
   menu: PlainMenuItemModel[];
