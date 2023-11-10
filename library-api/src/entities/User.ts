@@ -6,10 +6,12 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Book } from './Book';
 import { Genre } from './Genre';
+import { Comment } from './Comment';
 
 export type UserId = string & { __brand: 'User' };
 
@@ -40,4 +42,8 @@ export class User extends BaseEntity {
   @JoinTable()
   // eslint-disable-next-line no-use-before-define
   friends?: User[];
+
+  @OneToMany(() => Comment, (comment) => comment.user)
+  @JoinTable()
+  comments?: Comment[];
 }
