@@ -72,4 +72,4 @@ export class BookController {
 
     return PlainCommentPresenter.from(outputComment);
   }
-  
+}
