@@ -74,7 +74,7 @@ export class BookController {
   }
 
   @ApiOkResponse({
-    description: 'view the comments',
+    description: 'view the comments of a specific book',
     isArray: true,
   })
   @Post('/:id/comments/')
