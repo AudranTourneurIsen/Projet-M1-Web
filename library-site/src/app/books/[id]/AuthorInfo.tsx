@@ -41,7 +41,14 @@ export function AuthorInfo(props: AuthorInfoProps): React.JSX.Element {
       <div>
         <p className="font-bold mt-2">Books by this author:</p>
         <ul className="list-disc ml-6">
-          {book.author.books?.map((b) => <li key={b.id}>{b.name}</li>)}
+          {book.author.books?.map((b) => (
+            <>
+              <a className="underline" href={`/books/${b.id}`} key={b.id}>
+                {b.name}
+              </a>
+              <br />
+            </>
+          ))}
         </ul>
       </div>
     );
@@ -63,9 +70,16 @@ export function AuthorInfo(props: AuthorInfoProps): React.JSX.Element {
         </div>
         <div className="ml-2">
           <p className="font-bold">
-            {book.author
-              ? `The author of this book is ${book.author?.firstName} ${book.author?.lastName}`
-              : `Sorry we can't find the author of this book...`}
+            {book.author ? (
+              <span>
+                The author of this book is{' '}
+                <a className="underline" href={`/authors/${book.author.id}`}>
+                  {book.author?.firstName} ${book.author?.lastName}
+                </a>
+              </span>
+            ) : (
+              `Sorry we can't find the author of this book...`
+            )}
           </p>
           <div className="ml-2">{getAuthorBooks()}</div>
         </div>
