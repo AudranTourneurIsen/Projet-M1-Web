@@ -38,4 +38,29 @@ describe('UserUseCases', () => {
       expect(result).toStrictEqual(userFix);
     });
   });
+
+  describe('getById', () => {
+    it('should call repository function', async () => {
+      const userRep = {
+        getById: jest.fn(),
+      } as unknown as UserRepository;
+      const bookRep = {} as unknown as BookRepository;
+      const genreRep = {} as unknown as GenreRepository;
+
+      const user = userFixture(null, [], [], []);
+      const useCases = new UserUseCases(userRep, bookRep, genreRep);
+      const userFix = adaptUserEntityToUserRepositoryOutput(user);
+
+      const getByIdSpy = jest
+        .spyOn(userRep, 'getById')
+        .mockResolvedValue(userFix);
+
+      const result = await useCases.getById(userFix.id);
+
+      expect(getByIdSpy).toHaveBeenCalledTimes(1);
+      expect(getByIdSpy).toHaveBeenCalledWith(userFix.id);
+
+      expect(result).toStrictEqual(userFix);
+    });
+  });
 });
