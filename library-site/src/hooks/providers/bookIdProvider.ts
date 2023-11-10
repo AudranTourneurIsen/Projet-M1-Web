@@ -20,9 +20,8 @@ export const useBook = (bookId: string): UseBookProvider => {
         }
         setBook(data.data);
       })
-      .catch((err) => {
+      .catch((): void => {
         setBook('not found');
-        console.error(err);
       });
   };
 
