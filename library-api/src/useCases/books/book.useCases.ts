@@ -85,8 +85,6 @@ export class BookUseCases {
       bookToSend.genres.push(genreTmp);
     });
 
-    console.log('bookToSend', bookToSend);
-
     Logger.log('bookToSend', JSON.stringify(bookToSend));
 
     return this.bookRepository.createBook(bookToSend);

@@ -1,9 +1,8 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { GenreUseCases } from 'library-api/src/useCases';
 import { GenreId } from 'library-api/src/entities';
-import { GenrePresenter, PlainGenrePresenter } from './genre.presenter';
 import { ApiOkResponse } from '@nestjs/swagger';
-import { PlainBookPresenter } from '../books/book.presenter';
+import { GenrePresenter, PlainGenrePresenter } from './genre.presenter';
 
 @Controller('genres')
 export class GenreController {

@@ -30,9 +30,8 @@ export class ImageRepository extends Repository<Image> {
 
     if (maybeImage) {
       maybeImage.image = imageInput.image;
-      return await this.save(maybeImage);
-    } else {
-      throw Error('Invalid image ID for: ' + imageInput.id);
+      return this.save(maybeImage);
     }
+    throw Error(`Invalid image ID for: ${imageInput.id}`);
   }
 }

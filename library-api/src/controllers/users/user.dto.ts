@@ -1,6 +1,6 @@
 import { IsString } from 'class-validator';
-import { BookId, GenreId, UserId } from '../../entities';
 import { ApiProperty } from '@nestjs/swagger';
+import { BookId, GenreId, UserId } from '../../entities';
 
 export class CreateUserDto {
   @ApiProperty({

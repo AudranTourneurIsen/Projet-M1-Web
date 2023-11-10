@@ -13,7 +13,7 @@ import type {
   CommentPresenter,
   PlainCommentPresenter,
 } from '../comments/comment.presenter';
-import { UserPresenter } from '../users/user.presenter';
+import type { UserPresenter } from '../users/user.presenter';
 
 export class PlainBookPresenter {
   @ApiProperty({
