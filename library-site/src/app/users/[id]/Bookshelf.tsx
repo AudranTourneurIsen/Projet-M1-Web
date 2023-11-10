@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import { faBook } from '@fortawesome/free-solid-svg-icons';
@@ -25,6 +25,11 @@ export function Bookshelf(props: BookshelfProps): React.JSX.Element {
   }, []);
 
   const [selectedBookIds, setSelectedBookIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    setSelectedBookIds(user?.ownedBooks?.map((book) => book.id) || []);
+  }, [user]);
+
 
   const save = useCallback(async () => {
     await axios.post(`${API_URL}/users/${user.id}/edit-owned-books`, {
