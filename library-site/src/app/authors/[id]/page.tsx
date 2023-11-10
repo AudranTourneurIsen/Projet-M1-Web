@@ -1,6 +1,6 @@
 'use client';
 
-import { redirect, useParams, useRouter } from 'next/navigation';
+import { redirect, useParams } from 'next/navigation';
 import React, { FC, useEffect, useState } from 'react';
 import axios from 'axios';
 import Image from 'next/image';
@@ -23,18 +23,12 @@ const AuthorDetailsPage: FC = () => {
   const { id } = useParams();
   const { author, loadAuthor } = useAuthor(id);
 
-  if (author === 'not found') {
-    return redirect('/authors');
-  }
-
   const { useListBooks } = useBooksProviders();
   const { books, loadBooks } = useListBooks();
 
   const [authorEditFirstName, setAuthorFirstName] = useState<string>('');
   const [authorEditLastName, setAuthorLastName] = useState<string>('');
   const [authorEditImage, setAuthorImage] = useState<File | null>(null);
-
-  const [shouldRedirect, setShouldRedirect] = useState<boolean>(false);
 
   const [selectedBookIds, setSelectedBookIds] = useState<string[]>([]);
 
@@ -46,10 +40,14 @@ const AuthorDetailsPage: FC = () => {
   }, []);
 
   useEffect(() => {
-    setSelectedBookIds(author?.books?.map((book) => book.id) || []);
+    if (author !== 'not found') {
+      setSelectedBookIds(author?.books?.map((book) => book.id) || []);
+    }
   }, [books, author]);
 
-  const router = useRouter();
+  if (author === 'not found') {
+    return redirect('/authors');
+  }
 
   const onClose = (): void => {
     if (isModalOpen) {
@@ -93,15 +91,13 @@ const AuthorDetailsPage: FC = () => {
     loadAuthor();
   }
 
-  // Hack, the "redirect" function doesn't seem to work in this case
-  if (shouldRedirect) {
-    router.push('/authors');
-  }
-
   async function submitDeleteAuthor(): Promise<void> {
-    await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/authors/delete/${id}`);
-    // setShouldRedirect(true);
-    redirect('/authors');
+    await axios.delete(
+      `${process.env.NEXT_PUBLIC_API_URL}/authors/delete/${id}`,
+    );
+    // La fonction redirect ne fonctionne pas, on utilise donc location.href
+    // eslint-disable-next-line no-restricted-globals
+    location.href = '/authors';
   }
 
   const booksOptions = books.map((book) => ({
