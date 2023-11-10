@@ -72,6 +72,10 @@ export class AuthorController {
     return AuthorPresenter.from(createdAuthor);
   }
 
+  @ApiOkResponse({
+    description: 'edit an author',
+    isArray: true,
+  })
   @Post('/edit')
   public async editAuthor(
     @Body() author: EditAuthorDto,
@@ -86,6 +90,10 @@ export class AuthorController {
     return AuthorPresenter.from(editedAuthor);
   }
 
+  @ApiOkResponse({
+    description: 'edit a image: the new image must be uploaded as multiform input in the request',
+    isArray: true,
+  })
   @Post('/edit/image')
   @UseInterceptors(FileInterceptor('image'))
   public async editAuthorImage(
@@ -99,6 +107,10 @@ export class AuthorController {
     await this.authorUseCases.editAuthorImage(author, file.buffer);
   }
 
+  @ApiOkResponse({
+    description: 'Delete the author by using is id',
+    isArray: true,
+  })
   @Delete('/delete/:id')
   public async deleteAuthor(@Param('id') id: AuthorId): Promise<void> {
     await this.authorUseCases.deleteAuthor(id);

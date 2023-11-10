@@ -27,8 +27,6 @@ const AuthorDetailsPage: FC = () => {
   const { books, loadBooks } = useListBooks();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
-  const [isBookOpen, setIsBooksOpen] = useState<boolean>(false);
 
   const [authorEditFirstName, setAuthorFirstName] = useState<string>('');
   const [authorEditLastName, setAuthorLastName] = useState<string>('');
@@ -271,6 +269,7 @@ const AuthorDetailsPage: FC = () => {
             <div className="w-full flex justify-between">
               <form className="w-full flex justify-between gap-8 p-6">
                 <TextInput
+                    placeholder={author.firstName}
                   label="Author's new first name"
                   onChange={(newName): void => {
                     setAuthorFirstName(newName);
@@ -278,6 +277,7 @@ const AuthorDetailsPage: FC = () => {
                   value={authorEditFirstName}
                 />
                 <TextInput
+                  placeholder={author.lastName}
                   label="Author's last name"
                   onChange={(newName): void => {
                     setAuthorLastName(newName);
