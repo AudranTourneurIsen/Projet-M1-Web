@@ -1,6 +1,6 @@
 import { IsString } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 import { AuthorId, BookId } from '../../entities';
-import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateAuthorDto {
   @ApiProperty({
@@ -20,7 +20,7 @@ export class EditAuthorDto {
   @ApiProperty({
     type: 'string',
     format: 'uuid',
-    description: 'author id'
+    description: 'author id',
   })
   @IsString()
   id: AuthorId;
@@ -49,7 +49,7 @@ export class EditAuthorImageDto {
   @ApiProperty({
     type: 'string',
     format: 'uuid',
-    description: 'author id'
+    description: 'author id',
   })
   @IsString()
   id: AuthorId;
