@@ -1,10 +1,14 @@
 'use client';
 
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { PlainMenuItemModel } from '@/models';
 import { Breadcrumbs } from './Breadcrumbs';
 import paths from '@/static/paths.json';
+import axios from 'axios';
+import { useBooksProviders } from '@/hooks';
+import { useAuthorsProviders } from '@/hooks/providers/authorProviders';
+import { useGenresProviders } from '@/hooks/providers/genreProviders';
 
 type MenuProps = {
   menu: PlainMenuItemModel[];
@@ -13,6 +17,28 @@ type MenuProps = {
 export const Menu: FC<MenuProps> = ({ menu }) => {
   const path = usePathname();
   const title = paths.filter((item) => path.match(item.regex))[0].name;
+
+  const { useListBooks } = useBooksProviders();
+  const { useListAuthors } = useAuthorsProviders();
+  const { useListGenres } = useGenresProviders();
+
+  const { books, loadBooks } = useListBooks();
+  const { authors, loadAuthors } = useListAuthors();
+  const { genres, loadGenres } = useListGenres();
+
+  useEffect(() => {
+    loadBooks();
+    loadAuthors();
+    loadGenres();
+  }, []);
+
+  const menuToDisplay = menu
+
+  console.log('menu = ', menuToDisplay)
+
+ // if (title === 'Book') {
+
+//  }
 
   return (
     <div className="w-full flex justify-around items-center p-1 gap-4 sm:gap-8 md:gap-16 lg:gap-24">

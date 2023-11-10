@@ -38,6 +38,11 @@ export class AuthorController {
     return authors.map(PlainAuthorPresenter.from);
   }
 
+  @ApiOkResponse({
+    description: 'Get the authors of the id',
+    type: AuthorPresenter,
+    isArray: true,
+  })
   @Get('/:id')
   public async getById(@Param('id') id: AuthorId): Promise<AuthorPresenter> {
     const author = await this.authorUseCases.getById(id);
