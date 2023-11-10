@@ -29,9 +29,6 @@ export class Book extends BaseEntity {
   @ManyToOne(() => Author, (author) => author.books, { onDelete: 'CASCADE' })
   author: Author;
 
-  @Column()
-  authorId: string;
-
   @ManyToMany(() => User, (user) => user.ownedBooks, { onDelete: 'CASCADE' })
   ownedByUsers: User[];
 

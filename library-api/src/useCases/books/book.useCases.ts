@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Book, BookId, Genre } from 'library-api/src/entities';
+import { Author, Book, BookId, Genre } from 'library-api/src/entities';
 import {
   AuthorRepository,
   BookRepository,
@@ -55,8 +55,13 @@ export class BookUseCases {
       throw new Error('Author not found');
     }
 
+    const authorTmp = new Author();
+    authorTmp.id = author.id;
+    authorTmp.firstName = author.firstName;
+    authorTmp.lastName = author.lastName;
+
     const bookToSend = new Book();
-    bookToSend.authorId = author.id;
+    bookToSend.author = authorTmp;
     bookToSend.name = book.name;
     bookToSend.writtenOn = book.writtenOn;
     bookToSend.genres = [];
