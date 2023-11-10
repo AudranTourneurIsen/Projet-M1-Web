@@ -46,7 +46,7 @@ describe('AuthorRepository', () => {
 
       expect(findOneSpy).toHaveBeenCalledTimes(1);
       expect(findOneSpy).toHaveBeenCalledWith({
-        relations: { photo: true },
+        relations: { books: { genres: true }, photo: true },
         where: { id: fixture.id },
       });
 
@@ -75,7 +75,7 @@ describe('AuthorRepository', () => {
 
       expect(findOneSpy).toHaveBeenCalledTimes(1);
       expect(findOneSpy).toHaveBeenCalledWith({
-        relations: { photo: true },
+        relations: { books: { genres: true }, photo: true },
         where: { id: undefined },
       });
     });
