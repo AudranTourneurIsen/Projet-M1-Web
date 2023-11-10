@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComment } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/navigation';
@@ -7,6 +7,8 @@ import { Button } from '@/components/Button';
 import { PlainBookModel } from '@/models';
 import { Drawer } from '@/components/Drawer';
 import { TextInput } from '@/components/TextInput';
+import { DropdownSelection } from '@/components/DropdownSelection';
+import { useUsersProviders } from '@/hooks';
 
 type CommentSectionProps = {
   book: PlainBookModel;
@@ -19,6 +21,23 @@ export function CommentSection(props: CommentSectionProps): React.JSX.Element {
   const [UserCommentInput, setUserCommentInput] = useState<string>('');
   const [userName, setUserName] = useState<string>('');
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const { useListUsers } = useUsersProviders();
+
+  const { users, loadUsers } = useListUsers();
+
+  useEffect(() => {
+    loadUsers();
+    // Boucle infinie si on suit la règle
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const usersOptions = users.map((user) => ({
+    id: user.id,
+    name: `${user.firstName} ${user.lastName}`,
+  }));
+
+  const [selectedUserId, setSelectedUserId] = useState<string>('');
 
   const router = useRouter();
   if (shouldRedirect) {
@@ -86,10 +105,10 @@ export function CommentSection(props: CommentSectionProps): React.JSX.Element {
           data-drawer-show="drawer-navigation"
           aria-controls="drawer-navigation"
           onClick={(): void => {
-            setIsDrawerActive(true);
+            setIsDrawerActive(!isDrawerActive);
           }}
         >
-          Open Comments
+          {isDrawerActive ? 'Close' : 'Open'} comment section
         </button>
       </div>
 
@@ -127,6 +146,12 @@ export function CommentSection(props: CommentSectionProps): React.JSX.Element {
 
         <form className="mb-6">
           <div className="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+            <DropdownSelection
+              label="Select user"
+              onChange={setSelectedUserId}
+              currentlySelectedId={selectedUserId}
+              propositions={usersOptions}
+            ></DropdownSelection>
             <label htmlFor="comment" className="sr-only">
               Your comment
             </label>
