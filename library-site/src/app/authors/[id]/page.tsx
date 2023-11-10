@@ -66,6 +66,11 @@ const AuthorDetailsPage: FC = () => {
     loadBooks();
   }, []);
 
+  useEffect(() => {
+    setSelectedBookIds(author?.books?.map((book) => book.id) || []);
+  }, [books, author]);
+
+
   if (!id || typeof id !== 'string') {
     redirect('/authors');
   }
@@ -269,7 +274,7 @@ const AuthorDetailsPage: FC = () => {
             <div className="w-full flex justify-between">
               <form className="w-full flex justify-between gap-8 p-6">
                 <TextInput
-                    placeholder={author.firstName}
+                  placeholder={author.firstName}
                   label="Author's new first name"
                   onChange={(newName): void => {
                     setAuthorFirstName(newName);
