@@ -43,10 +43,20 @@ export class PlainAuthorPresenter {
 }
 
 export class AuthorPresenter {
+  @ApiProperty({
+    type: 'string',
+    format: 'uuid',
+  })
   id: AuthorId;
 
+  @ApiProperty({
+    type: 'string',
+  })
   firstName: string;
 
+  @ApiProperty({
+    type: 'string',
+  })
   lastName: string;
 
   photo?: ImagePresenter;
