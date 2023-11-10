@@ -239,7 +239,7 @@ const BooksPage: FC = (): ReactElement => {
           <div className="w-[600px] mb-4">
             <SearchBar onChange={setSearchInput} value={searchInput} />
           </div>
-          <div className="flex mb-4">
+          <div className="grid grid-cols-2 lg:flex mb-4 gap-4 lg:gap-0">
             {' '}
             {genres.map((genre) => (
               <div key={genre.id}>
@@ -290,12 +290,17 @@ const BooksPage: FC = (): ReactElement => {
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                   >
-                    <a href={`/books/${book.id}`}>{book.name}</a>
+                    <a className="underline" href={`/books/${book.id}`}>
+                      {book.name}
+                    </a>
                   </th>
                   <td className="px-6 py-4">{returnDate(book.writtenOn)}</td>
                   <td className="px-6 py-4">
                     {book.author ? (
-                      <a href={`/authors/${book.author.id}`}>
+                      <a
+                        className="underline font-gray-500"
+                        href={`/authors/${book.author.id}`}
+                      >
                         {book.author.firstName} {book.author.lastName}
                       </a>
                     ) : (
