@@ -142,7 +142,7 @@ const AuthorDetailsPage: FC = () => {
         <h3 className="text-xl font-bold text-center col-span-3 p-4">
           {author.books
             ? author.books.map((book) => (
-                <a href={`/books/${book.id}`}>{book.name}</a>
+                <a href={`/books/${book.id}`}>{book.name} &nbsp; </a>
               ))
             : "Couldn't find any books written by this author"}
         </h3>

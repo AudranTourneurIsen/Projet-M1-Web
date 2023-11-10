@@ -293,13 +293,17 @@ const BooksPage: FC = (): ReactElement => {
                   </th>
                   <td className="px-6 py-4">{returnDate(book.writtenOn)}</td>
                   <td className="px-6 py-4">
-                    {book.author
-                      ? `${book.author.firstName} ${book.author.lastName}`
-                      : 'Auteur inconnu'}
+                    {book.author ? (
+                        <a href={`/authors/${book.author.id}`}>
+                            {book.author.firstName} {book.author.lastName}
+                        </a>
+                        ) : (
+                        'Auteur inconnu'
+                        )}
                   </td>
                   <td className="px-6 py-4">
                     {book.genres.map((genre) => (
-                      <span key={genre.id}>{genre.name}</span>
+                      <span key={genre.id}>{genre.name} &nbsp; </span>
                     ))}
                   </td>
                 </tr>

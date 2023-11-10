@@ -66,7 +66,9 @@ export function FriendList(props: FriendListProps): React.JSX.Element {
                   className="text-cyan-500"
                   size="xl"
                 />
+                <a href={`/users/${friend.id}`}>
                 {friend.firstName} {friend.lastName}
+                </a>
               </div>
             </div>
           ))}

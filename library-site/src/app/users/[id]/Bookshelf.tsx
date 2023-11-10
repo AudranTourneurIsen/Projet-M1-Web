@@ -56,7 +56,7 @@ export function Bookshelf(props: BookshelfProps): React.JSX.Element {
                   className="text-lime-400"
                   size="xl"
                 />
-                {book.name}
+                <a href={`/books/${book.id}`}>{book.name}</a>
               </div>
             </div>
           ))}

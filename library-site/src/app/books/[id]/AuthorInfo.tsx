@@ -64,13 +64,13 @@ export function AuthorInfo(props: AuthorInfoProps): React.JSX.Element {
             </p>
             <div className="ml-2">
               {book.author ? (
-                book.author.books.length === 0 ? (
+                book.author.books?.length === 0 ? (
                   <p>There is no known book from this author</p>
                 ) : (
                   <div>
                     <p className="font-bold mt-2">Books by this author:</p>
                     <ul className="list-disc ml-6">
-                      {book.author.books.map((book) => (
+                      {book.author.books?.map((book) => (
                         <li key={book.id}>{book.name}</li>
                       ))}
                     </ul>

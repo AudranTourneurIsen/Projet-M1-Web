@@ -25,7 +25,10 @@ export function FavoriteBook(props: FavoriteBookProps): React.JSX.Element {
   const favBookName = user.favoriteBook?.name;
 
   const favBookText = favBookName
-    ? `My favorite book is ${favBookName}`
+    ?
+      <span>
+            My favorite book is <a href={`/books/${user.favoriteBook?.id}`}>{favBookName}</a>
+        </span>
     : 'This user has no favorite book... yet!';
 
   const booksOptions = books.map((book) => ({
