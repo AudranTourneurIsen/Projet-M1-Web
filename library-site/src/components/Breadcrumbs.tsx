@@ -5,7 +5,6 @@ import { usePathname } from 'next/navigation';
 import { PlainMenuItemModel } from '@/models';
 import { useBooksProviders, useUsersProviders } from '@/hooks';
 import { useAuthorsProviders } from '@/hooks/providers/authorProviders';
-import { useGenresProviders } from '@/hooks/providers/genreProviders';
 import paths from '@/static/paths.json';
 
 type BreadcrumbsProps = {
@@ -15,8 +14,6 @@ type BreadcrumbsProps = {
 export const Breadcrumbs: FC<BreadcrumbsProps> = ({ root = 'books' }) => {
   const path = usePathname();
   const title = paths.filter((item) => path.match(item.regex))[0].name;
-
-  console.log('le titre est =', title);
 
   const { useListBooks } = useBooksProviders();
   const { useListAuthors } = useAuthorsProviders();
@@ -30,6 +27,9 @@ export const Breadcrumbs: FC<BreadcrumbsProps> = ({ root = 'books' }) => {
     loadBooks();
     loadAuthors();
     loadUsers();
+    // Si on suit la recommendation du linter d'inclure exhaustivement les dépendences ou de supprimer le tableau,
+    // cela mène à une boucle infinie de reload
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function getBookById(id: string): string {
