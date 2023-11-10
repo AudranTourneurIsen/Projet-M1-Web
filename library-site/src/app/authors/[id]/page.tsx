@@ -1,11 +1,12 @@
 'use client';
+
 import { redirect, useParams, useRouter } from 'next/navigation';
 import React, { FC, useEffect, useState } from 'react';
+import axios from 'axios';
 import { useAuthorProvider, useBooksProviders } from '@/hooks';
 import { Button } from '@/components/Button';
 import { Modal } from '@/components/Modal';
 import { TextInput } from '@/components/TextInput';
-import axios from 'axios';
 import { MultiSelectBlock } from '@/components/MultiSelectBlock';
 
 const AuthorDetailsPage: FC = () => {
@@ -140,7 +141,7 @@ const AuthorDetailsPage: FC = () => {
               : "Couldn't find any books written by this author"}
           </h3>
         </div>
-        <div className={'p-4 grid grid-cols-8'}>
+        <div className="p-4 grid grid-cols-8">
           <Button
             color="info"
             onPress={(): void => {
@@ -152,7 +153,7 @@ const AuthorDetailsPage: FC = () => {
         </div>
       </div>
 
-      <div className={'pt-5'}>
+      <div className="pt-5">
         <Button
           color="info"
           onPress={(): void => {
@@ -187,7 +188,7 @@ const AuthorDetailsPage: FC = () => {
           <Button color="info" onPress={onClose}>
             Cancel
           </Button>
-          <Button color="danger" onPress={submitDeleteAuthor}>
+          <Button color="danger" onPress={(): Promise<void> => submitDeleteAuthor()}>
             Proceed
           </Button>
         </div>
@@ -219,7 +220,10 @@ const AuthorDetailsPage: FC = () => {
                 }}
               />
               <div className="flex justify-between ">
-                <Button color="success" onPress={submitImageAuthor}>
+                <Button
+                  color="success"
+                  onPress={(): Promise<void> => submitImageAuthor()}
+                >
                   Modify image
                 </Button>
               </div>
@@ -254,7 +258,10 @@ const AuthorDetailsPage: FC = () => {
             <Button color="info" onPress={onClose}>
               Cancel
             </Button>{' '}
-            <Button color="success" onPress={submitEditAuthor}>
+            <Button
+              color="success"
+              onPress={(): Promise<void> => submitEditAuthor()}
+            >
               Change name
             </Button>
           </div>
