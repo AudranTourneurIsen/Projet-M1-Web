@@ -1,5 +1,6 @@
 import { IsString } from 'class-validator';
 import { AuthorId, BookId } from '../../entities';
+import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateAuthorDto {
   @IsString()
@@ -10,6 +11,10 @@ export class CreateAuthorDto {
 }
 
 export class EditAuthorDto {
+  @ApiProperty({
+    type: 'string',
+    format: 'uuid',
+  })
   @IsString()
   id: AuthorId;
 

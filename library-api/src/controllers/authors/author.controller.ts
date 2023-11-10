@@ -9,6 +9,7 @@ import {
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
+import { ApiProperty } from '@nestjs/swagger';
 import { AuthorId } from 'library-api/src/entities';
 import { AuthorUseCases } from 'library-api/src/useCases';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -24,6 +25,11 @@ import {
 export class AuthorController {
   constructor(private readonly authorUseCases: AuthorUseCases) {}
 
+  @ApiProperty({
+    description: 'Get all authors',
+    type: PlainAuthorPresenter,
+    isArray: true,
+  })
   @Get('/')
   public async getAll(): Promise<PlainAuthorPresenter[]> {
     const authors = await this.authorUseCases.getAllPlain();
