@@ -18,20 +18,6 @@ export const Menu: FC<MenuProps> = ({ menu }) => {
   const path = usePathname();
   const title = paths.filter((item) => path.match(item.regex))[0].name;
 
-  const { useListBooks } = useBooksProviders();
-  const { useListAuthors } = useAuthorsProviders();
-  const { useListGenres } = useGenresProviders();
-
-  const { books, loadBooks } = useListBooks();
-  const { authors, loadAuthors } = useListAuthors();
-  const { genres, loadGenres } = useListGenres();
-
-  useEffect(() => {
-    loadBooks();
-    loadAuthors();
-    loadGenres();
-  }, []);
-
   const menuToDisplay = menu
 
   console.log('menu = ', menuToDisplay)
