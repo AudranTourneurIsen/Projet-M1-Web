@@ -33,7 +33,6 @@ export class Book extends BaseEntity {
   authorId: string;
 
   @ManyToMany(() => User, (user) => user.ownedBooks, { onDelete: 'CASCADE' })
-  @JoinTable()
   ownedByUsers: User[];
 
   @OneToMany(() => User, (user) => user.favoriteBook, { onDelete: 'CASCADE' })

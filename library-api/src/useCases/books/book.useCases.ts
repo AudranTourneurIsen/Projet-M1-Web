@@ -1,5 +1,5 @@
-import { Injectable, Logger } from "@nestjs/common";
-import { Author, Book, BookId, Genre } from 'library-api/src/entities';
+import { Injectable, Logger } from '@nestjs/common';
+import { Book, BookId, Genre } from 'library-api/src/entities';
 import {
   AuthorRepository,
   BookRepository,
