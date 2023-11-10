@@ -44,4 +44,5 @@ export const adaptBookEntityToCreateBookRepositoryInput = (
   writtenOn: book.writtenOn,
   genres: book.genres ? book.genres : [],
   comments: book.comments ? book.comments : [],
+  ownedByUsers: book.ownedByUsers ? book.ownedByUsers : [],
 });

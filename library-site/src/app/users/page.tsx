@@ -144,7 +144,7 @@ const UsersPage: FC = () => {
 
         <div className="flex flex-col gap-12 my-8 items-center justify-center">
           <div className="flex flex-col w-[600px] gap-8">
-            <div className="">
+            <div className="flex items-center justify-center w-full max-w-[600px] mb-4">
               <SearchBar onChange={setSearchInput} value={searchInput} />
             </div>
             <div className="flex flex-col gap-4 justify-center items-center">

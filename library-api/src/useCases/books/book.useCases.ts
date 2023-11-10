@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import {
   Comment,
   Author,
@@ -84,10 +84,6 @@ export class BookUseCases {
       genreTmp.name = genre.name;
       bookToSend.genres.push(genreTmp);
     });
-
-    console.log('bookToSend', bookToSend);
-
-    Logger.log('bookToSend', JSON.stringify(bookToSend));
 
     return this.bookRepository.createBook(bookToSend);
   }

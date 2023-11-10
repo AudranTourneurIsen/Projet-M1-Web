@@ -43,6 +43,7 @@ export class BookRepository extends Repository<Book> {
         genres: true,
         author: { books: true, photo: true },
         comments: { user: true },
+        ownedByUsers: true,
       },
     });
 

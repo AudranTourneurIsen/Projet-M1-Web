@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  Logger,
   Param,
   Post,
   UploadedFile,
@@ -81,11 +80,6 @@ export class AuthorController {
   public async editAuthor(
     @Body() author: EditAuthorDto,
   ): Promise<AuthorPresenter> {
-    Logger.warn(
-      `ICI auteur édité ; ${author.id} ${author.firstName} ${author.lastName}`,
-      author,
-    );
-
     const editedAuthor = await this.authorUseCases.editAuthor(author);
 
     return AuthorPresenter.from(editedAuthor);

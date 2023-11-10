@@ -10,7 +10,7 @@ export type PlainBookUseCasesOutput = PlainBookModel;
 export type BookUseCasesOutput = BookModel;
 export type CreateBookUseCasesInput = Omit<
   CreateBookRepositoryInput,
-  'author'
+  'author' | 'ownedByUsers'
 > & {
   authorId: AuthorId;
 };

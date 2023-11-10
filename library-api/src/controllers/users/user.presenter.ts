@@ -4,8 +4,8 @@ import {
 } from 'library-api/src/controllers/genres/genre.presenter';
 import { UserId } from 'library-api/src/entities';
 import { UserModel, PlainUserModel } from 'library-api/src/models';
-import { BookPresenter, PlainBookPresenter } from '../books/book.presenter';
 import { ApiProperty } from '@nestjs/swagger';
+import { BookPresenter, PlainBookPresenter } from '../books/book.presenter';
 
 export class PlainUserPresenter {
   @ApiProperty({
