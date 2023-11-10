@@ -5,12 +5,18 @@ import {
 } from 'library-api/src/controllers/books/book.presenter';
 import { BookId } from 'library-api/src/entities';
 import { BookUseCases } from 'library-api/src/useCases';
+import { ApiOkResponse } from '@nestjs/swagger';
 import { CreateBookDto, CreateCommentDto } from './book.dto';
 
 @Controller('books')
 export class BookController {
   constructor(private readonly bookUseCases: BookUseCases) {}
 
+  @ApiOkResponse({
+    description: 'Get all authors',
+    type: PlainBookPresenter,
+    isArray: true,
+  })
   @Get('/')
   public async getAll(): Promise<PlainBookPresenter[]> {
     const books = await this.bookUseCases.getAllPlain();

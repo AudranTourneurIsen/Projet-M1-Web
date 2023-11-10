@@ -1,14 +1,13 @@
 import { type FC, useId } from 'react';
 
-type TextInputProps = {
-  placeholder: string;
+type NumberInputProps = {
   label: string;
-  onChange: (value: string) => void;
-  value: string;
+  onChange: (value: number) => void;
+  value: number;
 };
 
-export const TextInput: FC<TextInputProps> = (props) => {
-  const { placeholder, label, onChange, value } = props;
+export const NumberInput: FC<NumberInputProps> = (props) => {
+  const { label, onChange, value } = props;
 
   const id = useId();
 
@@ -21,12 +20,12 @@ export const TextInput: FC<TextInputProps> = (props) => {
         {label}
       </label>
       <input
-        type="text"
+        type="number"
         id={id}
         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        placeholder={placeholder}
+        placeholder="John"
         required
-        onChange={(e): void => onChange(e.target.value)}
+        onChange={(e): void => onChange(Number(e.target.value))}
         value={value}
       />
     </div>

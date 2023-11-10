@@ -1,12 +1,19 @@
 'use client';
+
 import { redirect, useParams, useRouter } from 'next/navigation';
 import React, { FC, useEffect, useState } from 'react';
+import axios from 'axios';
+import Image from 'next/image';
 import { useAuthorProvider, useBooksProviders } from '@/hooks';
 import { Button } from '@/components/Button';
 import { Modal } from '@/components/Modal';
 import { TextInput } from '@/components/TextInput';
-import axios from 'axios';
 import { MultiSelectBlock } from '@/components/MultiSelectBlock';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faPenToSquare,
+  faTriangleExclamation,
+} from '@fortawesome/free-solid-svg-icons';
 
 const AuthorDetailsPage: FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -20,8 +27,6 @@ const AuthorDetailsPage: FC = () => {
   const { books, loadBooks } = useListBooks();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
-  const [isBookOpen, setIsBooksOpen] = useState<boolean>(false);
 
   const [authorEditFirstName, setAuthorFirstName] = useState<string>('');
   const [authorEditLastName, setAuthorLastName] = useState<string>('');
@@ -46,10 +51,12 @@ const AuthorDetailsPage: FC = () => {
   const imageRenderer = (imageURL: string): React.JSX.Element => {
     const fullBase64Src = `data:image/png;base64,${imageURL}`;
     return (
-      <img
-        className="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-l-lg"
+      <Image
+        className="object-cover w-full h-96 md:h-auto md:w-48 rounded-xl"
         src={fullBase64Src}
         alt=""
+        width={200}
+        height={200}
       />
     );
   };
@@ -68,13 +75,12 @@ const AuthorDetailsPage: FC = () => {
   }
 
   if (author === 'not found') {
-    console.log('author not found');
     return redirect('/authors');
   }
 
   async function submitEditAuthor(): Promise<void> {
     await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/authors/edit`, {
-      id: id,
+      id,
       firstName: authorEditFirstName,
       lastName: authorEditLastName,
     });
@@ -99,7 +105,6 @@ const AuthorDetailsPage: FC = () => {
     name: book.name,
   }));
 
-
   async function submitImageAuthor(): Promise<void> {
     const formData = new FormData();
     formData.append('image', authorEditImage as File);
@@ -117,61 +122,83 @@ const AuthorDetailsPage: FC = () => {
   return (
     <div className="relative m-10 p-auto">
       <h1 className="text-2xl font-bold text-center">Author Details</h1>
-      <div className="mt-5 grid gap-5 border rounded bg-gray-900">
-        <div className={'p-4 '}>
-          {author.photo ? (
-            imageRenderer(author.photo?.image)
-          ) : (
-            <span>no photo available</span>
-          )}
-        </div>
+      <div className="flex flex-col ">
+        <div className="flex flex-col md:flex-row items-center justify-center">
+          <div className="p-4">
+            {author.photo ? (
+              imageRenderer(author.photo?.image)
+            ) : (
+              <span>no photo available</span>
+            )}
+          </div>
 
-        <div className="grid grid-cols-8">
-          <h2 className="p-4">Author name :</h2>
-          <h3 className="text-xl font-bold text-center col-span-3 p-4">
+          <h3 className="text-3xl font-bold text-center col-span-3 p-4">
             {author.firstName} {author.lastName}
           </h3>
         </div>
-        <div className="grid grid-cols-8">
-          <h2 className="p-4"> Books written by this author :</h2>
-          <h3 className={'text-xl font-bold text-center col-span-3 p-4'}>
-            {author.books
-              ? author.books.map((book) => (
-                  <a href={`/books/${book.id}`}>{book.name}</a>
-                ))
-              : "Couldn't find any books written by this author"}
-          </h3>
-        </div>
-        <div className={'p-4 grid grid-cols-8'}>
-          <Button
-            color="info"
-            onPress={(): void => {
-              setIsModalBooksOpen(true);
-            }}
-          >
-            Edit book list
-          </Button>
-        </div>
+
+        <h3 className="text-xl font-bold text-center col-span-3 p-4">
+          {author.books
+            ? author.books.map((book) => (
+                <a href={`/books/${book.id}`}>{book.name} &nbsp; </a>
+              ))
+            : "Couldn't find any books written by this author"}
+        </h3>
       </div>
 
-      <div className={'pt-5'}>
-        <Button
-          color="info"
-          onPress={(): void => {
-            setIsModalEditOpen(true);
-          }}
-        >
-          Edit author informations
-        </Button>
+      <div className="flex flex-col items-center mt-8">
+        <div className="flex flex-col gap-8">
+          <div className="flex flex-col">
+            <span className="flex gap-3">
+              <span className="text-cyan-500">
+                <FontAwesomeIcon icon={faPenToSquare} />
+              </span>
+              Edit information
+            </span>
+            <div className="flex gap-4 p-4">
+              <div>
+                <Button
+                  color="info"
+                  onPress={(): void => {
+                    setIsModalBooksOpen(true);
+                  }}
+                >
+                  Edit book list
+                </Button>
+              </div>
+              <Button
+                color="info"
+                onPress={(): void => {
+                  setIsModalEditOpen(true);
+                }}
+              >
+                Edit author information
+              </Button>
+            </div>
+          </div>
 
-        <Button
-          color="danger"
-          onPress={(): void => {
-            setIsModalOpen(true);
-          }}
-        >
-          Delete Author
-        </Button>
+          <div className="flex flex-col">
+            <div className="flex gap-3">
+              <FontAwesomeIcon
+                icon={faTriangleExclamation}
+                className="text-orange-500"
+                size="xl"
+              />
+              Danger zone
+            </div>
+
+            <div className="flex p-4">
+              <Button
+                color="danger"
+                onPress={(): void => {
+                  setIsModalOpen(true);
+                }}
+              >
+                Delete Author
+              </Button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <Modal
@@ -189,7 +216,10 @@ const AuthorDetailsPage: FC = () => {
           <Button color="info" onPress={onClose}>
             Cancel
           </Button>
-          <Button color="danger" onPress={submitDeleteAuthor}>
+          <Button
+            color="danger"
+            onPress={(): Promise<void> => submitDeleteAuthor()}
+          >
             Proceed
           </Button>
         </div>
@@ -202,7 +232,7 @@ const AuthorDetailsPage: FC = () => {
           setIsModalEditOpen(false);
         }}
       >
-        <div className={'pt-5'}>
+        <div className="pt-5">
           <div className="flex flex-col bg-white rounded-lg dark:border-gray-700 dark:bg-gray-800  p-2">
             {author.photo ? (
               imageRenderer(author.photo?.image)
@@ -221,14 +251,17 @@ const AuthorDetailsPage: FC = () => {
                 }}
               />
               <div className="flex justify-between ">
-                <Button color="success" onPress={submitImageAuthor}>
+                <Button
+                  color="success"
+                  onPress={(): Promise<void> => submitImageAuthor()}
+                >
                   Modify image
                 </Button>
               </div>
             </form>
           </div>
           <div className="flex flex-col gap-8 p-6">
-            <h3 className={'text-center'}>
+            <h3 className="text-center">
               Author current name : &nbsp; {author.firstName} &nbsp;{' '}
               {author.lastName}
             </h3>
@@ -236,6 +269,7 @@ const AuthorDetailsPage: FC = () => {
             <div className="w-full flex justify-between">
               <form className="w-full flex justify-between gap-8 p-6">
                 <TextInput
+                    placeholder={author.firstName}
                   label="Author's new first name"
                   onChange={(newName): void => {
                     setAuthorFirstName(newName);
@@ -243,6 +277,7 @@ const AuthorDetailsPage: FC = () => {
                   value={authorEditFirstName}
                 />
                 <TextInput
+                  placeholder={author.lastName}
                   label="Author's last name"
                   onChange={(newName): void => {
                     setAuthorLastName(newName);
@@ -256,7 +291,10 @@ const AuthorDetailsPage: FC = () => {
             <Button color="info" onPress={onClose}>
               Cancel
             </Button>{' '}
-            <Button color="success" onPress={submitEditAuthor}>
+            <Button
+              color="success"
+              onPress={(): Promise<void> => submitEditAuthor()}
+            >
               Change name
             </Button>
           </div>

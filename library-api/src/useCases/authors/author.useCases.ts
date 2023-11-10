@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { AuthorRepository } from 'library-api/src/repositories';
+import { AuthorRepository, BookRepository } from 'library-api/src/repositories';
 import { AuthorId } from 'library-api/src/entities';
 import { ImageRepository } from 'library-api/src/repositories/images/image.repository';
 import {
@@ -17,12 +17,14 @@ import {
   EditAuthorUseCasesInput,
   EditAuthorImageUseCasesInput,
 } from 'library-api/src/useCases/authors/author.useCases.type';
+import { In } from 'typeorm';
 
 @Injectable()
 export class AuthorUseCases {
   constructor(
     private readonly authorRepository: AuthorRepository,
     private readonly imageRepository: ImageRepository,
+    private readonly bookRepository: BookRepository,
   ) {}
 
   /**
@@ -46,6 +48,7 @@ export class AuthorUseCases {
   /**
    * Create a new author
    * @param author Author to create
+   * @param imageBuffer Author's image
    * @returns Created author
    */
   public async createAuthor(
@@ -78,13 +81,15 @@ export class AuthorUseCases {
     const authorInput: EditAuthorRepositoryInput = {
       ...author,
     };
+    const bookIds = author.books.map((book) => book.id);
+    authorInput.books = await this.bookRepository.findBy({ id: In(bookIds) });
     return this.authorRepository.editAuthor(authorInput);
   }
 
   public async editAuthorImage(
     authorBase: EditAuthorImageUseCasesInput,
     imageBuffer: Buffer,
-  ) {
+  ): Promise<void> {
     const authorId = authorBase.id;
 
     const author = await this.getById(authorId);
@@ -96,10 +101,9 @@ export class AuthorUseCases {
       image: imageBuffer.toString('base64'),
     };
 
-    this.imageRepository.editImage(imageInput);
+    await this.imageRepository.editImage(imageInput);
   }
 
-  
   /**
    * Delete an author
    * @param id Author's ID

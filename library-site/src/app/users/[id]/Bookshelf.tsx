@@ -1,11 +1,11 @@
 import React, { useCallback, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import axios from 'axios';
 import { faBook } from '@fortawesome/free-solid-svg-icons';
 import { Button } from '@/components/Button';
 import { Modal } from '@/components/Modal';
 import { MultiSelectBlock } from '@/components/MultiSelectBlock';
 import { PlainBookModel, PlainUserModel } from '@/models';
-import axios from 'axios';
 import { API_URL } from '@/utils/constants';
 
 type BookshelfProps = {
@@ -27,7 +27,6 @@ export function Bookshelf(props: BookshelfProps): React.JSX.Element {
   const [selectedBookIds, setSelectedBookIds] = useState<string[]>([]);
 
   const save = useCallback(async () => {
-    console.log('SAVE', selectedBookIds);
     await axios.post(`${API_URL}/users/${user.id}/edit-owned-books`, {
       bookIds: selectedBookIds,
     });
@@ -56,7 +55,7 @@ export function Bookshelf(props: BookshelfProps): React.JSX.Element {
                   className="text-lime-400"
                   size="xl"
                 />
-                {book.name}
+                <a href={`/books/${book.id}`}>{book.name}</a>
               </div>
             </div>
           ))}

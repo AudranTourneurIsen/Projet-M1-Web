@@ -1,6 +1,7 @@
 import React from 'react';
 import { PlainAuthorModel } from '@/models';
 import { Button } from '@/components/Button';
+import Image from 'next/image';
 
 type AuthorLineProps = {
   author: PlainAuthorModel;
@@ -12,10 +13,12 @@ export function AuthorLine(props: AuthorLineProps): React.JSX.Element {
   const imageRenderer = (imageURL: string): React.JSX.Element => {
     const fullBase64Src = `data:image/png;base64,${imageURL}`;
     return (
-      <img
+      <Image
         className="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-l-lg"
         src={fullBase64Src}
         alt=""
+        width={200}
+        height={200}
       />
     );
   };

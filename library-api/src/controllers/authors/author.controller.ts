@@ -9,6 +9,7 @@ import {
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
+import { ApiOkResponse, ApiProperty, ApiTags } from '@nestjs/swagger';
 import { AuthorId } from 'library-api/src/entities';
 import { AuthorUseCases } from 'library-api/src/useCases';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -20,10 +21,16 @@ import {
   EditAuthorImageDto,
 } from './author.dto';
 
+@ApiTags('authors')
 @Controller('authors')
 export class AuthorController {
   constructor(private readonly authorUseCases: AuthorUseCases) {}
 
+  @ApiOkResponse({
+    description: 'Get all authors',
+    type: PlainAuthorPresenter,
+    isArray: true,
+  })
   @Get('/')
   public async getAll(): Promise<PlainAuthorPresenter[]> {
     const authors = await this.authorUseCases.getAllPlain();
@@ -31,6 +38,11 @@ export class AuthorController {
     return authors.map(PlainAuthorPresenter.from);
   }
 
+  @ApiOkResponse({
+    description: 'Get author by id',
+    type: AuthorPresenter,
+    isArray: true,
+  })
   @Get('/:id')
   public async getById(@Param('id') id: AuthorId): Promise<AuthorPresenter> {
     const author = await this.authorUseCases.getById(id);
@@ -38,6 +50,10 @@ export class AuthorController {
     return AuthorPresenter.from(author);
   }
 
+  @ApiOkResponse({
+    description: 'Create a new author, the file must be uploaded as multiform input in the same request',
+    isArray: true,
+  })
   @Post('/new')
   @UseInterceptors(FileInterceptor('image'))
   public async createAuthor(
@@ -56,6 +72,10 @@ export class AuthorController {
     return AuthorPresenter.from(createdAuthor);
   }
 
+  @ApiOkResponse({
+    description: 'edit an author',
+    isArray: true,
+  })
   @Post('/edit')
   public async editAuthor(
     @Body() author: EditAuthorDto,
@@ -70,6 +90,10 @@ export class AuthorController {
     return AuthorPresenter.from(editedAuthor);
   }
 
+  @ApiOkResponse({
+    description: 'edit a image: the new image must be uploaded as multiform input in the request',
+    isArray: true,
+  })
   @Post('/edit/image')
   @UseInterceptors(FileInterceptor('image'))
   public async editAuthorImage(
@@ -83,9 +107,12 @@ export class AuthorController {
     await this.authorUseCases.editAuthorImage(author, file.buffer);
   }
 
+  @ApiOkResponse({
+    description: 'Delete the author by using is id',
+    isArray: true,
+  })
   @Delete('/delete/:id')
   public async deleteAuthor(@Param('id') id: AuthorId): Promise<void> {
-    Logger.warn('ouuuuuuuuuui ID=' + id);
     await this.authorUseCases.deleteAuthor(id);
   }
 }

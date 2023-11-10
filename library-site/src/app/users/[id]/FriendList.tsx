@@ -44,7 +44,7 @@ export function FriendList(props: FriendListProps): React.JSX.Element {
 
   useEffect(() => {
     setSelectedFriendIds(user.friends?.map((f) => f.id) || []);
-  }, []);
+  }, [user]);
 
   return (
     <>
@@ -66,7 +66,9 @@ export function FriendList(props: FriendListProps): React.JSX.Element {
                   className="text-cyan-500"
                   size="xl"
                 />
+                <a href={`/users/${friend.id}`}>
                 {friend.firstName} {friend.lastName}
+                </a>
               </div>
             </div>
           ))}

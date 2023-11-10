@@ -3,39 +3,59 @@
 import React, { FC, useEffect, useState } from 'react';
 import axios from 'axios';
 
-import Image from 'next/image';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useAuthorsProviders } from '@/hooks/providers/authorProviders';
 import { Modal } from '@/components/Modal';
 import { Button } from '@/components/Button';
 import { TextInput } from '@/components/TextInput';
 import { AuthorLine } from '@/app/authors/AuthorLine';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { SearchBar } from '@/components/SearchBar';
+import { NumberInput } from '@/components/NumberInput';
 
 const AuthorsPage: FC = () => {
   const { useListAuthors } = useAuthorsProviders();
   const { authors, loadAuthors } = useListAuthors();
   const [displayedAuthors, setDisplayedAuthors] = useState(authors);
   const [searchInput, setSearchInput] = useState<string>('');
+  const [isSearchByNumberEnabled, setIsSearchByNumberEnabled] =
+    useState<boolean>(false);
+  const [minBooksNumber, setMinBooksNumber] = useState<number>(0);
+  const [maxBooksNumber, setMaxBooksNumber] = useState<number>(1000);
 
   useEffect(() => {
-    console.log('searchInput', searchInput);
-    if (searchInput) {
-      setDisplayedAuthors(
-        authors.filter(
+    if (searchInput || isSearchByNumberEnabled) {
+      let newAuthors = authors;
+      if (newAuthors) {
+        newAuthors = authors.filter(
           (author) =>
             author.books?.length ||
             author.firstName
               .toLowerCase()
               .includes(searchInput.toLowerCase()) ||
             author.lastName.toLowerCase().includes(searchInput.toLowerCase()),
-        ),
-      );
+        );
+      }
+      if (isSearchByNumberEnabled) {
+        newAuthors = newAuthors.filter(
+          (author) =>
+            author.books?.length &&
+            author.books.length >= minBooksNumber &&
+            author.books.length <= maxBooksNumber,
+        );
+      }
+
+      setDisplayedAuthors(newAuthors);
     } else {
       setDisplayedAuthors(authors);
     }
-  }, [searchInput]);
+  }, [
+    searchInput,
+    isSearchByNumberEnabled,
+    minBooksNumber,
+    maxBooksNumber,
+    authors,
+  ]);
 
   useEffect(() => {
     loadAuthors();
@@ -91,9 +111,32 @@ const AuthorsPage: FC = () => {
         </div>
       </div>
       <div className="flex flex-col gap-4 my-8 items-center justify-center">
-        <div className="w-[600px]">
+        <div className="w-full max-w-[600px]">
           <SearchBar onChange={setSearchInput} value={searchInput} />
         </div>
+        <Button
+          color="info"
+          onPress={(): void =>
+            setIsSearchByNumberEnabled(!isSearchByNumberEnabled)
+          }
+        >
+          {isSearchByNumberEnabled ? 'Disable' : 'Enable'} search by number of
+          books
+        </Button>
+        {isSearchByNumberEnabled && (
+          <div className="flex flex-col sm:flex-row gap-4">
+            <NumberInput
+              value={minBooksNumber}
+              onChange={setMinBooksNumber}
+              label="Minimum number of books"
+            />
+            <NumberInput
+              value={maxBooksNumber}
+              onChange={setMaxBooksNumber}
+              label="Maximum number of books"
+            />
+          </div>
+        )}
       </div>
       <div className="h-8" />
       <div className="w-[100vw] md:w-[95vw] lg:w-[90vw] max-w-[950px] flex flex-col mx-auto gap-8">
@@ -111,6 +154,7 @@ const AuthorsPage: FC = () => {
         <form className="flex flex-col gap-8 p-6">
           <h1>Author creation</h1>
           <TextInput
+            placeholder={'Author\'s first name'}
             label="Author's first name"
             onChange={(newName): void => {
               setAuthorFirstName(newName);
@@ -118,6 +162,7 @@ const AuthorsPage: FC = () => {
             value={authorFirstName}
           />
           <TextInput
+            placeholder={'Author\'s last name'}
             label="Author's last name"
             onChange={(newName): void => {
               setAuthorLastName(newName);

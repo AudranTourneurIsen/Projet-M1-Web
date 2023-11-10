@@ -1,19 +1,28 @@
 import { AuthorId } from 'library-api/src/entities';
 import { AuthorModel, PlainAuthorModel } from 'library-api/src/models';
-import type {
-  BookPresenter,
-  PlainBookPresenter,
-} from '../books/book.presenter';
+import { ApiProperty } from '@nestjs/swagger';
+import { BookPresenter } from '../books/book.presenter';
+import type { PlainBookPresenter } from '../books/book.presenter';
 import type {
   ImagePresenter,
   PlainImagePresenter,
 } from '../images/image.presenter';
 
 export class PlainAuthorPresenter {
+  @ApiProperty({
+    type: 'string',
+    format: 'uuid',
+  })
   id: AuthorId;
 
+  @ApiProperty({
+    type: 'string',
+  })
   firstName: string;
 
+  @ApiProperty({
+    type: 'string',
+  })
   lastName: string;
 
   photo?: PlainImagePresenter;
@@ -30,15 +39,26 @@ export class PlainAuthorPresenter {
       firstName: data.firstName,
       lastName: data.lastName,
       photo: data.photo,
+      books: data.books,
     });
   }
 }
 
 export class AuthorPresenter {
+  @ApiProperty({
+    type: 'string',
+    format: 'uuid',
+  })
   id: AuthorId;
 
+  @ApiProperty({
+    type: 'string',
+  })
   firstName: string;
 
+  @ApiProperty({
+    type: 'string',
+  })
   lastName: string;
 
   photo?: ImagePresenter;

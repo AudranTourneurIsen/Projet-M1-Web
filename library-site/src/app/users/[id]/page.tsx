@@ -28,10 +28,12 @@ const UserDetailsPage: FC = () => {
     loadBooks();
     loadGenres();
     loadUsers();
+    // Si on suit la recommendation du linter d'inclure exhaustivement les dépendences ou de supprimer le tableau,
+    // cela mène à une boucle infinie de reload
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!id || typeof id !== 'string') {
-    console.log('ID=', id);
     redirect('/users');
   }
 
@@ -40,11 +42,10 @@ const UserDetailsPage: FC = () => {
   }
 
   if (user === 'not found') {
-    console.log('ID NOT FOUND');
     return redirect('/users');
   }
 
-  function reload() {
+  function reload(): void {
     loadUser();
     loadBooks();
     loadGenres();

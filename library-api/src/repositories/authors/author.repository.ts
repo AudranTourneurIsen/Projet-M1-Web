@@ -39,7 +39,7 @@ export class AuthorRepository extends Repository<Author> {
    */
   public async getById(id: AuthorId): Promise<AuthorRepositoryOutput> {
     const author = await this.findOne({
-      relations: { photo: true },
+      relations: { photo: true, books: { genres: true } },
       where: { id },
     });
 

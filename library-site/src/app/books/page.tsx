@@ -293,13 +293,17 @@ const BooksPage: FC = (): ReactElement => {
                   </th>
                   <td className="px-6 py-4">{returnDate(book.writtenOn)}</td>
                   <td className="px-6 py-4">
-                    {book.author
-                      ? `${book.author.firstName} ${book.author.lastName}`
-                      : 'Auteur inconnu'}
+                    {book.author ? (
+                        <a href={`/authors/${book.author.id}`}>
+                            {book.author.firstName} {book.author.lastName}
+                        </a>
+                        ) : (
+                        'Auteur inconnu'
+                        )}
                   </td>
                   <td className="px-6 py-4">
                     {book.genres.map((genre) => (
-                      <span key={genre.id}>{genre.name}</span>
+                      <span key={genre.id}>{genre.name} &nbsp; </span>
                     ))}
                   </td>
                 </tr>
@@ -311,6 +315,7 @@ const BooksPage: FC = (): ReactElement => {
           <form className="p-6 flex flex-col gap-4">
             <div className="flex flex-col gap-1">
               <TextInput
+                placeholder='Name'
                 label="Name"
                 value={nameInput}
                 onChange={(text: string): void => setNameInput(text)}
