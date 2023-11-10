@@ -7,6 +7,7 @@ import {
   AuthorRepository,
   BookRepository,
   GenreRepository,
+  UserRepository,
 } from 'library-api/src/repositories';
 import {
   adaptBookEntityToBookModel,
@@ -15,17 +16,26 @@ import {
   adaptBookEntityToCreateBookUseCasesInput,
 } from 'library-api/src/repositories/books/book.utils';
 import { adaptGenreEntityToGenreRepositoryOutput } from 'library-api/src/repositories/genres/genre.utils';
+import { CommentRepository } from 'library-api/src/repositories/comments/comment.repository';
 import { BookUseCases } from './book.useCases';
 
 describe('BookUseCases', () => {
   describe('getAll', () => {
     it('should call repository function', async () => {
-      const repository1 = {
+      const repository1 = {} as unknown as CommentRepository;
+      const repository2 = {
         getAllPlain: jest.fn(),
       } as unknown as BookRepository;
-      const repository2 = {} as unknown as GenreRepository;
-      const repository3 = {} as unknown as AuthorRepository;
-      const useCases = new BookUseCases(repository1, repository2, repository3);
+      const repository3 = {} as unknown as GenreRepository;
+      const repository4 = {} as unknown as AuthorRepository;
+      const repository5 = {} as unknown as UserRepository;
+      const useCases = new BookUseCases(
+        repository1,
+        repository2,
+        repository3,
+        repository4,
+        repository5,
+      );
       const authorFix = authorFixture();
       const genreFix = genreFixture();
       const bookFix = [
@@ -35,7 +45,7 @@ describe('BookUseCases', () => {
       ].map(adaptBookEntityToBookRepositoryOutput);
 
       const getAllPlainSpy = jest
-        .spyOn(repository1, 'getAllPlain')
+        .spyOn(repository2, 'getAllPlain')
         .mockResolvedValue(bookFix);
 
       const result = await useCases.getAllPlain();
@@ -49,12 +59,20 @@ describe('BookUseCases', () => {
 
   describe('getById', () => {
     it('should call repository function', async () => {
-      const repository1 = {
+      const repository1 = {} as unknown as CommentRepository;
+      const repository2 = {
         getById: jest.fn(),
       } as unknown as BookRepository;
-      const repository2 = {} as unknown as GenreRepository;
-      const repository3 = {} as unknown as AuthorRepository;
-      const useCases = new BookUseCases(repository1, repository2, repository3);
+      const repository3 = {} as unknown as GenreRepository;
+      const repository4 = {} as unknown as AuthorRepository;
+      const repository5 = {} as unknown as UserRepository;
+      const useCases = new BookUseCases(
+        repository1,
+        repository2,
+        repository3,
+        repository4,
+        repository5,
+      );
       const authorFix = authorFixture();
       const genreFix = genreFixture();
       const bookFix = adaptBookEntityToBookModel(
@@ -62,7 +80,7 @@ describe('BookUseCases', () => {
       );
 
       const getByIdSpy = jest
-        .spyOn(repository1, 'getById')
+        .spyOn(repository2, 'getById')
         .mockResolvedValue(bookFix);
 
       const result = await useCases.getById(bookFix.id);
@@ -76,16 +94,24 @@ describe('BookUseCases', () => {
 
   describe('createBook', () => {
     it('should call repositories functions', async () => {
-      const repository1 = {
+      const repository1 = {} as unknown as CommentRepository;
+      const repository2 = {
         createBook: jest.fn(),
       } as unknown as BookRepository;
-      const repository2 = {
+      const repository3 = {
         getByIds: jest.fn(),
       } as unknown as GenreRepository;
-      const repository3 = {
+      const repository4 = {
         getById: jest.fn(),
       } as unknown as AuthorRepository;
-      const useCases = new BookUseCases(repository1, repository2, repository3);
+      const repository5 = {} as unknown as UserRepository;
+      const useCases = new BookUseCases(
+        repository1,
+        repository2,
+        repository3,
+        repository4,
+        repository5,
+      );
       const authorFix = authorFixture();
       const genreFix = genreFixture();
       const bookFix = bookFixture(authorFix, [genreFix]);
@@ -95,15 +121,15 @@ describe('BookUseCases', () => {
       const output1 = adaptBookEntityToBookRepositoryOutput(bookFix);
 
       const getByIdsGenreSpy = jest
-        .spyOn(repository2, 'getByIds')
+        .spyOn(repository3, 'getByIds')
         .mockResolvedValue([adaptGenreEntityToGenreRepositoryOutput(genreFix)]);
 
       const getByIdAuthorSpy = jest
-        .spyOn(repository3, 'getById')
+        .spyOn(repository4, 'getById')
         .mockResolvedValue(authorFix);
 
       const createBookSpy = jest
-        .spyOn(repository1, 'createBook')
+        .spyOn(repository2, 'createBook')
         .mockResolvedValue(output1);
 
       const result = await useCases.createBook(input1);
@@ -122,16 +148,24 @@ describe('BookUseCases', () => {
       expect(result).toStrictEqual(output1);
     });
     it('should throw an error', async () => {
-      const repository1 = {
+      const repository1 = {} as unknown as CommentRepository;
+      const repository2 = {
         createBook: jest.fn(),
       } as unknown as BookRepository;
-      const repository2 = {
+      const repository3 = {
         getByIds: jest.fn(),
       } as unknown as GenreRepository;
-      const repository3 = {
+      const repository4 = {
         getById: jest.fn(),
       } as unknown as AuthorRepository;
-      const useCases = new BookUseCases(repository1, repository2, repository3);
+      const repository5 = {} as unknown as UserRepository;
+      const useCases = new BookUseCases(
+        repository1,
+        repository2,
+        repository3,
+        repository4,
+        repository5,
+      );
       const authorFix = authorFixture();
       const genreFix = genreFixture();
       const bookFix = bookFixture(authorFix, [genreFix]);
@@ -141,15 +175,15 @@ describe('BookUseCases', () => {
       const output1 = adaptBookEntityToBookRepositoryOutput(bookFix);
 
       const getByIdsGenreSpy = jest
-        .spyOn(repository2, 'getByIds')
+        .spyOn(repository3, 'getByIds')
         .mockResolvedValue([adaptGenreEntityToGenreRepositoryOutput(genreFix)]);
 
       const getByIdAuthorSpy = jest
-        .spyOn(repository3, 'getById')
+        .spyOn(repository4, 'getById')
         .mockResolvedValue(authorFix);
 
       const createBookSpy = jest
-        .spyOn(repository1, 'createBook')
+        .spyOn(repository2, 'createBook')
         .mockResolvedValue(output1);
 
       try {
@@ -166,16 +200,24 @@ describe('BookUseCases', () => {
       expect(createBookSpy).toHaveBeenCalledTimes(0);
     });
     it('should throw an error', async () => {
-      const repository1 = {
+      const repository1 = {} as unknown as CommentRepository;
+      const repository2 = {
         createBook: jest.fn(),
       } as unknown as BookRepository;
-      const repository2 = {
+      const repository3 = {
         getByIds: jest.fn(),
       } as unknown as GenreRepository;
-      const repository3 = {
+      const repository4 = {
         getById: jest.fn(),
       } as unknown as AuthorRepository;
-      const useCases = new BookUseCases(repository1, repository2, repository3);
+      const repository5 = {} as unknown as UserRepository;
+      const useCases = new BookUseCases(
+        repository1,
+        repository2,
+        repository3,
+        repository4,
+        repository5,
+      );
       const authorFix = authorFixture();
       const genreFix = genreFixture();
       const bookFix = bookFixture(authorFix, [genreFix]);
@@ -185,15 +227,15 @@ describe('BookUseCases', () => {
       const output1 = adaptBookEntityToBookRepositoryOutput(bookFix);
 
       const getByIdsGenreSpy = jest
-        .spyOn(repository2, 'getByIds')
+        .spyOn(repository3, 'getByIds')
         .mockResolvedValue([adaptGenreEntityToGenreRepositoryOutput(genreFix)]);
 
       const getByIdAuthorSpy = jest
-        .spyOn(repository3, 'getById')
+        .spyOn(repository4, 'getById')
         .mockResolvedValue(undefined);
 
       const createBookSpy = jest
-        .spyOn(repository1, 'createBook')
+        .spyOn(repository2, 'createBook')
         .mockResolvedValue(output1);
 
       try {

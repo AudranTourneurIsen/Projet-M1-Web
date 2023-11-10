@@ -9,6 +9,10 @@ import {
 import { BookId } from 'library-api/src/entities';
 import { BookModel, PlainBookModel } from 'library-api/src/models';
 import { ApiProperty } from '@nestjs/swagger';
+import type {
+  CommentPresenter,
+  PlainCommentPresenter,
+} from '../comments/comment.presenter';
 
 export class PlainBookPresenter {
   @ApiProperty({
@@ -37,6 +41,11 @@ export class PlainBookPresenter {
   })
   genres: PlainGenrePresenter[];
 
+  @ApiProperty({
+    type: 'object',
+  })
+  comments?: PlainCommentPresenter[];
+
   private constructor(data: PlainBookPresenter) {
     Object.assign(this, data);
   }
@@ -48,6 +57,7 @@ export class PlainBookPresenter {
       genres: data.genres,
       writtenOn: data.writtenOn,
       author: data.author,
+      comments: data.comments,
     });
   }
 }
@@ -79,6 +89,11 @@ export class BookPresenter {
   })
   genres: GenrePresenter[];
 
+  @ApiProperty({
+    type: 'object',
+  })
+  comments?: CommentPresenter[];
+
   private constructor(data: BookPresenter) {
     Object.assign(this, data);
   }
@@ -90,6 +105,7 @@ export class BookPresenter {
       writtenOn: data.writtenOn,
       author: data.author,
       genres: data.genres,
+      comments: data.comments,
     });
   }
 }
