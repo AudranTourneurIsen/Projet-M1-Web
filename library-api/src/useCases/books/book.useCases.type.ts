@@ -1,4 +1,4 @@
-import { AuthorId } from 'library-api/src/entities';
+import { AuthorId, UserId } from 'library-api/src/entities';
 import { BookModel, PlainBookModel } from 'library-api/src/models';
 import { CreateBookRepositoryInput } from 'library-api/src/repositories/books/book.repository.type';
 import {
