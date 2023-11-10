@@ -89,6 +89,7 @@ const AuthorDetailsPage: FC = () => {
       lastName: authorEditLastName,
     });
     loadAuthor();
+    setIsModalEditOpen(false);
   }
 
   async function submitDeleteAuthor(): Promise<void> {
@@ -117,6 +118,8 @@ const AuthorDetailsPage: FC = () => {
         },
       },
     );
+    loadAuthor();
+    setIsModalEditOpen(false);
   }
 
   return (
