@@ -114,11 +114,13 @@ const UsersPage: FC = () => {
         >
           <div className="flex flex-col gap-4">
             <TextInput
+              placeholder="First name"
               label="First name"
               onChange={setCreateFirstName}
               value={createFirstName}
             />
             <TextInput
+              placeholder="Last name"
               label="Last name"
               onChange={setCreateLastName}
               value={createLastName}

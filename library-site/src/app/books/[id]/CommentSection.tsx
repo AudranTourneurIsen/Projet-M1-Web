@@ -146,6 +146,7 @@ export function CommentSection(props: CommentSectionProps): React.JSX.Element {
                             </label>
                             <div className="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800">
                                 <TextInput
+                                    placeholder={'Your comment'}
                                     label="Your comment"
                                     value={UserCommentInput}
                                     onChange={(text: string): void => setUserCommentInput(text)}
@@ -153,6 +154,7 @@ export function CommentSection(props: CommentSectionProps): React.JSX.Element {
                             </div>
                             <div className="flex items-center justify-between mt-4">
                                 <TextInput
+                                    placeholder={'Comment as User'}
                                     label="Comment as User"
                                     onChange={(newName): void => {
                                         setUserName(newName);
