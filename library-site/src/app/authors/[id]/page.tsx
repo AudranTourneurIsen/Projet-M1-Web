@@ -9,6 +9,11 @@ import { Button } from '@/components/Button';
 import { Modal } from '@/components/Modal';
 import { TextInput } from '@/components/TextInput';
 import { MultiSelectBlock } from '@/components/MultiSelectBlock';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faPenToSquare,
+  faTriangleExclamation,
+} from '@fortawesome/free-solid-svg-icons';
 
 const AuthorDetailsPage: FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -49,7 +54,7 @@ const AuthorDetailsPage: FC = () => {
     const fullBase64Src = `data:image/png;base64,${imageURL}`;
     return (
       <Image
-        className="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-l-lg"
+        className="object-cover w-full h-96 md:h-auto md:w-48 rounded-xl"
         src={fullBase64Src}
         alt=""
         width={200}
@@ -119,61 +124,83 @@ const AuthorDetailsPage: FC = () => {
   return (
     <div className="relative m-10 p-auto">
       <h1 className="text-2xl font-bold text-center">Author Details</h1>
-      <div className="mt-5 grid gap-5 border rounded bg-gray-900">
-        <div className="p-4">
-          {author.photo ? (
-            imageRenderer(author.photo?.image)
-          ) : (
-            <span>no photo available</span>
-          )}
-        </div>
+      <div className="flex flex-col ">
+        <div className="flex flex-col md:flex-row items-center justify-center">
+          <div className="p-4">
+            {author.photo ? (
+              imageRenderer(author.photo?.image)
+            ) : (
+              <span>no photo available</span>
+            )}
+          </div>
 
-        <div className="grid grid-cols-8">
-          <h2 className="p-4">Author name :</h2>
-          <h3 className="text-xl font-bold text-center col-span-3 p-4">
+          <h3 className="text-3xl font-bold text-center col-span-3 p-4">
             {author.firstName} {author.lastName}
           </h3>
         </div>
-        <div className="grid grid-cols-8">
-          <h2 className="p-4"> Books written by this author :</h2>
-          <h3 className="text-xl font-bold text-center col-span-3 p-4">
-            {author.books
-              ? author.books.map((book) => (
-                  <a href={`/books/${book.id}`}>{book.name}</a>
-                ))
-              : "Couldn't find any books written by this author"}
-          </h3>
-        </div>
-        <div className="p-4 grid grid-cols-8">
-          <Button
-            color="info"
-            onPress={(): void => {
-              setIsModalBooksOpen(true);
-            }}
-          >
-            Edit book list
-          </Button>
-        </div>
+
+        <h3 className="text-xl font-bold text-center col-span-3 p-4">
+          {author.books
+            ? author.books.map((book) => (
+                <a href={`/books/${book.id}`}>{book.name}</a>
+              ))
+            : "Couldn't find any books written by this author"}
+        </h3>
       </div>
 
-      <div className="pt-5">
-        <Button
-          color="info"
-          onPress={(): void => {
-            setIsModalEditOpen(true);
-          }}
-        >
-          Edit author informations
-        </Button>
+      <div className="flex flex-col items-center mt-8">
+        <div className="flex flex-col gap-8">
+          <div className="flex flex-col">
+            <span className="flex gap-3">
+              <span className="text-cyan-500">
+                <FontAwesomeIcon icon={faPenToSquare} />
+              </span>
+              Edit information
+            </span>
+            <div className="flex gap-4 p-4">
+              <div>
+                <Button
+                  color="info"
+                  onPress={(): void => {
+                    setIsModalBooksOpen(true);
+                  }}
+                >
+                  Edit book list
+                </Button>
+              </div>
+              <Button
+                color="info"
+                onPress={(): void => {
+                  setIsModalEditOpen(true);
+                }}
+              >
+                Edit author information
+              </Button>
+            </div>
+          </div>
 
-        <Button
-          color="danger"
-          onPress={(): void => {
-            setIsModalOpen(true);
-          }}
-        >
-          Delete Author
-        </Button>
+          <div className="flex flex-col">
+            <div className="flex gap-3">
+              <FontAwesomeIcon
+                icon={faTriangleExclamation}
+                className="text-orange-500"
+                size="xl"
+              />
+              Danger zone
+            </div>
+
+            <div className="flex p-4">
+              <Button
+                color="danger"
+                onPress={(): void => {
+                  setIsModalOpen(true);
+                }}
+              >
+                Delete Author
+              </Button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <Modal
