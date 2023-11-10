@@ -1,9 +1,10 @@
 import { AuthorId } from 'library-api/src/entities';
 import { BookModel, PlainBookModel } from 'library-api/src/models';
+import { CreateBookRepositoryInput } from 'library-api/src/repositories/books/book.repository.type';
 import {
-  CreateBookRepositoryInput,
+  CommentRepositoryOutput,
   CreateCommentRepositoryInput,
-} from 'library-api/src/repositories/books/book.repository.type';
+} from 'library-api/src/repositories/comments/comment.repository.type';
 
 export type PlainBookUseCasesOutput = PlainBookModel;
 export type BookUseCasesOutput = BookModel;
@@ -14,4 +15,8 @@ export type CreateBookUseCasesInput = Omit<
   authorId: AuthorId;
 };
 
-export type CreateCommentUseCasesInput = CreateCommentRepositoryInput;
+export type CreateCommentUseCasesInput = Omit<
+  CreateCommentRepositoryInput,
+  'user'
+> & { userId: UserId };
+export type CreateCommentUseCasesOutput = CommentRepositoryOutput;

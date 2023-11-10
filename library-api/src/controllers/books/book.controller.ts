@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Delete } from '@nestjs/common';
 import {
   BookPresenter,
   PlainBookPresenter,
@@ -7,6 +7,7 @@ import { BookId } from 'library-api/src/entities';
 import { BookUseCases } from 'library-api/src/useCases';
 import { ApiOkResponse } from '@nestjs/swagger';
 import { CreateBookDto, CreateCommentDto } from './book.dto';
+import { PlainCommentPresenter } from '../comments/comment.presenter';
 
 @Controller('books')
 export class BookController {
@@ -24,6 +25,11 @@ export class BookController {
     return books.map(PlainBookPresenter.from);
   }
 
+  @ApiOkResponse({
+    description: 'Get all authors',
+    type: BookPresenter,
+    isArray: true,
+  })
   @Get('/:id')
   public async getById(@Param('id') id: BookId): Promise<BookPresenter> {
     const book = await this.bookUseCases.getById(id);
@@ -31,6 +37,10 @@ export class BookController {
     return BookPresenter.from(book);
   }
 
+  @ApiOkResponse({
+    description: 'create a new book',
+    isArray: true,
+  })
   @Post('/new')
   public async createBook(
     @Body() bookCreationRequest: CreateBookDto,
@@ -40,21 +50,33 @@ export class BookController {
     return BookPresenter.from(createdBook);
   }
 
-  @Post('/:id/delete')
+  @ApiOkResponse({
+    description: 'delete a book',
+    isArray: true,
+  })
+  @Delete('/:id/delete')
   public async deleteBook(@Param('id') id: BookId): Promise<void> {
     await this.bookUseCases.deleteBook(id);
   }
 
+  @ApiOkResponse({
+    description: 'create a new comment',
+    isArray: true,
+  })
   @Post('/:id/comments/new')
   public async addComment(
     @Param('id') id: BookId,
     @Body() comment: CreateCommentDto,
-  ): Promise<BookPresenter> {
-    const book = await this.bookUseCases.addComment(id, comment);
+  ): Promise<PlainCommentPresenter> {
+    const outputComment = await this.bookUseCases.addComment(id, comment);
 
-    return BookPresenter.from(book);
+    return PlainCommentPresenter.from(outputComment);
   }
 
+  @ApiOkResponse({
+    description: 'view the comments',
+    isArray: true,
+  })
   @Post('/:id/comments/')
   public async getComments(@Param('id') id: BookId): Promise<BookPresenter> {
     const book = await this.bookUseCases.getComments(id);

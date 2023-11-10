@@ -1,23 +1,35 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Comment, Author, Book, BookId, Genre } from 'library-api/src/entities';
+import {
+  Comment,
+  Author,
+  Book,
+  BookId,
+  Genre,
+  User,
+} from 'library-api/src/entities';
 import {
   AuthorRepository,
   BookRepository,
   GenreRepository,
+  UserRepository,
 } from 'library-api/src/repositories';
+import { CommentRepository } from 'library-api/src/repositories/comments/comment.repository';
 import {
   BookUseCasesOutput,
   CreateBookUseCasesInput,
   CreateCommentUseCasesInput,
+  CreateCommentUseCasesOutput,
   PlainBookUseCasesOutput,
 } from 'library-api/src/useCases/books/book.useCases.type';
 
 @Injectable()
 export class BookUseCases {
   constructor(
+    private readonly commentRepository: CommentRepository,
     private readonly bookRepository: BookRepository,
     private readonly genreRepository: GenreRepository,
     private readonly authorRepository: AuthorRepository,
+    private readonly userRepository: UserRepository,
   ) {}
 
   /**
@@ -105,16 +117,32 @@ export class BookUseCases {
   public async addComment(
     id: BookId,
     comment: CreateCommentUseCasesInput,
-  ): Promise<BookUseCasesOutput> {
+  ): Promise<CreateCommentUseCasesOutput> {
     const book = await this.bookRepository.getById(id);
 
     if (!book) {
       throw new Error('Book not found');
     }
 
-    const commentTmp = new Comment();
+    const user = await this.userRepository.getById(comment.userId);
 
-    return book;
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const userTmp = new User();
+    userTmp.id = user.id;
+
+    const bookTmp = new Book();
+    bookTmp.id = book.id;
+
+    const commentTmp = new Comment();
+    commentTmp.text = comment.text;
+    commentTmp.writtenOn = comment.writtenOn;
+    commentTmp.book = bookTmp;
+    commentTmp.user = userTmp;
+
+    return this.commentRepository.createComment(commentTmp);
   }
 
   /**

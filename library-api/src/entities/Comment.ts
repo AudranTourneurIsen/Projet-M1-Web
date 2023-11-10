@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { User } from './User';
+import { Book } from './Book';
 
 export type CommentId = string & { __brand: 'Comment' };
 
@@ -23,4 +24,7 @@ export class Comment extends BaseEntity {
 
   @ManyToOne(() => User, (user) => user.comments, { onDelete: 'CASCADE' })
   user: User;
+
+  @ManyToOne(() => Book, (book) => book.comments, { onDelete: 'CASCADE' })
+  book: Book;
 }
