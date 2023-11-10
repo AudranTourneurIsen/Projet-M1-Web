@@ -39,7 +39,11 @@ export class BookRepository extends Repository<Book> {
   public async getById(id: BookId): Promise<BookRepositoryOutput> {
     const book = await this.findOne({
       where: { id },
-      relations: { genres: true, author: { books: true, photo: true } },
+      relations: {
+        genres: true,
+        author: { books: true, photo: true },
+        comments: { user: true },
+      },
     });
 
     if (!book) {
