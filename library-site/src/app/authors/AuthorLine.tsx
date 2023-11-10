@@ -33,7 +33,7 @@ export function AuthorLine(props: AuthorLineProps): React.JSX.Element {
         </h5>
         <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
           Wrote <span className="font-bold">{author.books?.length || 0}</span>{' '}
-          books
+          books | {author.books?.join(', ') ?? 'rien du tout'}
         </p>
 
         <div className="flex justify-end">

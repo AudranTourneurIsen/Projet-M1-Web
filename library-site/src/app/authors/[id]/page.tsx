@@ -3,6 +3,7 @@
 import { redirect, useParams, useRouter } from 'next/navigation';
 import React, { FC, useEffect, useState } from 'react';
 import axios from 'axios';
+import Image from 'next/image';
 import { useAuthorProvider, useBooksProviders } from '@/hooks';
 import { Button } from '@/components/Button';
 import { Modal } from '@/components/Modal';
@@ -47,10 +48,12 @@ const AuthorDetailsPage: FC = () => {
   const imageRenderer = (imageURL: string): React.JSX.Element => {
     const fullBase64Src = `data:image/png;base64,${imageURL}`;
     return (
-      <img
+      <Image
         className="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-l-lg"
         src={fullBase64Src}
         alt=""
+        width={200}
+        height={200}
       />
     );
   };
@@ -117,7 +120,7 @@ const AuthorDetailsPage: FC = () => {
     <div className="relative m-10 p-auto">
       <h1 className="text-2xl font-bold text-center">Author Details</h1>
       <div className="mt-5 grid gap-5 border rounded bg-gray-900">
-        <div className={'p-4 '}>
+        <div className="p-4">
           {author.photo ? (
             imageRenderer(author.photo?.image)
           ) : (
@@ -133,7 +136,7 @@ const AuthorDetailsPage: FC = () => {
         </div>
         <div className="grid grid-cols-8">
           <h2 className="p-4"> Books written by this author :</h2>
-          <h3 className={'text-xl font-bold text-center col-span-3 p-4'}>
+          <h3 className="text-xl font-bold text-center col-span-3 p-4">
             {author.books
               ? author.books.map((book) => (
                   <a href={`/books/${book.id}`}>{book.name}</a>
@@ -188,7 +191,10 @@ const AuthorDetailsPage: FC = () => {
           <Button color="info" onPress={onClose}>
             Cancel
           </Button>
-          <Button color="danger" onPress={(): Promise<void> => submitDeleteAuthor()}>
+          <Button
+            color="danger"
+            onPress={(): Promise<void> => submitDeleteAuthor()}
+          >
             Proceed
           </Button>
         </div>
@@ -201,7 +207,7 @@ const AuthorDetailsPage: FC = () => {
           setIsModalEditOpen(false);
         }}
       >
-        <div className={'pt-5'}>
+        <div className="pt-5">
           <div className="flex flex-col bg-white rounded-lg dark:border-gray-700 dark:bg-gray-800  p-2">
             {author.photo ? (
               imageRenderer(author.photo?.image)
@@ -230,7 +236,7 @@ const AuthorDetailsPage: FC = () => {
             </form>
           </div>
           <div className="flex flex-col gap-8 p-6">
-            <h3 className={'text-center'}>
+            <h3 className="text-center">
               Author current name : &nbsp; {author.firstName} &nbsp;{' '}
               {author.lastName}
             </h3>

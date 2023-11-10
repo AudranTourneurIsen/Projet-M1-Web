@@ -37,6 +37,7 @@ export class PlainAuthorPresenter {
       firstName: data.firstName,
       lastName: data.lastName,
       photo: data.photo,
+      books: data.books,
     });
   }
 }

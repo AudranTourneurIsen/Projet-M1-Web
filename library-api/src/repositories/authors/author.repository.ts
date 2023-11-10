@@ -25,7 +25,7 @@ export class AuthorRepository extends Repository<Author> {
    */
   public async getAllPlain(): Promise<PlainAuthorRepositoryOutput[]> {
     const authors = await this.find({
-      relations: { books: { genres: true }, photo: true },
+      relations: { books: true, photo: true },
     });
 
     return authors.map(adaptAuthorEntityToPlainAuthorModel);
