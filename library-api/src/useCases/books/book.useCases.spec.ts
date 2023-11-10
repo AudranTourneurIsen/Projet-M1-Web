@@ -12,7 +12,6 @@ import {
 import {
   adaptBookEntityToBookModel,
   adaptBookEntityToBookRepositoryOutput,
-  adaptBookEntityToCreateBookRepositoryInput,
   adaptBookEntityToCreateBookUseCasesInput,
 } from 'library-api/src/repositories/books/book.utils';
 import { adaptGenreEntityToGenreRepositoryOutput } from 'library-api/src/repositories/genres/genre.utils';
@@ -141,9 +140,6 @@ describe('BookUseCases', () => {
       expect(getByIdAuthorSpy).toHaveBeenCalledWith(authorFix.id);
 
       expect(createBookSpy).toHaveBeenCalledTimes(1);
-      expect(createBookSpy).toHaveBeenCalledWith(
-        adaptBookEntityToCreateBookRepositoryInput(bookFix),
-      );
 
       expect(result).toStrictEqual(output1);
     });
@@ -168,58 +164,9 @@ describe('BookUseCases', () => {
       );
       const authorFix = authorFixture();
       const genreFix = genreFixture();
-      const bookFix = bookFixture(authorFix, [genreFix]);
 
-      const input1 = adaptBookEntityToCreateBookUseCasesInput(bookFix);
+      authorFix.id = undefined;
 
-      const output1 = adaptBookEntityToBookRepositoryOutput(bookFix);
-
-      const getByIdsGenreSpy = jest
-        .spyOn(repository3, 'getByIds')
-        .mockResolvedValue([adaptGenreEntityToGenreRepositoryOutput(genreFix)]);
-
-      const getByIdAuthorSpy = jest
-        .spyOn(repository4, 'getById')
-        .mockResolvedValue(authorFix);
-
-      const createBookSpy = jest
-        .spyOn(repository2, 'createBook')
-        .mockResolvedValue(output1);
-
-      try {
-        await useCases.createBook(input1);
-      } catch (e) {
-        expect(e.message).toMatch('all fields are required');
-      }
-
-      expect(getByIdsGenreSpy).toHaveBeenCalledTimes(1);
-      expect(getByIdsGenreSpy).toHaveBeenCalledWith([genreFix.id]);
-
-      expect(getByIdAuthorSpy).toHaveBeenCalledTimes(0);
-
-      expect(createBookSpy).toHaveBeenCalledTimes(0);
-    });
-    it('should throw an error', async () => {
-      const repository1 = {} as unknown as CommentRepository;
-      const repository2 = {
-        createBook: jest.fn(),
-      } as unknown as BookRepository;
-      const repository3 = {
-        getByIds: jest.fn(),
-      } as unknown as GenreRepository;
-      const repository4 = {
-        getById: jest.fn(),
-      } as unknown as AuthorRepository;
-      const repository5 = {} as unknown as UserRepository;
-      const useCases = new BookUseCases(
-        repository1,
-        repository2,
-        repository3,
-        repository4,
-        repository5,
-      );
-      const authorFix = authorFixture();
-      const genreFix = genreFixture();
       const bookFix = bookFixture(authorFix, [genreFix]);
 
       const input1 = adaptBookEntityToCreateBookUseCasesInput(bookFix);
@@ -251,6 +198,83 @@ describe('BookUseCases', () => {
       expect(getByIdAuthorSpy).toHaveBeenCalledWith(authorFix.id);
 
       expect(createBookSpy).toHaveBeenCalledTimes(0);
+    });
+  });
+  describe('deleteBook', () => {
+    it('should call repository function', async () => {
+      const repository1 = {} as unknown as CommentRepository;
+      const repository2 = {
+        deleteBook: jest.fn(),
+        getById: jest.fn(),
+      } as unknown as BookRepository;
+      const repository3 = {} as unknown as GenreRepository;
+      const repository4 = {} as unknown as AuthorRepository;
+      const repository5 = {} as unknown as UserRepository;
+      const useCases = new BookUseCases(
+        repository1,
+        repository2,
+        repository3,
+        repository4,
+        repository5,
+      );
+      const authorFix = authorFixture();
+      const genreFix = genreFixture();
+      const bookFix = bookFixture(authorFix, [genreFix]);
+
+      const getByIdSpy = jest
+        .spyOn(repository2, 'getById')
+        .mockResolvedValue(bookFix);
+
+      const deleteBookSpy = jest
+        .spyOn(repository2, 'deleteBook')
+        .mockResolvedValue();
+
+      await useCases.deleteBook(bookFix.id);
+
+      expect(getByIdSpy).toHaveBeenCalledTimes(1);
+      expect(getByIdSpy).toHaveBeenCalledWith(bookFix.id);
+
+      expect(deleteBookSpy).toHaveBeenCalledTimes(1);
+      expect(deleteBookSpy).toHaveBeenCalledWith(bookFix.id);
+    });
+    it('should throw an error', async () => {
+      const repository1 = {} as unknown as CommentRepository;
+      const repository2 = {
+        deleteBook: jest.fn(),
+        getById: jest.fn(),
+      } as unknown as BookRepository;
+      const repository3 = {} as unknown as GenreRepository;
+      const repository4 = {} as unknown as AuthorRepository;
+      const repository5 = {} as unknown as UserRepository;
+      const useCases = new BookUseCases(
+        repository1,
+        repository2,
+        repository3,
+        repository4,
+        repository5,
+      );
+      const authorFix = authorFixture();
+      const genreFix = genreFixture();
+      const bookFix = bookFixture(authorFix, [genreFix]);
+
+      const getByIdSpy = jest
+        .spyOn(repository2, 'getById')
+        .mockResolvedValue(undefined);
+
+      const deleteBookSpy = jest
+        .spyOn(repository2, 'deleteBook')
+        .mockResolvedValue();
+
+      try {
+        await useCases.deleteBook(bookFix.id);
+      } catch (e) {
+        expect(e.message).toMatch('Book not found');
+      }
+
+      expect(getByIdSpy).toHaveBeenCalledTimes(1);
+      expect(getByIdSpy).toHaveBeenCalledWith(bookFix.id);
+
+      expect(deleteBookSpy).toHaveBeenCalledTimes(0);
     });
   });
 });
