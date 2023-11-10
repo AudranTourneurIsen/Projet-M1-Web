@@ -1,5 +1,6 @@
 import { PlainAuthorModel } from './author.model';
 import { PlainGenreModel } from './genre.model';
+import type { PlainCommentModel } from '../../../library-api/src/models';
 
 export type PlainBookModel = {
   id: string;
@@ -7,4 +8,5 @@ export type PlainBookModel = {
   writtenOn: Date;
   author: PlainAuthorModel;
   genres: PlainGenreModel[];
+  comments: PlainCommentModel[];
 };

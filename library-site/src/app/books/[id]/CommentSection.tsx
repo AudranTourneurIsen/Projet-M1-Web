@@ -17,7 +17,6 @@ type CommentSectionProps = {
 export function CommentSection(props: CommentSectionProps): React.JSX.Element {
   const { book } = props;
   const [isDrawerActive, setIsDrawerActive] = useState<boolean>(false);
-  const [shouldRedirect, setShouldRedirect] = useState<boolean>(false);
   const [UserCommentInput, setUserCommentInput] = useState<string>('');
   const [userName, setUserName] = useState<string>('');
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -38,11 +37,6 @@ export function CommentSection(props: CommentSectionProps): React.JSX.Element {
   }));
 
   const [selectedUserId, setSelectedUserId] = useState<string>('');
-
-  const router = useRouter();
-  if (shouldRedirect) {
-    router.push('/authors');
-  }
 
   const onClose = (): void => {
     setIsOpen(!isOpen);
@@ -114,34 +108,36 @@ export function CommentSection(props: CommentSectionProps): React.JSX.Element {
 
       <Drawer title="Comments" isActive={isDrawerActive} onClose={drawerClose}>
         <ol className="relative border-l border-gray-200 dark:border-gray-700">
-          <li className="mb-10 ml-6">
-            <span className="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -left-3 ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
-              <Image
-                className="rounded-full shadow-lg"
-                src="/avatar-default-icon.png"
-                alt=""
-                width={100}
-                height={100}
-              />
-            </span>
+          {book.comments.map((comment) => (
+            <li className="mb-10 ml-6">
+              <span className="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -left-3 ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
+                <Image
+                  className="rounded-full shadow-lg"
+                  src="/avatar-default-icon.png"
+                  alt=""
+                  width={100}
+                  height={100}
+                />
+              </span>
 
-            <div className="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-700 dark:border-gray-600">
-              <div className="items-center justify-between mb-3 sm:flex">
-                <time className="mb-1 text-xs font-normal text-gray-400 sm:order-last sm:mb-0">
-                  12 - 16 -1999
-                </time>
-                <div className="text-sm font-normal text-gray-500 lex dark:text-gray-300">
-                  <b>User</b> commented{' '}
+              <div className="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-700 dark:border-gray-600">
+                <div className="items-center justify-between mb-3 sm:flex">
+                  <time className="mb-1 text-xs font-normal text-gray-400 sm:order-last sm:mb-0">
+                    12 - 16 -1999
+                  </time>
+                  <div className="text-sm font-normal text-gray-500 lex dark:text-gray-300">
+                    <b>User</b> commented{' '}
+                  </div>
+                </div>
+                <div className="p-3 text-xs italic font-normal text-gray-500 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-300">
+                  Crazy? I was crazy once. They put me in a room. A rubber room.
+                  A rubber room with rats. They put me in a rubber room with
+                  rubber rats. Rubber rats? I hate rubber rats. They make me
+                  crazy. Crazy? I was crazy once. They put me in a room…
                 </div>
               </div>
-              <div className="p-3 text-xs italic font-normal text-gray-500 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-300">
-                Crazy? I was crazy once. They put me in a room. A rubber room. A
-                rubber room with rats. They put me in a rubber room with rubber
-                rats. Rubber rats? I hate rubber rats. They make me crazy.
-                Crazy? I was crazy once. They put me in a room…
-              </div>
-            </div>
-          </li>
+            </li>
+          ))}
         </ol>
 
         <form className="mb-6">
@@ -151,7 +147,7 @@ export function CommentSection(props: CommentSectionProps): React.JSX.Element {
               onChange={setSelectedUserId}
               currentlySelectedId={selectedUserId}
               propositions={usersOptions}
-            ></DropdownSelection>
+            />
             <label htmlFor="comment" className="sr-only">
               Your comment
             </label>
