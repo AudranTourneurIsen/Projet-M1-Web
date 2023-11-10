@@ -39,7 +39,7 @@ export class AuthorController {
   }
 
   @ApiOkResponse({
-    description: 'Get the authors of the id',
+    description: 'Get author by id',
     type: AuthorPresenter,
     isArray: true,
   })
@@ -50,6 +50,10 @@ export class AuthorController {
     return AuthorPresenter.from(author);
   }
 
+  @ApiOkResponse({
+    description: 'Create a new author, the file must be uploaded as multiform input in the same request',
+    isArray: true,
+  })
   @Post('/new')
   @UseInterceptors(FileInterceptor('image'))
   public async createAuthor(
