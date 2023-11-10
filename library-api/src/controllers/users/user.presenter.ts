@@ -77,7 +77,7 @@ export class UserPresenter {
   lastName: string;
 
   @ApiProperty({
-    type: 'object',
+    type: 'C',
   })
   ownedBooks?: BookPresenter[];
 
