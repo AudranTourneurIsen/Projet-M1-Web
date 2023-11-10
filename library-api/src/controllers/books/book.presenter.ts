@@ -14,16 +14,21 @@ export class PlainBookPresenter {
   @ApiProperty({
     type: 'string',
     format: 'uuid',
-    description: 'author id'
-  })z
+  })
   id: BookId;
 
+  @ApiProperty({
+    type: 'string',
+  })
   name: string;
 
   writtenOn: Date;
 
   author: PlainAuthorPresenter;
 
+  @ApiProperty({
+    type: 'string',
+  })
   genres: PlainGenrePresenter[];
 
   private constructor(data: PlainBookPresenter) {

@@ -15,7 +15,7 @@ export class BookController {
 
   @ApiOkResponse({
     description: 'Get all authors',
-    type: PlainAuthorPresenter,
+    type: PlainBookPresenter,
     isArray: true,
   })
   @Get('/')
