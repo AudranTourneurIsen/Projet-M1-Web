@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  Logger,
   Param,
   Post,
 } from '@nestjs/common';
@@ -72,7 +71,6 @@ export class UserController {
     @Param('id') userId: UserId,
     @Body() editUserFavoriteBookDto: EditUserFavoriteBookDto,
   ): Promise<UserPresenter> {
-    Logger.log(`editFavoriteBook: ${userId} ${editUserFavoriteBookDto.bookId}`);
     const editedUser = await this.userUseCases.editFavoriteBook(
       userId,
       editUserFavoriteBookDto.bookId,
@@ -127,7 +125,6 @@ export class UserController {
     @Param('id') userId: UserId,
     @Body() editUserFriendsDto: EditUserFriendsDto,
   ): Promise<UserPresenter> {
-    Logger.log(`editFriends: ${userId} ${editUserFriendsDto.userIds}`);
     const editedUser = await this.userUseCases.editFriends(
       userId,
       editUserFriendsDto.userIds,
