@@ -10,8 +10,6 @@ type UsersOwningProps = {
 export function UsersOwning(props: UsersOwningProps): React.JSX.Element {
   const { book } = props;
 
-  console.log('book=', book);
-
   const displayedUsers: PlainUserModel[] = book.ownedByUsers || [];
 
   return (

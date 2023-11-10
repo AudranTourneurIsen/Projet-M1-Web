@@ -1,6 +1,6 @@
-import { PlainUserModel } from '@/models/user.model';
-import { PlainAuthorModel } from './author.model';
-import { PlainGenreModel } from './genre.model';
+import type { PlainUserModel } from '@/models/user.model';
+import type { PlainAuthorModel } from './author.model';
+import type { PlainGenreModel } from './genre.model';
 import type { PlainCommentModel } from '../../../library-api/src/models';
 
 export type PlainBookModel = {
