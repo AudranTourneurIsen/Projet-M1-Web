@@ -2,7 +2,7 @@
 
 import React, { FC, useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faFilter, faPlus } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 
 import { useUsersProviders } from '@/hooks/providers/userProviders';
@@ -154,7 +154,10 @@ const UsersPage: FC = () => {
                   setFilterByBookIsModalOpen(!filterByBookIsModalOpen);
                 }}
               >
-                Filter by books
+                <div className="flex gap-3">
+                  <FontAwesomeIcon icon={faFilter} />
+                  <span>Filter by books</span>
+                </div>
               </Button>
               {selectedBookIds.length > 0 && (
                 <span>
