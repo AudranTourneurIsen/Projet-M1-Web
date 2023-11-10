@@ -5,7 +5,6 @@ import {
   Param,
   Post,
   Delete,
-  Logger,
 } from '@nestjs/common';
 import {
   BookPresenter,
@@ -41,8 +40,6 @@ export class BookController {
   @Get('/:id')
   public async getById(@Param('id') id: BookId): Promise<BookPresenter> {
     const book = await this.bookUseCases.getById(id);
-
-    Logger.log('book data = ', book);
 
     return BookPresenter.from(book);
   }
