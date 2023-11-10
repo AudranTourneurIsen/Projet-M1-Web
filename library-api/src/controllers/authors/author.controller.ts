@@ -9,7 +9,7 @@ import {
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiProperty, ApiTags } from "@nestjs/swagger";
+import { ApiOkResponse, ApiProperty, ApiTags } from '@nestjs/swagger';
 import { AuthorId } from 'library-api/src/entities';
 import { AuthorUseCases } from 'library-api/src/useCases';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -41,6 +41,7 @@ export class AuthorController {
   @Get('/:id')
   public async getById(@Param('id') id: AuthorId): Promise<AuthorPresenter> {
     const author = await this.authorUseCases.getById(id);
+
     return AuthorPresenter.from(author);
   }
 
