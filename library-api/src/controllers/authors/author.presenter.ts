@@ -1,10 +1,12 @@
 import { AuthorId } from 'library-api/src/entities';
 import { AuthorModel, PlainAuthorModel } from 'library-api/src/models';
-// eslint-disable-next-line import/no-cycle
-import { BookPresenter, PlainBookPresenter } from '../books/book.presenter';
-// eslint-disable-next-line import/no-cycle
-import { ImagePresenter, PlainImagePresenter } from '../images/image.presenter';
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
+import { BookPresenter } from '../books/book.presenter';
+import type { PlainBookPresenter } from '../books/book.presenter';
+import type {
+  ImagePresenter,
+  PlainImagePresenter,
+} from '../images/image.presenter';
 
 export class PlainAuthorPresenter {
   @ApiProperty({

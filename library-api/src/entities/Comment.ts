@@ -19,7 +19,7 @@ export class Comment extends BaseEntity {
   writtenOn: Date;
 
   @Column()
-  author: string;
+  text: string;
 
   @ManyToOne(() => User, (user) => user.comments, { onDelete: 'CASCADE' })
   user: User;

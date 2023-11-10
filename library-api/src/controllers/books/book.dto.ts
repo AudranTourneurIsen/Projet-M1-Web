@@ -1,5 +1,9 @@
 import { IsDate, IsArray, IsString } from 'class-validator';
-import { GenreModel, PlainAuthorModel } from 'library-api/src/models';
+import {
+  GenreModel,
+  PlainAuthorModel,
+  PlainCommentModel,
+} from 'library-api/src/models';
 
 export class CreateBookDto {
   @IsString()
@@ -13,4 +17,15 @@ export class CreateBookDto {
 
   @IsArray()
   genres: GenreModel[];
+}
+
+export class CreateCommentDto {
+  @IsString()
+  text: string;
+
+  @IsString()
+  id: PlainCommentModel['id'];
+
+  @IsString()
+  userId: PlainCommentModel['user']['id'];
 }
