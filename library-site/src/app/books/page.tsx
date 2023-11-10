@@ -32,9 +32,9 @@ const BooksPage: FC = (): ReactElement => {
   const { genres, loadGenres } = useListGenres();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const onClose = (): void => {
+  const onClose = useCallback((): void => {
     setIsOpen(!isOpen);
-  };
+  }, [isOpen]);
 
   const [nameInput, setNameInput] = useState<string>('');
   const [writtenOnDateInput, setWrittenOnDateInput] = useState<Date>(
@@ -92,12 +92,15 @@ const BooksPage: FC = (): ReactElement => {
     } else {
       setDisplayedBooks(books);
     }
-  }, [searchInput, selectedGenres]);
+  }, [books, searchInput, selectedGenres]);
 
   useEffect(() => {
     loadAuthors();
     loadGenres();
     loadBooks();
+    // Si on suit la recommendation du linter d'inclure exhaustivement les dépendences ou de supprimer le tableau,
+    // cela mène à une boucle infinie de reload
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -151,6 +154,7 @@ const BooksPage: FC = (): ReactElement => {
         loadAuthors();
         loadGenres();
         loadBooks();
+        onClose();
       })
       .catch((err: Error | AxiosError) => {
         if (axios.isAxiosError(err)) {
@@ -173,6 +177,7 @@ const BooksPage: FC = (): ReactElement => {
     loadAuthors,
     loadGenres,
     loadBooks,
+    onClose,
   ]);
 
   const submitGenre = useCallback(() => {

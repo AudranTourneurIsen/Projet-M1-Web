@@ -16,6 +16,8 @@ export function SingleSelectBlock(props: SingleSelectBlockProps): JSX.Element {
       const newValue = event.target.value;
       setSelectedOptionId(newValue);
     },
+    // Boucle infinie si on suit la règle
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
 

@@ -13,8 +13,7 @@ export const useListGenres = (): UseListGenresProvider => {
   const fetchGenres = (): void => {
     axios
       .get(`${process.env.NEXT_PUBLIC_API_URL}/genres`)
-      .then((data) => setGenres(data.data))
-      .catch((err) => console.error(err));
+      .then((data) => setGenres(data.data));
   };
 
   return { genres, loadGenres: fetchGenres };

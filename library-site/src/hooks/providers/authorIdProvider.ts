@@ -22,9 +22,8 @@ export const useAuthor = (authorId: string | string[]): UseAuthorProvider => {
         }
         setAuthor(data.data);
       })
-      .catch((err) => {
+      .catch((): void => {
         setAuthor('not found');
-        console.error(err);
       });
   };
 
