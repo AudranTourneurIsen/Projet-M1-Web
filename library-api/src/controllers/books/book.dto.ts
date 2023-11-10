@@ -28,4 +28,7 @@ export class CreateCommentDto {
 
   @IsString()
   userId: PlainCommentModel['user']['id'];
+
+  @IsDate()
+  writtenOn: Date;
 }
