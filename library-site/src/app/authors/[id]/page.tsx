@@ -4,16 +4,16 @@ import { redirect, useParams, useRouter } from 'next/navigation';
 import React, { FC, useEffect, useState } from 'react';
 import axios from 'axios';
 import Image from 'next/image';
-import { useAuthorProvider, useBooksProviders } from '@/hooks';
-import { Button } from '@/components/Button';
-import { Modal } from '@/components/Modal';
-import { TextInput } from '@/components/TextInput';
-import { MultiSelectBlock } from '@/components/MultiSelectBlock';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faPenToSquare,
   faTriangleExclamation,
 } from '@fortawesome/free-solid-svg-icons';
+import { useAuthorProvider, useBooksProviders } from '@/hooks';
+import { Button } from '@/components/Button';
+import { Modal } from '@/components/Modal';
+import { TextInput } from '@/components/TextInput';
+import { MultiSelectBlock } from '@/components/MultiSelectBlock';
 
 const AuthorDetailsPage: FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -23,10 +23,12 @@ const AuthorDetailsPage: FC = () => {
   const { id } = useParams();
   const { author, loadAuthor } = useAuthor(id);
 
+  if (author === 'not found') {
+    return redirect('/authors');
+  }
+
   const { useListBooks } = useBooksProviders();
   const { books, loadBooks } = useListBooks();
-
-  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const [authorEditFirstName, setAuthorFirstName] = useState<string>('');
   const [authorEditLastName, setAuthorLastName] = useState<string>('');
@@ -35,6 +37,19 @@ const AuthorDetailsPage: FC = () => {
   const [shouldRedirect, setShouldRedirect] = useState<boolean>(false);
 
   const [selectedBookIds, setSelectedBookIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    loadAuthor();
+    loadBooks();
+    // Boucle infinie si on suit la règle
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    setSelectedBookIds(author?.books?.map((book) => book.id) || []);
+  }, [books, author]);
+
+  const router = useRouter();
 
   const onClose = (): void => {
     if (isModalOpen) {
@@ -61,16 +76,6 @@ const AuthorDetailsPage: FC = () => {
     );
   };
 
-  useEffect(() => {
-    loadAuthor();
-    loadBooks();
-  }, []);
-
-  useEffect(() => {
-    setSelectedBookIds(author?.books?.map((book) => book.id) || []);
-  }, [books, author]);
-
-
   if (!id || typeof id !== 'string') {
     redirect('/authors');
   }
@@ -79,21 +84,14 @@ const AuthorDetailsPage: FC = () => {
     return <p>Loading...</p>;
   }
 
-  if (author === 'not found') {
-    return redirect('/authors');
-  }
-
   async function submitEditAuthor(): Promise<void> {
     await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/authors/edit`, {
       id,
       firstName: authorEditFirstName,
       lastName: authorEditLastName,
     });
-    setIsOpen(false);
     loadAuthor();
   }
-
-  const router = useRouter();
 
   // Hack, the "redirect" function doesn't seem to work in this case
   if (shouldRedirect) {
@@ -102,7 +100,8 @@ const AuthorDetailsPage: FC = () => {
 
   async function submitDeleteAuthor(): Promise<void> {
     await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/authors/delete/${id}`);
-    setShouldRedirect(true);
+    // setShouldRedirect(true);
+    redirect('/authors');
   }
 
   const booksOptions = books.map((book) => ({

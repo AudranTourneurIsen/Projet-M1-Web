@@ -7,22 +7,24 @@ import { Modal } from '@/components/Modal';
 import { PlainBookModel } from '@/models';
 import { API_URL } from '@/utils/constants';
 
-type BookSuppression = {
+type BookSuppressionProps = {
   book: PlainBookModel;
   reload: () => void;
 };
 
-export function BookSuppression(props: BookSuppression): React.JSX.Element {
+export function BookSuppression(
+  props: BookSuppressionProps,
+): React.JSX.Element {
   const { book, reload } = props;
 
-  const [isDeleteUserModalOpen,setIsDeleteBookModalOpen] = useState(false);
+  const [isDeleteUserModalOpen, setIsDeleteBookModalOpen] = useState(false);
 
   const cancel = useCallback(() => {
-   setIsDeleteBookModalOpen(false);
+    setIsDeleteBookModalOpen(false);
   }, []);
 
   const confirm = useCallback(async () => {
-   setIsDeleteBookModalOpen(false);
+    setIsDeleteBookModalOpen(false);
     await axios.delete(`${API_URL}/books/${book.id}/delete`);
     reload();
   }, [reload, book.id]);
@@ -41,7 +43,7 @@ export function BookSuppression(props: BookSuppression): React.JSX.Element {
         <div className="border-gray-500 border-l-2 ml-2 pl-2">
           <Button
             color="danger"
-            onPress={(): void =>setIsDeleteBookModalOpen(true)}
+            onPress={(): void => setIsDeleteBookModalOpen(true)}
           >
             Delete book
           </Button>
@@ -49,7 +51,7 @@ export function BookSuppression(props: BookSuppression): React.JSX.Element {
       </div>
 
       <Modal
-        onClose={(): void =>setIsDeleteBookModalOpen(false)}
+        onClose={(): void => setIsDeleteBookModalOpen(false)}
         isOpen={isDeleteUserModalOpen}
         title="Delete book"
       >
