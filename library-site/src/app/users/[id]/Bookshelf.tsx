@@ -59,7 +59,9 @@ export function Bookshelf(props: BookshelfProps): React.JSX.Element {
                   className="text-lime-400"
                   size="xl"
                 />
-                <a className="underline" href={`/books/${book.id}`}>{book.name}</a>
+                <a className="underline" href={`/books/${book.id}`}>
+                  {book.name}
+                </a>
               </div>
             </div>
           ))}
