@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import axios, { AxiosError } from 'axios';
 import { faComment } from '@fortawesome/free-solid-svg-icons';
-import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Button } from '@/components/Button';
 import { PlainBookModel } from '@/models';
@@ -9,7 +9,6 @@ import { Drawer } from '@/components/Drawer';
 import { TextInput } from '@/components/TextInput';
 import { DropdownSelection } from '@/components/DropdownSelection';
 import { useUsersProviders } from '@/hooks';
-import axios, { AxiosError } from 'axios';
 
 type CommentSectionProps = {
   book: PlainBookModel;
@@ -20,8 +19,6 @@ export function CommentSection(props: CommentSectionProps): React.JSX.Element {
   const { book, loadBook } = props;
   const [isDrawerActive, setIsDrawerActive] = useState<boolean>(false);
   const [UserCommentInput, setUserCommentInput] = useState<string>('');
-  const [userName, setUserName] = useState<string>('');
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const { useListUsers } = useUsersProviders();
 
@@ -40,10 +37,8 @@ export function CommentSection(props: CommentSectionProps): React.JSX.Element {
 
   const [selectedUserId, setSelectedUserId] = useState<string>('');
 
-  let displayedComments = book.comments
-  //sort by writtenOn
-    displayedComments.sort((a, b) => (a.writtenOn > b.writtenOn) ? 1 : -1)
-
+  const displayedComments = book.comments;
+  displayedComments.sort((a, b) => (a.writtenOn > b.writtenOn ? 1 : -1));
 
   const drawerClose = (): void => {
     setIsDrawerActive(false);
@@ -62,7 +57,6 @@ export function CommentSection(props: CommentSectionProps): React.JSX.Element {
     setErrorMsg('');
 
     setErrorMsg('');
-    console.log('submitComment');
 
     axios
       .post(
@@ -90,8 +84,7 @@ export function CommentSection(props: CommentSectionProps): React.JSX.Element {
           setErrorMsg(err.message);
         }
       });
-  }, [userName, UserCommentInput, loadUsers]);
-
+  }, [UserCommentInput, book.id, loadBook, loadUsers, selectedUserId]);
 
   return (
     <div className="flex flex-col gap-3">
@@ -123,9 +116,7 @@ export function CommentSection(props: CommentSectionProps): React.JSX.Element {
               currentlySelectedId={selectedUserId}
               propositions={usersOptions}
             />
-            <label htmlFor="comment" className="sr-only">
-              Your comment
-            </label>
+            <div className="sr-only">Your comment</div>
             <div className="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800">
               <TextInput
                 placeholder="Your comment"

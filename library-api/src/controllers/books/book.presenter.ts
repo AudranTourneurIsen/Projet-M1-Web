@@ -13,6 +13,7 @@ import type {
   CommentPresenter,
   PlainCommentPresenter,
 } from '../comments/comment.presenter';
+import { UserPresenter } from '../users/user.presenter';
 
 export class PlainBookPresenter {
   @ApiProperty({
@@ -94,6 +95,11 @@ export class BookPresenter {
   })
   comments?: CommentPresenter[];
 
+  @ApiProperty({
+    type: 'object',
+  })
+  ownedByUsers?: UserPresenter[];
+
   private constructor(data: BookPresenter) {
     Object.assign(this, data);
   }
@@ -106,6 +112,7 @@ export class BookPresenter {
       author: data.author,
       genres: data.genres,
       comments: data.comments,
+      ownedByUsers: data.ownedByUsers,
     });
   }
 }

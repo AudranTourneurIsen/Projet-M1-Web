@@ -8,6 +8,7 @@ import {
   PlainGenreModel,
 } from 'library-api/src/models/genre.model';
 import type { CommentModel, PlainCommentModel } from './comment.model';
+import { UserModel } from "./user.model";
 
 export type PlainBookModel = {
   id: BookId;
@@ -16,6 +17,7 @@ export type PlainBookModel = {
   author: PlainAuthorModel;
   genres: PlainGenreModel[];
   comments?: PlainCommentModel[];
+  ownedByUsers: UserModel[],
 };
 
 export type BookModel = {
@@ -25,4 +27,5 @@ export type BookModel = {
   author: AuthorModel;
   genres: GenreModel[];
   comments?: CommentModel[];
+  ownedByUsers: UserModel[],
 };

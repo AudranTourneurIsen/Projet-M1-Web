@@ -9,6 +9,7 @@ import { BookInfo } from '@/app/books/[id]/BookInfo';
 import { AuthorInfo } from '@/app/books/[id]/AuthorInfo';
 import { CommentSection } from '@/app/books/[id]/CommentSection';
 import { BookSuppression } from '@/app/books/[id]/BookSuppression';
+import { UsersOwning } from '@/app/books/[id]/UsersOwning';
 
 const BooksDetailsPage: FC = () => {
   const { id } = useParams();
@@ -57,9 +58,9 @@ const BooksDetailsPage: FC = () => {
         <BookInfo book={book} />
         <AuthorInfo book={book} />
         <CommentSection book={book} loadBook={loadBook} />
+        <UsersOwning book={book} />
         <BookSuppression book={book} reload={(): void => reload()} />
       </div>
-
     </div>
   );
 };
