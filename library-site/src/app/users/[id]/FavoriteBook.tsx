@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import axios from 'axios';
 import { Modal } from '@/components/Modal';
 import { Button } from '@/components/Button';
@@ -24,12 +24,14 @@ export function FavoriteBook(props: FavoriteBookProps): React.JSX.Element {
 
   const favBookName = user.favoriteBook?.name;
 
-  const favBookText = favBookName
-    ?
-      <span>
-            My favorite book is <a href={`/books/${user.favoriteBook?.id}`}>{favBookName}</a>
-        </span>
-    : 'This user has no favorite book... yet!';
+  const favBookText = favBookName ? (
+    <span>
+      My favorite book is{' '}
+      <a href={`/books/${user.favoriteBook?.id}`}>{favBookName}</a>
+    </span>
+  ) : (
+    'This user has no favorite book... yet!'
+  );
 
   const booksOptions = books.map((book) => ({
     id: book.id,
@@ -43,19 +45,12 @@ export function FavoriteBook(props: FavoriteBookProps): React.JSX.Element {
 
   const save = useCallback(async () => {
     if (!selectedBookId) return;
-    console.log('SAVE', selectedBookId);
-    console.log('NETCALL 1');
     await axios.post(`${API_URL}/users/${user.id}/edit-favorite-book`, {
       bookId: selectedBookId,
     });
-    console.log('NETCALL 2');
     setIsEditFavoriteBookModalOpen(false);
     reload();
-  }, [selectedBookId, reload]);
-
-  useEffect(() => {
-    console.log('selectedBookId => ', selectedBookId);
-  }, [selectedBookId]);
+  }, [selectedBookId, user.id, reload]);
 
   return (
     <>

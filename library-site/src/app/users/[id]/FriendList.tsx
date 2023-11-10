@@ -44,7 +44,7 @@ export function FriendList(props: FriendListProps): React.JSX.Element {
 
   useEffect(() => {
     setSelectedFriendIds(user.friends?.map((f) => f.id) || []);
-  }, []);
+  }, [user]);
 
   return (
     <>

@@ -37,7 +37,6 @@ export function FavoriteGenres(props: FavoriteGenresProps): React.JSX.Element {
   }, [genres, user]);
 
   const save = useCallback(async () => {
-    console.log('SAVE', selectedGenreIds);
     await axios.post(`${API_URL}/users/${user.id}/edit-favorite-genres`, {
       genreIds: selectedGenreIds,
     });
