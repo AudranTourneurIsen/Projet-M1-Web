@@ -9,7 +9,7 @@ import {
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiProperty, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { AuthorId } from 'library-api/src/entities';
 import { AuthorUseCases } from 'library-api/src/useCases';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -51,7 +51,8 @@ export class AuthorController {
   }
 
   @ApiOkResponse({
-    description: 'Create a new author, the file must be uploaded as multiform input in the same request',
+    description:
+      'Create a new author, the file must be uploaded as multiform input in the same request',
     isArray: true,
   })
   @Post('/new')
@@ -91,7 +92,8 @@ export class AuthorController {
   }
 
   @ApiOkResponse({
-    description: 'edit a image: the new image must be uploaded as multiform input in the request',
+    description:
+      'edit a image: the new image must be uploaded as multiform input in the request',
     isArray: true,
   })
   @Post('/edit/image')
