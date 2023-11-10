@@ -7,11 +7,12 @@ import {
   Param,
   Post,
 } from '@nestjs/common';
+import { ApiOkResponse } from '@nestjs/swagger';
 import {
   UserPresenter,
   PlainUserPresenter,
 } from 'library-api/src/controllers/users/user.presenter';
-import { BookId, GenreId, UserId } from 'library-api/src/entities';
+import { UserId } from 'library-api/src/entities';
 import { UserUseCases } from 'library-api/src/useCases';
 import {
   CreateUserDto,
@@ -20,9 +21,6 @@ import {
   EditUserFriendsDto,
   EditUserOwnedBooksDto,
 } from './user.dto';
-import { resolveItunes } from 'next/dist/lib/metadata/resolvers/resolve-basics';
-import { ApiOkResponse } from '@nestjs/swagger';
-import { PlainBookPresenter } from '../books/book.presenter';
 
 @Controller('users')
 export class UserController {
