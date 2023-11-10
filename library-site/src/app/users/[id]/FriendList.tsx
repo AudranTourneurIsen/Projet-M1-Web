@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserGroup } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
@@ -27,7 +27,6 @@ export function FriendList(props: FriendListProps): React.JSX.Element {
   const [selectedFriendIds, setSelectedFriendIds] = useState<string[]>([]);
 
   const save = useCallback(async () => {
-    console.log('SAVE', selectedFriendIds);
     await axios.post(`${API_URL}/users/${user.id}/edit-friends`, {
       userIds: selectedFriendIds,
     });
@@ -67,7 +66,7 @@ export function FriendList(props: FriendListProps): React.JSX.Element {
                   size="xl"
                 />
                 <a href={`/users/${friend.id}`}>
-                {friend.firstName} {friend.lastName}
+                  {friend.firstName} {friend.lastName}
                 </a>
               </div>
             </div>

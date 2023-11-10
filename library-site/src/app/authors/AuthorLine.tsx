@@ -1,7 +1,7 @@
 import React from 'react';
+import Image from 'next/image';
 import { PlainAuthorModel } from '@/models';
 import { Button } from '@/components/Button';
-import Image from 'next/image';
 
 type AuthorLineProps = {
   author: PlainAuthorModel;

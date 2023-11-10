@@ -32,7 +32,6 @@ export default function RootLayout({
   });
 
   return (
-
     <html lang="en" className="dark">
       <body
         className={`${inter.className} bg-gray-100 dark:bg-gray-900 text-gray-300`}

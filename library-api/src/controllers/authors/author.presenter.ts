@@ -25,8 +25,14 @@ export class PlainAuthorPresenter {
   })
   lastName: string;
 
+  @ApiProperty({
+    type: 'object',
+  })
   photo?: PlainImagePresenter;
 
+  @ApiProperty({
+    type: 'object',
+  })
   books?: PlainBookPresenter[];
 
   private constructor(data: PlainAuthorPresenter) {
@@ -61,8 +67,14 @@ export class AuthorPresenter {
   })
   lastName: string;
 
+  @ApiProperty({
+    type: 'object',
+  })
   photo?: ImagePresenter;
 
+  @ApiProperty({
+    type: 'object',
+  })
   books?: BookPresenter[];
 
   private constructor(data: AuthorPresenter) {

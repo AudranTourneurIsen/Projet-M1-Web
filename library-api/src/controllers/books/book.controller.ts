@@ -14,7 +14,7 @@ export class BookController {
   constructor(private readonly bookUseCases: BookUseCases) {}
 
   @ApiOkResponse({
-    description: 'Get all authors',
+    description: 'Get all books',
     type: PlainBookPresenter,
     isArray: true,
   })
@@ -26,7 +26,7 @@ export class BookController {
   }
 
   @ApiOkResponse({
-    description: 'Get all authors',
+    description: 'Get book by id',
     type: BookPresenter,
     isArray: true,
   })

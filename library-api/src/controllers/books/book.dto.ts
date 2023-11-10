@@ -40,12 +40,6 @@ export class CreateCommentDto {
   text: string;
 
   @ApiProperty({
-    type: 'string',
-  })
-  @IsString()
-  id: PlainCommentModel['id'];
-
-  @ApiProperty({
     type: 'object',
   })
   @IsDate()
