@@ -4,6 +4,7 @@ import { BookRepository } from 'library-api/src/repositories/books/book.reposito
 import { GenreRepository } from 'library-api/src/repositories/genres/genre.repository';
 import { UserRepository } from 'library-api/src/repositories/users/user.repository';
 import { ImageRepository } from './images/image.repository';
+import { CommentRepository } from './comments/comment.repository';
 
 const repositories = [
   AuthorRepository,
@@ -11,6 +12,7 @@ const repositories = [
   GenreRepository,
   UserRepository,
   ImageRepository,
+  CommentRepository,
 ];
 
 @Module({

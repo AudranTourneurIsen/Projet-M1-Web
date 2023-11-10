@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Delete } from '@nestjs/common';
 import {
   BookPresenter,
   PlainBookPresenter,
@@ -7,6 +7,7 @@ import { BookId } from 'library-api/src/entities';
 import { BookUseCases } from 'library-api/src/useCases';
 import { ApiOkResponse } from '@nestjs/swagger';
 import { CreateBookDto, CreateCommentDto } from './book.dto';
+import { PlainCommentPresenter } from '../comments/comment.presenter';
 
 @Controller('books')
 export class BookController {
@@ -40,7 +41,7 @@ export class BookController {
     return BookPresenter.from(createdBook);
   }
 
-  @Post('/:id/delete')
+  @Delete('/:id/delete')
   public async deleteBook(@Param('id') id: BookId): Promise<void> {
     await this.bookUseCases.deleteBook(id);
   }
@@ -49,10 +50,10 @@ export class BookController {
   public async addComment(
     @Param('id') id: BookId,
     @Body() comment: CreateCommentDto,
-  ): Promise<BookPresenter> {
-    const book = await this.bookUseCases.addComment(id, comment);
+  ): Promise<PlainCommentPresenter> {
+    const outputComment = await this.bookUseCases.addComment(id, comment);
 
-    return BookPresenter.from(book);
+    return PlainCommentPresenter.from(outputComment);
   }
 
   @Post('/:id/comments/')

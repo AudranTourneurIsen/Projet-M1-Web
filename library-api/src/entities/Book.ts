@@ -12,6 +12,7 @@ import {
 import { Author } from './Author';
 import { User } from './User';
 import { Genre } from './Genre';
+import { Comment } from './Comment';
 
 export type BookId = string & { __brand: 'Book' };
 
@@ -34,6 +35,10 @@ export class Book extends BaseEntity {
 
   @OneToMany(() => User, (user) => user.favoriteBook, { onDelete: 'CASCADE' })
   inFavoriteBook: User;
+
+  @OneToMany(() => Comment, (comment) => comment.book, { onDelete: 'CASCADE' })
+  @JoinTable()
+  comments: Comment[];
 
   @ManyToMany(() => Genre, (genre) => genre.books)
   @JoinTable()
