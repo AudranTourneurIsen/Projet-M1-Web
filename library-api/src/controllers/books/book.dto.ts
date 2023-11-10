@@ -4,6 +4,7 @@ import {
   PlainAuthorModel,
   PlainCommentModel,
 } from 'library-api/src/models';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateBookDto {
   @IsString()
