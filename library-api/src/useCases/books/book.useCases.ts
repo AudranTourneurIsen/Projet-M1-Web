@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Author, Book, BookId, Genre } from 'library-api/src/entities';
+import { Comment, Author, Book, BookId, Genre } from 'library-api/src/entities';
 import {
   AuthorRepository,
   BookRepository,
@@ -8,6 +8,7 @@ import {
 import {
   BookUseCasesOutput,
   CreateBookUseCasesInput,
+  CreateCommentUseCasesInput,
   PlainBookUseCasesOutput,
 } from 'library-api/src/useCases/books/book.useCases.type';
 
@@ -74,7 +75,7 @@ export class BookUseCases {
 
     Logger.log('bookToSend', JSON.stringify(bookToSend));
 
-    return this.bookRepository.createBook(book);
+    return this.bookRepository.createBook(bookToSend);
   }
 
   /**
@@ -103,13 +104,15 @@ export class BookUseCases {
 
   public async addComment(
     id: BookId,
-    comment: string,
+    comment: CreateCommentUseCasesInput,
   ): Promise<BookUseCasesOutput> {
     const book = await this.bookRepository.getById(id);
 
     if (!book) {
       throw new Error('Book not found');
     }
+
+    const commentTmp = new Comment();
 
     return book;
   }

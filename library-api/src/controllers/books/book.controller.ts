@@ -5,7 +5,7 @@ import {
 } from 'library-api/src/controllers/books/book.presenter';
 import { BookId } from 'library-api/src/entities';
 import { BookUseCases } from 'library-api/src/useCases';
-import { CreateBookDto } from './book.dto';
+import { CreateBookDto, CreateCommentDto } from './book.dto';
 
 @Controller('books')
 export class BookController {
@@ -42,7 +42,7 @@ export class BookController {
   @Post('/:id/comments/new')
   public async addComment(
     @Param('id') id: BookId,
-    @Body() comment: string,
+    @Body() comment: CreateCommentDto,
   ): Promise<BookPresenter> {
     const book = await this.bookUseCases.addComment(id, comment);
 
