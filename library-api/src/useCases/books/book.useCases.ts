@@ -144,21 +144,4 @@ export class BookUseCases {
 
     return this.commentRepository.createComment(commentTmp);
   }
-
-  /**
-   * Get all comments of a book
-   * @param id Book's ID
-   * @returns Book with its comments
-   * @throws 404: book with this ID was not found
-   */
-
-  public async getComments(id: BookId): Promise<BookUseCasesOutput> {
-    const book = await this.bookRepository.getById(id);
-
-    if (!book) {
-      throw new Error('Book not found');
-    }
-
-    return book;
-  }
 }
