@@ -40,5 +40,11 @@
     "link": "/users",
     "regex": "^/users/.+$",
     "menu": false
+  },
+  {
+    "name": "Api",
+    "link": "/api",
+    "regex": "^/api$",
+    "menu": true
   }
 ]
