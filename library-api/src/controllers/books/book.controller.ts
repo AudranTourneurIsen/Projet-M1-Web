@@ -13,7 +13,7 @@ export class BookController {
   constructor(private readonly bookUseCases: BookUseCases) {}
 
   @ApiOkResponse({
-    description: 'Get all authors',
+    description: 'Get all books',
     type: PlainBookPresenter,
     isArray: true,
   })
@@ -24,6 +24,11 @@ export class BookController {
     return books.map(PlainBookPresenter.from);
   }
 
+  @ApiOkResponse({
+    description: 'Get book by id',
+    type: BookPresenter,
+    isArray: true,
+  })
   @Get('/:id')
   public async getById(@Param('id') id: BookId): Promise<BookPresenter> {
     const book = await this.bookUseCases.getById(id);
@@ -31,6 +36,10 @@ export class BookController {
     return BookPresenter.from(book);
   }
 
+  @ApiOkResponse({
+    description: 'Create a new book',
+    isArray: true,
+  })
   @Post('/new')
   public async createBook(
     @Body() bookCreationRequest: CreateBookDto,

@@ -6,15 +6,27 @@ import {
 } from 'library-api/src/models';
 
 export class CreateBookDto {
+  @ApiProperty({
+    type: 'string',
+  })
   @IsString()
   name: string;
 
+  @ApiProperty({
+    type: 'date',
+  })
   @IsDate()
   writtenOn: Date;
 
+  @ApiProperty({
+    type: 'class',
+  })
   @IsString()
   authorId: PlainAuthorModel['id'];
 
+  @ApiProperty({
+    type: 'class',
+  })
   @IsArray()
   genres: GenreModel[];
 }

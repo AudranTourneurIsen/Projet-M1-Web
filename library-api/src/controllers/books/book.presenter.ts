@@ -22,12 +22,18 @@ export class PlainBookPresenter {
   })
   name: string;
 
+  @ApiProperty({
+    type: 'date',
+  })
   writtenOn: Date;
 
+  @ApiProperty({
+    type: 'class',
+  })
   author: PlainAuthorPresenter;
 
   @ApiProperty({
-    type: 'string',
+    type: 'class',
   })
   genres: PlainGenrePresenter[];
 
@@ -47,14 +53,30 @@ export class PlainBookPresenter {
 }
 
 export class BookPresenter {
+  @ApiProperty({
+    type: 'string',
+    format: 'uuid',
+  })
   id: BookId;
 
+  @ApiProperty({
+    type: 'string',
+  })
   name: string;
 
+  @ApiProperty({
+    type: 'class',
+  })
   author: AuthorPresenter;
 
+  @ApiProperty({
+    type: 'date',
+  })
   writtenOn: Date;
 
+  @ApiProperty({
+    type: 'class',
+  })
   genres: GenrePresenter[];
 
   private constructor(data: BookPresenter) {
