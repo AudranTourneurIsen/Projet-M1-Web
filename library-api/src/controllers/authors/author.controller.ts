@@ -85,7 +85,6 @@ export class AuthorController {
 
   @Delete('/delete/:id')
   public async deleteAuthor(@Param('id') id: AuthorId): Promise<void> {
-    Logger.warn('ouuuuuuuuuui ID=' + id);
     await this.authorUseCases.deleteAuthor(id);
   }
 }

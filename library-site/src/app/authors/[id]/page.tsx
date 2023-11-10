@@ -68,13 +68,12 @@ const AuthorDetailsPage: FC = () => {
   }
 
   if (author === 'not found') {
-    console.log('author not found');
     return redirect('/authors');
   }
 
   async function submitEditAuthor(): Promise<void> {
     await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/authors/edit`, {
-      id: id,
+      id,
       firstName: authorEditFirstName,
       lastName: authorEditLastName,
     });
@@ -98,7 +97,6 @@ const AuthorDetailsPage: FC = () => {
     id: book.id,
     name: book.name,
   }));
-
 
   async function submitImageAuthor(): Promise<void> {
     const formData = new FormData();
