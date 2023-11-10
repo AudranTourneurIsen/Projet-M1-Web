@@ -7,4 +7,5 @@ export const bookFixture = (author: Author, genres: Genre[]): Book =>
     name: faker.string.sample(8),
     author,
     genres,
+    comments: [],
   }) as Book;

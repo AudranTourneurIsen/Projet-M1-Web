@@ -1,6 +1,7 @@
 import { Book } from 'library-api/src/entities';
 import {
   BookRepositoryOutput,
+  CreateBookRepositoryInput,
   PlainBookRepositoryOutput,
 } from 'library-api/src/repositories/books/book.repository.type';
 import { CreateBookUseCasesInput } from 'library-api/src/useCases/books/book.useCases.type';
@@ -32,11 +33,15 @@ export const adaptBookEntityToBookRepositoryOutput = (
 ): BookRepositoryOutput => ({
   ...book,
   genres: book.genres ? book.genres : [],
+  comments: book.comments ? book.comments : [],
 });
 
 export const adaptBookEntityToCreateBookRepositoryInput = (
   book: Book,
-): BookRepositoryOutput => ({
-  ...book,
+): CreateBookRepositoryInput => ({
+  name: book.name,
+  author: book.author,
+  writtenOn: book.writtenOn,
   genres: book.genres ? book.genres : [],
+  comments: book.comments ? book.comments : [],
 });
