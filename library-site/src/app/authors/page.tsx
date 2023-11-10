@@ -154,6 +154,7 @@ const AuthorsPage: FC = () => {
         <form className="flex flex-col gap-8 p-6">
           <h1>Author creation</h1>
           <TextInput
+            placeholder={'Author\'s first name'}
             label="Author's first name"
             onChange={(newName): void => {
               setAuthorFirstName(newName);
@@ -161,6 +162,7 @@ const AuthorsPage: FC = () => {
             value={authorFirstName}
           />
           <TextInput
+            placeholder={'Author\'s last name'}
             label="Author's last name"
             onChange={(newName): void => {
               setAuthorLastName(newName);

@@ -315,6 +315,7 @@ const BooksPage: FC = (): ReactElement => {
           <form className="p-6 flex flex-col gap-4">
             <div className="flex flex-col gap-1">
               <TextInput
+                placeholder='Name'
                 label="Name"
                 value={nameInput}
                 onChange={(text: string): void => setNameInput(text)}

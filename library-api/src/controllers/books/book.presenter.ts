@@ -8,8 +8,14 @@ import {
 } from 'library-api/src/controllers/genres/genre.presenter';
 import { BookId } from 'library-api/src/entities';
 import { BookModel, PlainBookModel } from 'library-api/src/models';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class PlainBookPresenter {
+  @ApiProperty({
+    type: 'string',
+    format: 'uuid',
+    description: 'author id'
+  })z
   id: BookId;
 
   name: string;
