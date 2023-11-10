@@ -24,6 +24,11 @@ export class BookController {
     return books.map(PlainBookPresenter.from);
   }
 
+  @ApiOkResponse({
+    description: 'Get all authors',
+    type: BookPresenter,
+    isArray: true,
+  })
   @Get('/:id')
   public async getById(@Param('id') id: BookId): Promise<BookPresenter> {
     const book = await this.bookUseCases.getById(id);
@@ -31,6 +36,10 @@ export class BookController {
     return BookPresenter.from(book);
   }
 
+  @ApiOkResponse({
+    description: 'create a new book',
+    isArray: true,
+  })
   @Post('/new')
   public async createBook(
     @Body() bookCreationRequest: CreateBookDto,
@@ -40,11 +49,19 @@ export class BookController {
     return BookPresenter.from(createdBook);
   }
 
+  @ApiOkResponse({
+    description: 'delete a book',
+    isArray: true,
+  })
   @Post('/:id/delete')
   public async deleteBook(@Param('id') id: BookId): Promise<void> {
     await this.bookUseCases.deleteBook(id);
   }
 
+  @ApiOkResponse({
+    description: 'create a new comment',
+    isArray: true,
+  })
   @Post('/:id/comments/new')
   public async addComment(
     @Param('id') id: BookId,
@@ -55,6 +72,10 @@ export class BookController {
     return BookPresenter.from(book);
   }
 
+  @ApiOkResponse({
+    description: 'view the comments',
+    isArray: true,
+  })
   @Post('/:id/comments/')
   public async getComments(@Param('id') id: BookId): Promise<BookPresenter> {
     const book = await this.bookUseCases.getComments(id);
