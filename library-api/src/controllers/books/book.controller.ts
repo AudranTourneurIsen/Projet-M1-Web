@@ -72,15 +72,4 @@ export class BookController {
 
     return PlainCommentPresenter.from(outputComment);
   }
-
-  @ApiOkResponse({
-    description: 'view the comments of a specific book',
-    isArray: true,
-  })
-  @Post('/:id/comments/')
-  public async getComments(@Param('id') id: BookId): Promise<BookPresenter> {
-    const book = await this.bookUseCases.getComments(id);
-
-    return BookPresenter.from(book);
-  }
-}
+  
