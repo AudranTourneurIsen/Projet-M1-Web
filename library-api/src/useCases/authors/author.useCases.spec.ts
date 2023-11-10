@@ -1,5 +1,5 @@
 import { authorFixture, imageFixture } from 'library-api/src/fixtures';
-import { AuthorRepository } from 'library-api/src/repositories';
+import { AuthorRepository, BookRepository } from 'library-api/src/repositories';
 import {
   adaptAuthorEntityToAuthorModel,
   adaptAuthorToCreateAuthorRepositoryInput,
@@ -17,7 +17,12 @@ describe('AuthorUseCases', () => {
         getAllPlain: jest.fn(),
       } as unknown as AuthorRepository;
       const repository2 = {} as unknown as ImageRepository;
-      const useCases = new AuthorUseCases(repository1, repository2);
+      const repository3 = {} as unknown as BookRepository;
+      const useCases = new AuthorUseCases(
+        repository1,
+        repository2,
+        repository3,
+      );
       const fixtures = [authorFixture(), authorFixture(), authorFixture()].map(
         adaptAuthorToPlainAuthorRepositoryOutput,
       );
@@ -41,7 +46,12 @@ describe('AuthorUseCases', () => {
         getById: jest.fn(),
       } as unknown as AuthorRepository;
       const repository2 = {} as unknown as ImageRepository;
-      const useCases = new AuthorUseCases(repository1, repository2);
+      const repository3 = {} as unknown as BookRepository;
+      const useCases = new AuthorUseCases(
+        repository1,
+        repository2,
+        repository3,
+      );
       const fixture = adaptAuthorEntityToAuthorModel(authorFixture());
 
       const getByIdSpy = jest
@@ -65,7 +75,12 @@ describe('AuthorUseCases', () => {
       const repository2 = {
         createImage: jest.fn(),
       } as unknown as ImageRepository;
-      const useCases = new AuthorUseCases(repository1, repository2);
+      const repository3 = {} as unknown as BookRepository;
+      const useCases = new AuthorUseCases(
+        repository1,
+        repository2,
+        repository3,
+      );
 
       const input2 = Buffer.from(faker.string.sample(8));
       const imageFix = imageFixture(input2);

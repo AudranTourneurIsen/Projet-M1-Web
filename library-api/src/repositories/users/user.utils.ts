@@ -16,3 +16,9 @@ export const adaptUserEntityToUserModel = (
 ): UserRepositoryOutput => ({
   ...user,
 });
+
+export const adaptUserEntityToUserRepositoryOutput = (
+  user: User,
+): UserRepositoryOutput => ({
+  ...user,
+});
